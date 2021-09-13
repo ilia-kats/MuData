@@ -1,4 +1,59 @@
-#' @importFrom rhdf5 H5Iget_type h5readAttributes h5ls H5Aexists H5Aopen H5Aread H5Aclose
+#' @importFrom rhdf5 H5Aexists H5Aopen H5Aread H5Aclose H5Dread H5Dclose
+#' @importMethodsFrom rhdf5 &
+read_dataframe <- function(group) {
+    indexcol <- "_index"
+    if (H5Aexists(group, "_index")) {
+        indexattr <- H5Aopen(group, "_index")
+        indexcol <- H5Aread(indexattr)
+        H5Aclose(indexattr)
+    }
+
+    orderedattr <- H5Aopen(group, "column-order")
+    columnorder <- H5Aread(orderedattr)
+    H5Aclose(orderedattr)
+
+    col_list <- lapply(columnorder, function(name) {
+        col <- group & name
+        values <- H5Dread(col)
+        if (H5Aexists(col, "categories")) {
+            attr <- H5Aopen(col, "categories")
+            labels <- H5Aread(attr)
+            if (!is(labels, "H5IdComponent")) {
+                warning(paste0("found categories attribute for column ", name, ", but it is not a reference"))
+            } else {
+                values <- factor(as.integer(values), labels=H5Dread(labels))
+                H5Dclose(labels)
+            }
+            H5Aclose(attr)
+        }
+        H5Dclose(col)
+        values
+    })
+    names(col_list) <- columnorder
+    index <- group & indexcol
+    col_list[["row.names"]] <- H5Dread(group & indexcol)
+    do.call(data.frame, args=col_list)
+}
+
+#' @importFrom rhdf5 H5Dread H5Aexists H5Aopen H5Aread H5Aclose
+read_dataframe_legacy <- function(dataset) {
+    table <- H5Dread(dataset)
+
+    indexcol <- "_index"
+    if (H5Aexists(dataset, "_index")) {
+        index <- H5Aopen(dataset, "_index")
+        indexcol <- H5Aread(index)
+        H5Aclose(index)
+    }
+
+    if (indexcol %in% colnames(table)) {
+        rownames(table) <- table[,indexcol,drop=TRUE]
+        table <- table[,!colnames(table) %in% c(indexcol),drop=FALSE]
+    }
+    table
+}
+
+#' @importFrom rhdf5 H5Iget_type H5Aexists H5Aopen H5Aread H5Aclose
 read_with_index <- function(dataset) {
     cls <- H5Iget_type(dataset)
     if (cls == "H5I_GROUP" && H5Aexists(dataset, "encoding-type")) {
@@ -9,85 +64,36 @@ read_with_index <- function(dataset) {
             warning(paste0("Unknown encoding ", encoding, " when attempting to read data frame"))
             return(data.frame())
         }
-        # Table is saved as a group rather than a dataset
-        indexcol <- "_index"
-        if (H5Aexists(dataset, "_index")) {
-            indexattr <- H5Aopen(dataset, "_index")
-            indexcol <- H5Aread(indexattr)
-            H5Aclose(indexattr)
-        }
-
-        columns <- h5ls(dataset, recursive=FALSE, datasetinfo=FALSE)$name
-        columns <- columns[columns != "__categories"]
-
-        col_list <- lapply(columns, function(name) {
-            values <- H5Dread(dataset & name)
-            col <- dataset & name
-            if (H5Aexists(col, "categories")) {
-                attr <- H5Aopen(col, "categories")
-                if (H5is_attr_reference(attr)) {
-                    labels <- H5deref_attr_reference(attr)
-                    values <- factor(as.integer(values), labels=H5Dread(labels))
-                } else {
-                    warning(paste0("found categories attribute for column ", name, ", but it is not a reference"))
-                }
-                H5Aclose(attr)
-            }
-            values
-        })
-        table <- data.frame(Reduce(cbind, col_list))
-        colnames(table) <- columns
-
-        if (indexcol %in% colnames(table)) {
-            rownames(table) <- table[,indexcol,drop=TRUE]
-            table <- table[,!colnames(table) %in% c(indexcol),drop=FALSE]
-        }
-
-        # Fix column order
-        if (H5Aexists(dataset, "column-order")) {
-            orderedattr <- H5Aopen(dataset, "column-order")
-            ordered_columns <- H5Aread(orderedattr)
-            H5Aclose(orderedattr)
-
-            ordered_columns <- ordered_columns[ordered_columns != indexcol]
-            table <- table[,ordered_columns[ordered_columns %in% columns],drop=FALSE]
-        }
+        read_dataframe(dataset)
     } else {
-        table <- H5Dread(dataset)
-
-        indexcol <- "_index"
-        if (H5Aexists(dataset, "_index")) {
-            index <- H5Aopen(dataset, "_index")
-            indexcol <- H5Aread(index)
-            H5Aclose(index)
-        }
-
-        if (indexcol %in% colnames(table)) {
-            rownames(table) <- table[,indexcol,drop=TRUE]
-            table <- table[,!colnames(table) %in% c(indexcol),drop=FALSE]
-        }
+        read_dataframe_legacy(dataset)
     }
-        table
+}
+
+#' @importFrom rhdf5 H5Dread H5Aopen H5Aread H5Aclose
+#' @importMethodsFrom rhdf5 &
+read_sparse_matrix <- function(group, encoding) {
+    i <- as.vector(H5Dread(group & "indices"))
+    p <- as.vector(H5Dread(group & "indptr"))
+    x <- as.vector(H5Dread(group & "data"))
+    shapeattr <- H5Aopen(group, "shape")
+    shape <- H5Aread(shapeattr)
+    H5Aclose(shapeattr)
+    if (encoding == "csr_matrix") {
+        sparseMatrix(j=i, p=p, x=x, dims=shape, repr="R", index1=FALSE)
+    } else {
+        sparseMatrix(i=i, p=p, x=x, dims=shape, repr="C", index1=FALSE)
+    }
 }
 
 #' @importFrom rhdf5 H5Iget_type H5Aexists H5Aopen H5Aread H5Aclose H5Dread
 read_matrix <- function(dataset) {
     if (H5Iget_type(dataset) == "H5I_GROUP" && H5Aexists(dataset, "encoding-type")) {
         encattr <- H5Aopen(dataset, "encoding-type")
-        encoding <- H5Aread(dataset, "encoding")
+        encoding <- H5Aread(encattr)
         H5Aclose(encattr)
         if (encoding %in% c("csr_matrix", "csc_matrix")) {
-            i <- H5Dread(dataset & "indices")
-            p <- H5Dread(dataset & "indptr")
-            x <- H5Dread(dataset & "data")
-            shapeattr <- H5Aopen(dataset, "shape")
-            shape <- H5Aread(shapeattr)
-            H5Aclose(shapeattr)
-            if (encoding == "csr_matrix") {
-                sparseMatrix(j=i, p=p, x=x, dims=shape, repr="R", index1=FALSE)
-            } else {
-                sparseMatrix(i=i, p=p, x=x, dims=shape, repr="C", index1=FALSE)
-            }
+            read_sparse_matrix(dataset, encoding)
         } else {
             warning(paste0("Unknown encoding ", encoding, "when attempting to read matrix"))
             matrix()
@@ -97,11 +103,34 @@ read_matrix <- function(dataset) {
     }
 }
 
-#' @details MultiAssayExperiment-helpers
+#' @importFrom rhdf5 H5Aopen H5Aread H5Aclose
+read_group <- function(group) {
+    encattr <- H5Aopen(group, "encoding-type")
+    encoding <- H5Aread(encattr)
+    H5Aclose(encattr)
+    if (encoding == "dataframe") {
+        read_dataframe(group)
+    } else if (endsWith(encoding, "matrix")) {
+        read_sparse_matrix(group)
+    } else {
+        warning(paste0("Unknown encoding ", encoding))
+        invisible(NULL)
+    }
+}
+
+#' @importFrom rhdf5 H5Iget_type H5Dread
+read_attribute <- function(attr) {
+    if (H5Iget_type(attr) == "H5I_GROUP")
+        read_group(attr)
+    else
+        H5Dread(attr)
+}
+
+#' Read an .h5mu file and create a MultiAssayExperiment
 #'
-#' @description Create a MultiAssayExperiment or a Seurat object from the .h5mu file
-#'
-#' @importFrom rhdf5 h5ls H5Dread
+#' @importFrom rhdf5 h5ls H5Fclose
+#' @importMethodsFrom rhdf5 &
+#' @importFrom S4Vectors SimpleList
 #' @importFrom SingleCellExperiment SingleCellExperiment
 #' @importFrom SummarizedExperiment SummarizedExperiment
 #' @importFrom MultiAssayExperiment MultiAssayExperiment
@@ -121,44 +150,34 @@ ReadH5MU <- function(file) {
     modalities <- lapply(assays, function(mod) {
         view <- h5 & paste("mod", mod, sep="/")
         X <- read_matrix(view & "X")
-
         var <- read_with_index(view & "var")
-
         obs <- read_with_index(view  & "obs")
-        if (is("obs", "data.frame"))
-            rownames(obs) <- paste(mod, rownames(obs), sep="-")
+        primary <- rownames(obs)
+        rownames(obs) <- paste(mod, rownames(obs), sep="-")
 
         viewnames <- h5ls(view, recursive=FALSE)$name
+        colnames(X) <- rownames(var)
+        rownames(X) <- rownames(obs)
         if ("obsm" %in% viewnames) {
             obsmnames <- h5ls(view & "obsm", recursive=FALSE)$name
-            obsm <- lapply(obsnames, function(space) {
-                H5Dread(view & paste("obsm", space, sep="/"))
+            obsm <- lapply(obsmnames, function(space) {
+                elem <- read_attribute(view & paste("obsm", space, sep="/"))
+                rownames(elem) <- rownames(obs)
+                elem
             })
             names(obsm) <- obsmnames
-            se <- SingleCellExperiment(assays=SimpleList(counts=X), rowData=var, colData=obs, reducedDims=obsm)
+            se <- SingleCellExperiment(assays=SimpleList(counts=t(X)), rowData=var, colData=obs, reducedDims=obsm)
         } else {
-            se <- SummarizedExperiment(assays=SimpleList(counts=X), rowData=var, colData=obs)
+            se <- SummarizedExperiment(assays=SimpleList(counts=t(X)), rowData=var, colData=obs)
         }
 
-        se
+        list(exp=se, primary=primary)
     })
     names(modalities) <- assays
 
     # Create sampleMap
-    mapping <- lapply(assays, function(mod) {
-        primary <- colnames(modalities[[mod]])
-
-        view <- h5 & paste("mod", mod, sep="/")
-        view_attr <- h5attributes(view[["obs"]])
-        indexcol <- "_index"
-        if ("_index" %in% names(view_attr)) {
-          indexcol <- view_attr$`_index`
-        }
-        obs_names <- view[['obs']]$read()[,indexcol,drop=TRUE]
-        sm <- data.frame(primary = obs_names,
-                         colname = rownames(colData(modalities[[mod]])),
-                         stringsAsFactors = FALSE)
-        sm
+    mapping <- lapply(modalities, function(mod) {
+        data.frame(primary=mod$primary, colname=colnames(mod$exp), stringsAsFactors=FALSE)
     })
 
     obsmap <- do.call(rbind, mapping)
@@ -166,9 +185,9 @@ ReadH5MU <- function(file) {
     obsmap <- obsmap[,c("assay", "primary", "colname")]
 
     # Close the connection
-    h5$close_all()
+    H5Fclose(h5)
 
     # Create a MAE object
-    MultiAssayExperiment(modalities, metadata, obsmap)
+    MultiAssayExperiment(lapply(modalities, function(mod)mod$exp), metadata, obsmap)
 }
 

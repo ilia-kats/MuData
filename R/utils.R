@@ -3,41 +3,18 @@
 .name <- paste0(getPackageName(), ".r")
 .version <- as.character(packageVersion(getPackageName()))
 
-#' useDynLib MuData, .registration=TRUE
-.onLoad <- function(libname, pkgname) {
-    dlls <- getLoadedDLLs()
-    rhdf5dll <- sapply(dlls, function(dll)dll[["name"]] == "rhdf5")
-    rhdf5dll <- dlls[rhdf5dll][[1]]
-    .Call("_init_rhdf5", rhdf5dll[["path"]], PACKAGE=getPackageName())
-}
+#' @importFrom methods setGeneric setMethod
+#' @import Matrix
+NULL
 
-#' @useDynLib MuData, .registration=TRUE
-#' @importFrom rhdf5 H5Pcreate H5Fcreate
+#' @importFrom rhdf5 H5Pcreate H5Pset_userblock H5Fcreate
 open_h5 <- function(filename) {
     h5p_create <- H5Pcreate("H5P_FILE_CREATE")
-    res <- .Call("_H5Pset_userblock", h5p_create@ID, 512, PACKAGE=getPackageName())
+    res <- H5Pset_userblock(h5p_create, 512)
     if (res < 0) {
         stop("could not set HDF5 user block")
     }
     H5Fcreate(filename, fcpl=h5p_create, native=TRUE)
-}
-
-#' @useDynLib MuData, .registration=TRUE
-H5is_attr_reference <- function(attr) {
-    .Call("_H5is_attr_reference", attr@ID, PACKAGE=getPackageName())
-}
-
-#' @useDynLib MuData, .registration=TRUE
-H5deref_attr_reference <- function(attr) {
-    obj <- .Call("_H5deref_attr_reference", attr@ID, PACKAGE=getPackageName())
-    if (!is.null(obj))
-        obj@native <- attr@native
-    return(obj)
-}
-
-#' @useDynLib MuData, .registration=TRUE
-H5write_attr_reference <- function(attr, obj) {
-    .Call("_H5write_attr_reference", attr@ID, obj@ID)
 }
 
 #' @importFrom rhdf5 h5writeAttribute H5Fget_name H5Fclose

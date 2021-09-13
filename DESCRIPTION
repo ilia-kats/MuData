@@ -13,7 +13,11 @@ Authors@R:
            email = "i.kats@dkfz-heidelberg.de",
            comment = c(ORCID = "0000-0001-5220-5671")))
 Description: Save MultiAssayExperiments to h5mu files supported by muon
-Imports: rhdf5, MultiAssayExperiment, SingleCellExperiment, SummarizedExperiment
+Imports: methods,
+         rhdf5,
+         MultiAssayExperiment,
+         SingleCellExperiment,
+         SummarizedExperiment
 Depends: Matrix
 License: GPL-3
 Encoding: UTF-8
