@@ -19,12 +19,17 @@ open_h5 <- function(filename) {
     file
 }
 
-#' @importFrom rhdf5 h5writeAttribute H5Fget_name H5Fclose
-finalize_mudata <- function(h5) {
+#' @importFrom rhdf5 h5writeAttribute
+finalize_mudata_internal <- function(h5) {
     h5writeAttribute("MuData", h5, "encoding-type", variableLengthString=TRUE, asScalar=TRUE)
     h5writeAttribute(.mudataversion, h5, "encoding-version", variableLengthString=TRUE, asScalar=TRUE)
     h5writeAttribute(.name, h5, "encoder", variableLengthString=TRUE, asScalar=TRUE)
     h5writeAttribute(.version, h5, "encoder-version", variableLengthString=TRUE, asScalar=TRUE)
+}
+
+#' @importFrom rhdf5 H5Fget_name H5Fclose
+finalize_mudata <- function(h5) {
+    finalize_mudata_internal(h5)
 
     filename <- H5Fget_name(h5)
     H5Fclose(h5)
@@ -39,6 +44,15 @@ finalize_anndata_internal <- function(h5) {
     h5writeAttribute(.anndataversion, h5, "encoding-version", variableLengthString=TRUE, asScalar=TRUE)
     h5writeAttribute(.name, h5, "encoder", variableLengthString=TRUE, asScalar=TRUE)
     h5writeAttribute(.version, h5, "encoder-version", variableLengthString=TRUE, asScalar=TRUE)
+}
+
+#' @importFrom rhdf5 H5Fget_name H5Fclose
+finalize_anndata <- function(h5) {
+    filename <- H5Fget_name(h5)
+    H5Fclose(h5)
+    h5 <- file(filename, "r+b")
+    writeChar(paste0("AnnData (format-version=", .anndataversion, ";creator=", .name, ";creator-version=", .version, ")"), h5)
+    close(h5)
 }
 
 #' @importFrom rhdf5 H5Fis_hdf5 H5Fopen

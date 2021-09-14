@@ -160,13 +160,53 @@ read_attribute <- function(attr) {
         H5Dread(attr)
 }
 
-#' Read an .h5mu file and create a MultiAssayExperiment
-#'
-#' @importFrom rhdf5 h5ls H5Fclose
+#' @importFrom rhdf5 h5ls
 #' @importMethodsFrom rhdf5 &
 #' @importFrom S4Vectors SimpleList
 #' @importFrom SingleCellExperiment SingleCellExperiment
 #' @importFrom SummarizedExperiment SummarizedExperiment
+read_modality <- function(view, backed=FALSE) {
+    X <- read_matrix(h5autoclose(view & "X"), backed=backed)
+    var <- read_with_index(h5autoclose(view & "var"))
+    obs <- read_with_index(h5autoclose(view  & "obs"))
+
+    viewnames <- h5ls(view, recursive=FALSE)$name
+    rownames(X) <- rownames(var)
+    colnames(X) <- rownames(obs)
+    if ("obsm" %in% viewnames) {
+        obsmnames <- h5ls(h5autoclose(view & "obsm"), recursive=FALSE)$name
+        obsm <- lapply(obsmnames, function(space) {
+            elem <- read_attribute(h5autoclose(view & paste("obsm", space, sep="/")))
+            if (!is.data.frame(elem) && length(dim(elem)) > 1)
+                elem <- t(elem)
+            rownames(elem) <- rownames(obs)
+            elem
+        })
+        names(obsm) <- obsmnames
+        se <- SingleCellExperiment(assays=SimpleList(counts=X), rowData=var, colData=obs, reducedDims=obsm)
+    } else {
+        se <- SummarizedExperiment(assays=SimpleList(counts=X), rowData=var, colData=obs)
+    }
+
+    se
+}
+
+
+#' Read an .h5ad file and create a SummarizedExperiment
+#'
+#' @importFrom rhdf5 H5Fclose
+#' @export
+ReadH5AD <- function(file, backed=FALSE) {
+    file <- H5Fopen(filename, flags="H5F_ACC_RDONLY", native=FALSE)
+    res <- read_modality(file, backed)
+    H5Fclose(file)
+    res
+}
+
+#' Read an .h5mu file and create a MultiAssayExperiment
+#'
+#' @importFrom rhdf5 h5ls H5Fclose
+#' @importMethodsFrom rhdf5 &
 #' @importFrom MultiAssayExperiment MultiAssayExperiment
 #'
 #' @export
@@ -182,48 +222,14 @@ ReadH5MU <- function(file, backed=FALSE) {
 
     # Create an experiments list
     modalities <- lapply(assays, function(mod) {
-        view <- h5autoclose(h5 & paste("mod", mod, sep="/"))
-        X <- read_matrix(h5autoclose(view & "X"), backed=backed)
-        var <- read_with_index(h5autoclose(view & "var"))
-        obs <- read_with_index(h5autoclose(view  & "obs"))
-        primary <- rownames(obs)
-        rownames(obs) <- paste(mod, rownames(obs), sep="-")
-
-        viewnames <- h5ls(view, recursive=FALSE)$name
-        rownames(X) <- rownames(var)
-        colnames(X) <- rownames(obs)
-        if ("obsm" %in% viewnames) {
-            obsmnames <- h5ls(h5autoclose(view & "obsm"), recursive=FALSE)$name
-            obsm <- lapply(obsmnames, function(space) {
-                elem <- read_attribute(h5autoclose(view & paste("obsm", space, sep="/")))
-                if (!is.data.frame(elem) && length(dim(elem)) > 1)
-                    elem <- t(elem)
-                rownames(elem) <- rownames(obs)
-                elem
-            })
-            names(obsm) <- obsmnames
-            se <- SingleCellExperiment(assays=SimpleList(counts=X), rowData=var, colData=obs, reducedDims=obsm)
-        } else {
-            se <- SummarizedExperiment(assays=SimpleList(counts=X), rowData=var, colData=obs)
-        }
-
-        list(exp=se, primary=primary)
+        read_modality(h5autoclose(h5 & paste("mod", mod, sep="/")), backed)
     })
     names(modalities) <- assays
-
-    # Create sampleMap
-    mapping <- lapply(modalities, function(mod) {
-        data.frame(primary=mod$primary, colname=colnames(mod$exp), stringsAsFactors=FALSE)
-    })
-
-    obsmap <- do.call(rbind, mapping)
-    obsmap["assay"] <- rep(assays, times=vapply(mapping, nrow, 1))
-    obsmap <- obsmap[,c("assay", "primary", "colname")]
 
     # Close the connection
     H5Fclose(h5)
 
     # Create a MAE object
-    MultiAssayExperiment(lapply(modalities, function(mod)mod$exp), metadata, obsmap)
+    MultiAssayExperiment(modalities, metadata)
 }
 

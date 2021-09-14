@@ -1,5 +1,60 @@
-setGeneric("WriteH5MU", function(object, file, overwrite = TRUE) standardGeneric("WriteH5MU"))
-# setGeneric("WriteH5AD", function(object, assay, file, overwrite = TRUE) standardGeneric("WriteH5AD"))
+setGeneric("WriteH5AD", function(object, file, overwrite=TRUE) standardGeneric("WriteH5AD"), signature=c("object", "file"))
+setGeneric("WriteH5MU", function(object, file, overwrite=TRUE) standardGeneric("WriteH5MU"), signature=c("object", "file"))
+
+#' @importFrom rhdf5 H5Iget_type
+setMethod("WriteH5AD", c(object="mMatrix", file="H5IdComponent"), function(object, file, overwrite) {
+    if (!(H5Iget_type(file) %in% c("H5I_FILE", "H5I_GROUP")))
+        stop("object must be a file or group")
+    write_matrix(file, "X", object)
+    finalize_anndata_internal(file)
+})
+
+#' @importFrom rhdf5 H5Iget_type
+#' @importMethodsFrom SummarizedExperiment colData assay
+setMethod("WriteH5AD", c(object="SummarizedExperiment", file="H5IdComponent"), function(object, file, overwrite) {
+    if (!(H5Iget_type(file) %in% c("H5I_FILE", "H5I_GROUP")))
+        stop("object must be a file or group")
+    write_data_frame(file, "obs", colData(object))
+    rdata <- rowData(object)
+    if (ncol(rdata) > 0 || !is.null(rownames(rdata)))
+        write_data_frame(file, "var", rdata)
+    WriteH5AD(assay(object), file, overwrite)
+})
+
+#' @importFrom rhdf5 H5Iget_type H5Gcreate H5Gclose
+#' @importFrom SingleCellExperiment reducedDims
+setMethod("WriteH5AD", c(object="SingleCellExperiment", file="H5IdComponent"), function(object, file, overwrite) {
+    if (!(H5Iget_type(file) %in% c("H5I_FILE", "H5I_GROUP")))
+        stop("object must be a file or group")
+
+    write_data_frame(file, "var", rowData(object))
+    obsm <- reducedDims(object)
+    if (length(obsm) > 0) {
+        obsmgrp <- H5Gcreate(file, "obsm")
+        mapply(function(name, data) {
+            if (is.data.frame(data)) {
+                rownames(data) <- rownames(colData(object))
+                write_data_frame(obsmgrp, name, data)
+            } else {
+                if (length(dim(data)) == 1)
+                    data <- as.vector(data)
+                else
+                    data <- t(data)
+                write_matrix(obsmgrp, name, data)
+            }
+        }, names(obsm), obsm)
+        H5Gclose(obsmgrp)
+    }
+    WriteH5AD(as(object, "SummarizedExperiment"), file, overwrite)
+})
+
+#' @export
+setMethod("WriteH5AD", c(object="ANY", file="character"), function(object, file, overwrite) {
+    h5 <- open_h5(file)
+    WriteH5AD(object, file, overwrite)
+    finalize_anndata(h5)
+    invisible(NULL)
+})
 
 #' Save a MultiAssayExperimet to an .h5mu file
 #'
@@ -13,7 +68,7 @@ setGeneric("WriteH5MU", function(object, file, overwrite = TRUE) standardGeneric
 #' @importMethodsFrom SingleCellExperiment reducedDims
 #'
 #' @export
-setMethod("WriteH5MU", "MultiAssayExperiment", function(object, file, overwrite) {
+setMethod("WriteH5MU", c(object="MultiAssayExperiment", file="character"), function(object, file, overwrite) {
     h5 <- open_h5(file)
 
     obs <- as.data.frame(colData(object), stringsAsFactors = FALSE)
@@ -24,52 +79,10 @@ setMethod("WriteH5MU", "MultiAssayExperiment", function(object, file, overwrite)
     mods <- H5Gcreate(h5, "mod")
     vars <- lapply(modalities, function(mod) {
         mod_group <- H5Gcreate(mods, mod)
-
-        # .obs
-        meta <- sampleMap(object)[sampleMap(object)$assay == mod,]
-        obs_global <- as.data.frame(colData(object)[meta$primary,], stringsAsFactors = FALSE)
-        obs <- data.frame(row.names=rownames(obs_global))
-        if (is(object[[mod]], "SummarizedExperiment")) {
-            obs_local <- colData(object[[mod]])
-            obs_local <- obs_local[meta$colname,,drop=FALSE]
-        if (ncol(obs_local) > 0)
-            obs <- cbind(obs, obs_local)
-        }
-        write_data_frame(mod_group, "obs", obs)
-
-        # .obsm
-        if (is(object[[mod]], "SingleCellExperiment")) {
-            obsm <- reducedDims(object[[mod]])
-            if (length(obsm) > 0) {
-                obsmgrp <- H5Gcreate(mod_group, "obsm")
-                mapply(function(name, data) {
-                    if (is.data.frame(data)) {
-                        rownames(data) <- rownames(obs_global)
-                        write_data_frame(obsmgrp, name, data)
-                    } else {
-                        if (length(dim(data)) == 1)
-                            data <- as.vector(data)
-                        else
-                            data <- t(data)
-                        write_matrix(obsmgrp, name, data)
-                    }
-                }, names(obsm), obsm)
-                H5Gclose(obsmgrp)
-            }
-        }
-
-        # X
-        x <- object[[mod]]
-        x <- x[,meta$colname]
-        write_matrix(mod_group, "X", assay(x))
-
-        # .var
-        var <- data.frame("mod" = rep(mod, nrow(x)), row.names = rownames(x), stringsAsFactors = FALSE)
-        write_data_frame(mod_group, "var", var)
-
-        finalize_anndata_internal(mod_group)
+        WriteH5AD(object[[mod]], mod_group)
         H5Gclose(mod_group)
-        var
+
+        data.frame(row.names = rownames(object[[mod]]))
     })
     H5Gclose(mods)
 
