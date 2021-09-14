@@ -31,7 +31,8 @@ read_dataframe <- function(group) {
     })
     names(col_list) <- columnorder
     index <- group & indexcol
-    col_list[["row.names"]] <- H5Dread(group & indexcol)
+    col_list[["row.names"]] <- H5Dread(index)
+    H5Dclose(index)
     do.call(data.frame, args=col_list)
 }
 
@@ -70,12 +71,18 @@ read_with_index <- function(dataset) {
     }
 }
 
-#' @importFrom rhdf5 H5Dread H5Aopen H5Aread H5Aclose
+#' @importFrom rhdf5 H5Dread H5Dclose H5Aopen H5Aread H5Aclose
 #' @importMethodsFrom rhdf5 &
 read_sparse_matrix <- function(group, encoding, backed=FALSE) {
-    i <- as.vector(H5Dread(group & "indices"))
-    p <- as.vector(H5Dread(group & "indptr"))
-    x <- as.vector(H5Dread(group & "data"))
+    indices <- group & "indices"
+    indptr <- group & "indptr"
+    data <- group & "data"
+    i <- as.vector(H5Dread(indices))
+    p <- as.vector(H5Dread(indptr))
+    x <- as.vector(H5Dread(data))
+    H5Dclose(indices)
+    H5Dclose(indptr)
+    H5Dclose(data)
     shapeattr <- H5Aopen(group, "shape")
     shape <- H5Aread(shapeattr)
     H5Aclose(shapeattr)
@@ -86,7 +93,7 @@ read_sparse_matrix <- function(group, encoding, backed=FALSE) {
     }
 }
 
-#' @importFrom rhdf5 H5Iget_type H5Iget_name H5Aexists H5Aopen H5Aread H5Aclose H5Dread H5Fget_name
+#' @importFrom rhdf5 H5Iget_type H5Iget_name H5Aexists H5Aopen H5Aread H5Aclose H5Dread H5Dclose H5Gclose H5Fget_name
 read_matrix <- function(dataset, backed=FALSE) {
     if (backed) {
         have_delayedarray <- requireNamespace("HDF5Array", quietly=TRUE)
@@ -168,17 +175,17 @@ ReadH5MU <- function(file, backed=FALSE) {
     h5 <- open_and_check_mudata(file)
 
     # Check all the assays are written
-    assays <- h5ls(h5 & "mod", recursive=FALSE)$name
+    assays <- h5ls(h5autoclose(h5 & "mod"), recursive=FALSE)$name
 
     # Create global colData
-    metadata <- read_with_index(h5 & "obs")
+    metadata <- read_with_index(h5autoclose(h5 & "obs"))
 
     # Create an experiments list
     modalities <- lapply(assays, function(mod) {
-        view <- h5 & paste("mod", mod, sep="/")
-        X <- read_matrix(view & "X", backed=backed)
-        var <- read_with_index(view & "var")
-        obs <- read_with_index(view  & "obs")
+        view <- h5autoclose(h5 & paste("mod", mod, sep="/"))
+        X <- read_matrix(h5autoclose(view & "X"), backed=backed)
+        var <- read_with_index(h5autoclose(view & "var"))
+        obs <- read_with_index(h5autoclose(view  & "obs"))
         primary <- rownames(obs)
         rownames(obs) <- paste(mod, rownames(obs), sep="-")
 
@@ -186,9 +193,9 @@ ReadH5MU <- function(file, backed=FALSE) {
         rownames(X) <- rownames(var)
         colnames(X) <- rownames(obs)
         if ("obsm" %in% viewnames) {
-            obsmnames <- h5ls(view & "obsm", recursive=FALSE)$name
+            obsmnames <- h5ls(h5autoclose(view & "obsm"), recursive=FALSE)$name
             obsm <- lapply(obsmnames, function(space) {
-                elem <- read_attribute(view & paste("obsm", space, sep="/"))
+                elem <- read_attribute(h5autoclose(view & paste("obsm", space, sep="/")))
                 if (!is.data.frame(elem) && length(dim(elem)) > 1)
                     elem <- t(elem)
                 rownames(elem) <- rownames(obs)

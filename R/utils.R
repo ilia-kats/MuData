@@ -14,7 +14,9 @@ open_h5 <- function(filename) {
     if (res < 0) {
         stop("could not set HDF5 user block")
     }
-    H5Fcreate(filename, fcpl=h5p_create, native=FALSE)
+    file <- H5Fcreate(filename, fcpl=h5p_create, native=FALSE)
+    H5Pclose(h5p_create)
+    file
 }
 
 #' @importFrom rhdf5 h5writeAttribute H5Fget_name H5Fclose
@@ -50,4 +52,21 @@ open_and_check_mudata <- function(filename) {
     }
 
     H5Fopen(filename, flags="H5F_ACC_RDONLY", native=FALSE)
+}
+
+#' @importFrom rhdf5 H5iget_type H5Iis_valid H5Dclose H5Gclose H5Aclose H5Fclose
+h5autoclose <- function(obj) {
+    obj <- force(obj)
+    do.call(on.exit, list(substitute({
+        if (H5Iis_valid(obj)) {
+            switch(H5Iget_type(obj),
+                H5I_FILE=H5Fclose(obj),
+                H5I_GROUP=H5Gclose(obj),
+                H5I_DATASET=H5Dclose(obj),
+                H5I_ATTR=H5Aclose(obj)
+            )
+        }
+    }), add=TRUE),
+    envir=parent.frame())
+    obj
 }

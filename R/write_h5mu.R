@@ -100,6 +100,7 @@ write_matrix <- function(parent, key, mat) {
             h5writeDataset(mat@j, grp, "indices")
             h5writeAttribute("csc_matrix", grp, "encoding-type", variableLengthString=TRUE, asScalar=TRUE)
         }
+        H5Gclose(grp)
     } else if (is(mat, "DelayedArray") && requireNamespace("HDF5Array", quietly=TRUE)) {
         writeArrayToMuData(mat, parent, key)
     } else {
@@ -112,7 +113,7 @@ write_data_frame <- function(parent, key, df) {
     group <- H5Gcreate(parent, key)
 
     columns <- colnames(df)
-    df["_index"] <- rownames(df)
+    df[["_index"]] <- rownames(df)
     categories <- list()
     for (col in colnames(df)) {
         v <- df[[col]]
@@ -129,9 +130,11 @@ write_data_frame <- function(parent, key, df) {
         mapply(function(colname, categories) {
             h5writeDataset(categories, catgrp, colname, variableLengthString=TRUE)
             cat_dset <- catgrp & colname
+            dset <- group & colname
             h5writeAttribute(as.integer(is.ordered(df[[colname]])), cat_dset, "ordered", asScalar=TRUE)
-            h5writeAttribute(cat_dset, group & colname, "categories", asScalar=TRUE)
+            h5writeAttribute(cat_dset, dset, "categories", asScalar=TRUE)
             H5Dclose(cat_dset)
+            H5Dclose(dset)
         }, names(categories), categories)
         H5Gclose(catgrp)
     }
