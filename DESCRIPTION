@@ -18,6 +18,7 @@ Imports: methods,
          MultiAssayExperiment,
          SingleCellExperiment,
          SummarizedExperiment
+Suggests: HDF5Array, DelayedArray
 Depends: Matrix
 License: GPL-3
 Encoding: UTF-8

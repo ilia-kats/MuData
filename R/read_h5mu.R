@@ -72,7 +72,7 @@ read_with_index <- function(dataset) {
 
 #' @importFrom rhdf5 H5Dread H5Aopen H5Aread H5Aclose
 #' @importMethodsFrom rhdf5 &
-read_sparse_matrix <- function(group, encoding) {
+read_sparse_matrix <- function(group, encoding, backed=FALSE) {
     i <- as.vector(H5Dread(group & "indices"))
     p <- as.vector(H5Dread(group & "indptr"))
     x <- as.vector(H5Dread(group & "data"))
@@ -80,26 +80,53 @@ read_sparse_matrix <- function(group, encoding) {
     shape <- H5Aread(shapeattr)
     H5Aclose(shapeattr)
     if (encoding == "csr_matrix") {
-        sparseMatrix(j=i, p=p, x=x, dims=shape, repr="R", index1=FALSE)
+        sparseMatrix(i=i, p=p, x=x, dims=rev(shape), repr="C", index1=FALSE)
     } else {
-        sparseMatrix(i=i, p=p, x=x, dims=shape, repr="C", index1=FALSE)
+        t(sparseMatrix(i=i, p=p, x=x, dims=shape, repr="C", index1=FALSE))
     }
 }
 
-#' @importFrom rhdf5 H5Iget_type H5Aexists H5Aopen H5Aread H5Aclose H5Dread
-read_matrix <- function(dataset) {
+#' @importFrom rhdf5 H5Iget_type H5Iget_name H5Aexists H5Aopen H5Aread H5Aclose H5Dread H5Fget_name
+read_matrix <- function(dataset, backed=FALSE) {
+    if (backed) {
+        have_delayedarray <- requireNamespace("HDF5Array", quietly=TRUE)
+        if (!have_delayedarray) {
+            warning("Could not load the HDF5Array package. HDF5Array is required for backed matrices. Loading matrix into memory...")
+            backed <- FALSE
+        }
+    }
+
     if (H5Iget_type(dataset) == "H5I_GROUP" && H5Aexists(dataset, "encoding-type")) {
         encattr <- H5Aopen(dataset, "encoding-type")
         encoding <- H5Aread(encattr)
         H5Aclose(encattr)
         if (encoding %in% c("csr_matrix", "csc_matrix")) {
-            read_sparse_matrix(dataset, encoding)
+            if (backed) {
+                cls <- ifelse(encoding == "csr_matrix", "CSR_H5ADMatrixSeed", "CSC_H5ADMatrixSeed")
+                seed <- HDF5Array::H5SparseMatrixSeed
+            } else {
+                return(read_sparse_matrix(dataset, encoding))
+            }
         } else {
             warning(paste0("Unknown encoding ", encoding, "when attempting to read matrix"))
-            matrix()
+            return(matrix())
         }
     } else {
-        H5Dread(dataset)
+        if (backed) {
+            cls <- "Dense_H5ADMatrixSeed"
+            seed <- HDF5Array::HDF5ArraySeed
+        } else {
+            return(H5Dread(dataset))
+        }
+    }
+    if (backed) {
+        file <- H5Fget_name(dataset)
+        name <- H5Iget_name(dataset)
+        suppressWarnings({
+            seed <- seed(file, name)
+            seed <- new(cls, seed)
+            HDF5Array::H5ADMatrix(seed)
+        })
     }
 }
 
@@ -136,7 +163,7 @@ read_attribute <- function(attr) {
 #' @importFrom MultiAssayExperiment MultiAssayExperiment
 #'
 #' @export
-ReadH5MU <- function(file) {
+ReadH5MU <- function(file, backed=FALSE) {
     # Connect to the the file
     h5 <- open_and_check_mudata(file)
 
@@ -149,26 +176,28 @@ ReadH5MU <- function(file) {
     # Create an experiments list
     modalities <- lapply(assays, function(mod) {
         view <- h5 & paste("mod", mod, sep="/")
-        X <- read_matrix(view & "X")
+        X <- read_matrix(view & "X", backed=backed)
         var <- read_with_index(view & "var")
         obs <- read_with_index(view  & "obs")
         primary <- rownames(obs)
         rownames(obs) <- paste(mod, rownames(obs), sep="-")
 
         viewnames <- h5ls(view, recursive=FALSE)$name
-        colnames(X) <- rownames(var)
-        rownames(X) <- rownames(obs)
+        rownames(X) <- rownames(var)
+        colnames(X) <- rownames(obs)
         if ("obsm" %in% viewnames) {
             obsmnames <- h5ls(view & "obsm", recursive=FALSE)$name
             obsm <- lapply(obsmnames, function(space) {
                 elem <- read_attribute(view & paste("obsm", space, sep="/"))
+                if (!is.data.frame(elem) && length(dim(elem)) > 1)
+                    elem <- t(elem)
                 rownames(elem) <- rownames(obs)
                 elem
             })
             names(obsm) <- obsmnames
-            se <- SingleCellExperiment(assays=SimpleList(counts=t(X)), rowData=var, colData=obs, reducedDims=obsm)
+            se <- SingleCellExperiment(assays=SimpleList(counts=X), rowData=var, colData=obs, reducedDims=obsm)
         } else {
-            se <- SummarizedExperiment(assays=SimpleList(counts=t(X)), rowData=var, colData=obs)
+            se <- SummarizedExperiment(assays=SimpleList(counts=X), rowData=var, colData=obs)
         }
 
         list(exp=se, primary=primary)

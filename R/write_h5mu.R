@@ -49,6 +49,8 @@ setMethod("WriteH5MU", "MultiAssayExperiment", function(object, file, overwrite)
                     } else {
                         if (length(dim(data)) == 1)
                             data <- as.vector(data)
+                        else
+                            data <- t(data)
                         write_matrix(obsmgrp, name, data)
                     }
                 }, names(obsm), obsm)
@@ -59,7 +61,7 @@ setMethod("WriteH5MU", "MultiAssayExperiment", function(object, file, overwrite)
         # X
         x <- object[[mod]]
         x <- x[,meta$colname]
-        write_matrix(mod_group, "X", t(assay(x)))
+        write_matrix(mod_group, "X", assay(x))
 
         # .var
         var <- data.frame("mod" = rep(mod, nrow(x)), row.names = rownames(x), stringsAsFactors = FALSE)
@@ -78,23 +80,28 @@ setMethod("WriteH5MU", "MultiAssayExperiment", function(object, file, overwrite)
     invisible(NULL)
 })
 
-#' @importFrom rhdf5 h5writeDataset h5writeAttribute H5Gcreate H5Gclose
+#' @importFrom rhdf5 h5writeDataset h5writeAttribute H5Gcreate H5Gclose H5Fget_name H5Iget_name
 write_matrix <- function(parent, key, mat) {
     if (is.matrix(mat) || is.vector(mat)) {
         h5writeDataset(mat, parent, key)
-    } else if (is(mat, "dgCMatrix") || is(mat, "dgRMatrix")) {
+    } else if (is(mat, "dgCMatrix") || is(mat, "dgRMatrix") || is(mat, "DelayedArray") && DelayedArray::is_sparse(mat)) {
+        if (is(mat, "DelayedArray"))
+            mat <- as(mat, "dgRMatrix")
+
         grp <- H5Gcreate(parent, key)
         h5writeDataset(mat@p, grp, "indptr")
         h5writeDataset(mat@x, grp, "data")
-        h5writeAttribute(dim(mat), grp, "shape")
+        h5writeAttribute(rev(dim(mat)), grp, "shape")
         h5writeAttribute("0.1.0", grp, "encoding-version", variableLengthString=TRUE, asScalar=TRUE)
         if (is(mat, "dgCMatrix")) {
             h5writeDataset(mat@i, grp, "indices")
-            h5writeAttribute("csc_matrix", grp, "encoding-type", variableLengthString=TRUE, asScalar=TRUE)
+            h5writeAttribute("csr_matrix", grp, "encoding-type", variableLengthString=TRUE, asScalar=TRUE)
         } else {
             h5writeDataset(mat@j, grp, "indices")
-            h5writeAttribute("csr_matrix", grp, "encoding-type", variableLengthString=TRUE, asScalar=TRUE)
+            h5writeAttribute("csc_matrix", grp, "encoding-type", variableLengthString=TRUE, asScalar=TRUE)
         }
+    } else if (is(mat, "DelayedArray") && requireNamespace("HDF5Array", quietly=TRUE)) {
+        writeArrayToMuData(mat, parent, key)
     } else {
         stop(paste0("Writing matrices of type ", class(mat), " is not implemented."))
     }
@@ -140,5 +147,53 @@ write_data_frame <- function(parent, key, df) {
         h5createAttribute(group, "column-order", dims=0)
     }
     H5Gclose(group)
+    invisible(NULL)
+}
+
+.registeredDelayedArrayMethods <- FALSE
+#' @importFrom rhdf5 h5write H5Dclose
+registerDelayedArrayMethods <- function() {
+    if (!.registeredDelayedArrayMethods) {
+        haveDelayedArray <- requireNamespace("DelayedArray", quietly=TRUE)
+        haveHDF5Array <- requireNamespace("HDF5Array", quietly=TRUE)
+        if (!haveDelayedArray || !haveHDF5Array)
+            return(FALSE)
+        setClass("MuDataFileRealizationSink",
+                 contains="HDF5RealizationSink",
+                 slots=c(parent="H5IdComponent",
+                         datasetname="character"))
+
+
+        setMethod(DelayedArray::write_block, "MuDataFileRealizationSink", function(sink, viewport, block) {
+            if (!is.array(block))
+                block <- as.array(block)
+            h5write(block, sink@parent, sink@datasetname, start=DelayedArray::start(viewport), count=DelayedArray::width(viewport))
+            sink
+        })
+
+        .registeredDelayedArrayMethods <<- TRUE
+    }
+    .registeredDelayedArrayMethods
+}
+
+#' @importFrom rhdf5 h5createDataset H5Fget_name H5Iget_name
+MuDataFileRealizationSink <- function(dim, type, parent, key, dimnames=NULL, as.sparse=FALSE) {
+    chunkdim <- HDF5Array::getHDF5DumpChunkDim(dim)
+    h5createDataset(parent, key, dim, storage.mode=type, chunk=chunkdim, level=9, shuffle=FALSE)
+    file <- H5Fget_name(parent)
+    path <- paste(H5Iget_name(parent), key, sep="/")
+    new("MuDataFileRealizationSink", dim=dim, dimnames=dimnames, type=type, as_sparse=as.sparse,
+                                     filepath=file, name=path, chunkdim=chunkdim, parent=parent, datasetname=key)
+}
+
+writeArrayToMuData <- function(x, parent, key, verbose=NA) {
+    if (!registerDelayedArrayMethods())
+        stop("The HDF5Array and DelayedArray packages must be installed to save DelayedArrays.")
+    as.sparse <- DelayedArray::is_sparse(x)
+    sink_dimnames <- dimnames(x)
+    sink <- MuDataFileRealizationSink(dim(x), DelayedArray::type(x), parent, key, sink_dimnames, as.sparse)
+
+    verbose <- DelayedArray:::normarg_verbose(verbose)
+    sink <- DelayedArray::BLOCK_write_to_sink(sink, x, verbose=verbose)
     invisible(NULL)
 }

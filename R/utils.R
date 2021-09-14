@@ -14,7 +14,7 @@ open_h5 <- function(filename) {
     if (res < 0) {
         stop("could not set HDF5 user block")
     }
-    H5Fcreate(filename, fcpl=h5p_create, native=TRUE)
+    H5Fcreate(filename, fcpl=h5p_create, native=FALSE)
 }
 
 #' @importFrom rhdf5 h5writeAttribute H5Fget_name H5Fclose
@@ -49,5 +49,5 @@ open_and_check_mudata <- function(filename) {
         )
     }
 
-    H5Fopen(filename, flags="H5F_ACC_RDONLY", native=TRUE)
+    H5Fopen(filename, flags="H5F_ACC_RDONLY", native=FALSE)
 }

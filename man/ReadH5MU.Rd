@@ -4,7 +4,7 @@
 \alias{ReadH5MU}
 \title{Read an .h5mu file and create a MultiAssayExperiment}
 \usage{
-ReadH5MU(file)
+ReadH5MU(file, backed = FALSE)
 }
 \description{
 Read an .h5mu file and create a MultiAssayExperiment
