@@ -1,7 +1,8 @@
 Package: MuData
 Title: Save MultiAssayExperiments to h5mu files
 Version: 0.0.0.9000
-Authors@R:
+Maintainer: Ilia Kats <i.kats@dkfz-heidelberg.de>
+Author:
     c(person(given = "Danila",
            family = "Bredikhin",
            role = c("aut", "cre"),
@@ -18,7 +19,11 @@ Imports: methods,
          MultiAssayExperiment,
          SingleCellExperiment,
          SummarizedExperiment
-Depends: Matrix
+Depends: Matrix, S4Vectors
+Suggests: 
+    rmarkdown,
+    knitr
+VignetteBuilder: knitr
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
