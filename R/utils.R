@@ -7,7 +7,7 @@
 #' @import Matrix
 NULL
 
-#' @importFrom rhdf5 H5Pcreate H5Pset_userblock H5Fcreate
+#' @importFrom rhdf5 H5Pcreate H5Pset_userblock H5Fcreate H5Pclose
 open_h5 <- function(filename) {
     h5p_create <- H5Pcreate("H5P_FILE_CREATE")
     res <- H5Pset_userblock(h5p_create, 512)
