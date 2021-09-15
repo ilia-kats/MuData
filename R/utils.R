@@ -68,7 +68,7 @@ open_and_check_mudata <- function(filename) {
     H5Fopen(filename, flags="H5F_ACC_RDONLY", native=FALSE)
 }
 
-#' @importFrom rhdf5 H5iget_type H5Iis_valid H5Dclose H5Gclose H5Aclose H5Fclose
+#' @importFrom rhdf5 H5Iget_type H5Iis_valid H5Dclose H5Gclose H5Aclose H5Fclose
 h5autoclose <- function(obj) {
     obj <- force(obj)
     do.call(on.exit, list(substitute({
