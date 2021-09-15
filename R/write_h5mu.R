@@ -62,7 +62,7 @@ setMethod("WriteH5AD", c(object="ANY", file="character"), function(object, file,
 #' so the behaviour of WriteH5MU when there are multiple samples
 #' for one primary key is not guaranteed.
 #'
-#' @importFrom rhdf5 H5Gcreate H5Gclose
+#' @importFrom rhdf5 H5Gcreate H5Gclose h5writeDataset
 #' @importMethodsFrom MultiAssayExperiment colData experiments sampleMap
 #' @importMethodsFrom SummarizedExperiment colData assay
 #' @importMethodsFrom SingleCellExperiment reducedDims
@@ -74,17 +74,28 @@ setMethod("WriteH5MU", c(object="MultiAssayExperiment", file="character"), funct
     obs <- as.data.frame(colData(object), stringsAsFactors = FALSE)
     write_data_frame(h5, "obs", obs)
 
-    modalities <- names(experiments(object))
-
     mods <- H5Gcreate(h5, "mod")
-    vars <- lapply(modalities, function(mod) {
-        mod_group <- H5Gcreate(mods, mod)
-        WriteH5AD(object[[mod]], mod_group)
+    obsmgrp <- H5Gcreate(h5, "obsm")
+    obsmapgrp <- H5Gcreate(h5, "obsmap")
+    samplemap <- sampleMap(object)
+    globalrownames <- rownames(obs)
+    vars <- mapply(function(mname, mod) {
+        mod_group <- H5Gcreate(mods, mname)
+        WriteH5AD(mod, mod_group)
         H5Gclose(mod_group)
 
-        data.frame(row.names = rownames(object[[mod]]))
-    })
+        cmap <- samplemap[samplemap$assay == mname,]
+        cmaporder <- match(globalrownames, cmap$primary)
+        localorder <- match(cmap$colname, colnames(mod))
+        obsmap <- sapply(cmaporder, function(o)ifelse(is.na(o), 0L, localorder[o]))
+        h5writeDataset(obsmap, obsmapgrp, mname)
+        h5writeDataset(as.integer(!is.na(cmaporder)), obsmgrp, mname)
+
+        data.frame(row.names = rownames(mod))
+    }, names(object), object)
     H5Gclose(mods)
+    H5Gclose(obsmgrp)
+    H5Gclose(obsmapgrp)
 
     var <- do.call(rbind, vars)
     write_data_frame(h5, "var", var)
