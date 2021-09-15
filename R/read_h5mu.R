@@ -164,6 +164,7 @@ read_attribute <- function(attr) {
 #' @importMethodsFrom rhdf5 &
 #' @importFrom S4Vectors SimpleList
 #' @importFrom SingleCellExperiment SingleCellExperiment
+#' @importMethodsFrom SingleCellExperiment colPair<- rowPair<-
 #' @importFrom SummarizedExperiment SummarizedExperiment
 read_modality <- function(view, backed=FALSE) {
     X <- read_matrix(h5autoclose(view & "X"), backed=backed)
@@ -173,6 +174,8 @@ read_modality <- function(view, backed=FALSE) {
     viewnames <- h5ls(view, recursive=FALSE)$name
     rownames(X) <- rownames(var)
     colnames(X) <- rownames(obs)
+
+    args <- list(assays=list(counts=X), rowData=var, colData=obs)
     if ("obsm" %in% viewnames) {
         obsmnames <- h5ls(h5autoclose(view & "obsm"), recursive=FALSE)$name
         obsm <- lapply(obsmnames, function(space) {
@@ -183,16 +186,29 @@ read_modality <- function(view, backed=FALSE) {
             elem
         })
         names(obsm) <- obsmnames
-        se <- SingleCellExperiment(assays=SimpleList(counts=X), rowData=var, colData=obs, reducedDims=obsm)
-    } else {
-        se <- SummarizedExperiment(assays=SimpleList(counts=X), rowData=var, colData=obs)
+        args$reducedDims <- obsm
     }
 
+    se <- do.call(SingleCellExperiment, args)
+
+    for (cp in list(list(name="obsp", setter=`colPair<-`), list(name="varp", setter=`rowPair<-`))) {
+        if (cp$name %in% viewnames) {
+            names <- h5ls(h5autoclose(view & cp$name), recursive=FALSE)$name
+            for (name in names) {
+                cpair <- read_matrix(h5autoclose(view & paste(cp$name, name, sep="/")))
+                if (!is(cpair, "dsparseMatrix")) {
+                    warn(paste("Pairwise", cp$name, "matrix", name, "is not a sparse matrix. Only sparse matrices are currently supported, skipping..."))
+                } else {
+                    se <- cp$setter(se, name, value=cpair)
+                }
+            }
+        }
+    }
     se
 }
 
 
-#' Read an .h5ad file and create a \code{\linkS4class{SummarizedExperiment}}.
+#' Read an .h5ad file and create a \code{\linkS4class{SingleCellExperiment}}.
 #'
 #' In file-backed mode, the main \code{X} matrix is not read into memory,
 #' but references the HDF5 file and its required parts are read on demand.
@@ -201,8 +217,7 @@ read_modality <- function(view, backed=FALSE) {
 #' @param file Path to the .h5ad file.
 #' @param backed Whether to use file-backed mode.
 #'
-#' @return A \code{\linkS4class{SingleCellExperiment}} if the .h5ad object has
-#'     non-empty \code{.obsm}, otherwise a \code{\linkS4class{SummarizedExperiment}}.
+#' @return A \code{\linkS4class{SingleCellExperiment}}.
 #'
 #' @importFrom rhdf5 H5Fclose
 #' @export
@@ -258,7 +273,9 @@ ReadH5MU <- function(file, backed=FALSE) {
             idx <- which(cmap > 0)
             data.frame(assay=mod, primary=rownames(metadata)[idx], colname=colnames(modalities[[mod]])[cmap[idx]])
         })
-        args$sampleMap <- do.call(rbind, samplemaps)
+        sampleMap <- do.call(rbind, samplemaps)
+        rownames(sampleMap) <- NULL
+        args$sampleMap <- sampleMap
     }
 
     # Close the connection

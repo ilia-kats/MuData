@@ -34,6 +34,7 @@ setMethod("WriteH5AD", c(object="SummarizedExperiment", file="H5IdComponent"), f
 })
 
 #' @importFrom rhdf5 H5Iget_type H5Gcreate H5Gclose
+#' @importMethodsFrom SingleCellExperiment rowData colData colPairNames colPair rowPairNames rowPair
 #' @importMethodsFrom SingleCellExperiment reducedDims
 setMethod("WriteH5AD", c(object="SingleCellExperiment", file="H5IdComponent"), function(object, file, overwrite) {
     if (!(H5Iget_type(file) %in% c("H5I_FILE", "H5I_GROUP")))
@@ -57,6 +58,17 @@ setMethod("WriteH5AD", c(object="SingleCellExperiment", file="H5IdComponent"), f
         }, names(obsm), obsm)
         H5Gclose(obsmgrp)
     }
+
+    lapply(list(list(name="obsp", names=colPairNames, getter=colPair), list(name="varp", names=rowPairNames, getter=rowPair)), function(cp) {
+        names <- cp$names(object)
+        if (length(names) > 0) {
+            pairgrp <- H5Gcreate(file, cp$name)
+            lapply(names, function(cname) {
+                write_matrix(pairgrp, cname, cp$getter(object, cname, asSparse=TRUE))
+            })
+            H5Gclose(pairgrp)
+        }
+    })
     WriteH5AD(as(object, "SummarizedExperiment"), file, overwrite)
 })
 
@@ -70,7 +82,7 @@ setMethod("WriteH5AD", c(object="SingleCellExperiment", file="H5IdComponent"), f
 #' @export
 setMethod("WriteH5AD", c(object="ANY", file="character"), function(object, file, overwrite) {
     h5 <- open_h5(file)
-    WriteH5AD(object, file, overwrite)
+    WriteH5AD(object, h5, overwrite)
     finalize_anndata(h5)
     invisible(NULL)
 })
