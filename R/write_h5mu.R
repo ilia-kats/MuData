@@ -7,8 +7,14 @@ setMethod("WriteH5AD", c(object="mMatrix", file="H5IdComponent"), function(objec
         stop("object must be a file or group")
     write_matrix(file, "X", object)
     if (write_dimnames) {
-        var <- data.frame(row.names=rownames(object))
-        obs <- data.frame(row.names=colnames(object))
+        rownames <- rownames(object)
+        colnames <- colnames(object)
+        if (is.null(rownames))
+            rownames <- as.character(1:nrow(object))
+        if (is.null(colnames))
+            colnames <- as.character(1:ncol(object))
+        var <- data.frame(row.names=rownames)
+        obs <- data.frame(row.names=colnames)
         write_data_frame(file, "obs", obs)
         write_data_frame(file, "var", var)
     }
