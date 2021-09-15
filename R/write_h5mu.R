@@ -1,11 +1,17 @@
-setGeneric("WriteH5AD", function(object, file, overwrite=TRUE) standardGeneric("WriteH5AD"), signature=c("object", "file"))
+setGeneric("WriteH5AD", function(object, file, overwrite=TRUE, ...) standardGeneric("WriteH5AD"), signature=c("object", "file"))
 setGeneric("WriteH5MU", function(object, file, overwrite=TRUE) standardGeneric("WriteH5MU"), signature=c("object", "file"))
 
 #' @importFrom rhdf5 H5Iget_type
-setMethod("WriteH5AD", c(object="mMatrix", file="H5IdComponent"), function(object, file, overwrite) {
+setMethod("WriteH5AD", c(object="mMatrix", file="H5IdComponent"), function(object, file, overwrite, write_dimnames=TRUE) {
     if (!(H5Iget_type(file) %in% c("H5I_FILE", "H5I_GROUP")))
         stop("object must be a file or group")
     write_matrix(file, "X", object)
+    if (write_dimnames) {
+        var <- data.frame(row.names=rownames(object))
+        obs <- data.frame(row.names=colnames(object))
+        write_data_frame(file, "obs", obs)
+        write_data_frame(file, "var", var)
+    }
     finalize_anndata_internal(file)
 })
 
@@ -18,7 +24,7 @@ setMethod("WriteH5AD", c(object="SummarizedExperiment", file="H5IdComponent"), f
     rdata <- rowData(object)
     if (ncol(rdata) > 0 || !is.null(rownames(rdata)))
         write_data_frame(file, "var", rdata)
-    WriteH5AD(assay(object), file, overwrite)
+    WriteH5AD(assay(object), file, overwrite, write_dimnames=FALSE)
 })
 
 #' @importFrom rhdf5 H5Iget_type H5Gcreate H5Gclose

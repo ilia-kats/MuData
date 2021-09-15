@@ -224,7 +224,8 @@ ReadH5AD <- function(file, backed=FALSE) {
 #'
 #' @return A \code{\linkS4class{MultiAssayExperiment}}
 #'
-#' @importFrom rhdf5 h5ls H5Fclose
+#' @importFrom stats setNames
+#' @importFrom rhdf5 h5ls H5Fclose H5Lexists H5Dread H5Dclose
 #' @importMethodsFrom rhdf5 &
 #' @importFrom MultiAssayExperiment MultiAssayExperiment
 #'
@@ -234,7 +235,7 @@ ReadH5MU <- function(file, backed=FALSE) {
     h5 <- open_and_check_mudata(file)
 
     # Check all the assays are written
-    assays <- h5ls(h5autoclose(h5 & "mod"), recursive=FALSE)$name
+    assays <- setNames(nm=h5ls(h5autoclose(h5 & "mod"), recursive=FALSE)$name)
 
     # Create global colData
     metadata <- read_with_index(h5autoclose(h5 & "obs"))
@@ -243,12 +244,27 @@ ReadH5MU <- function(file, backed=FALSE) {
     modalities <- lapply(assays, function(mod) {
         read_modality(h5autoclose(h5 & paste("mod", mod, sep="/")), backed)
     })
-    names(modalities) <- assays
+
+    args <- list(experiments=modalities, colData=metadata)
+
+    # create a sampleMap. This is needed for a round-trip MAE -> .h5mu -> MAE
+    # if colData(MAE) has different row names than the experiments
+    if (H5Lexists(h5, "obsmap")) {
+        samplemaps <- lapply(assays, function(mod) {
+            cmapdset <- h5 & paste("obsmap", mod, sep="/")
+            cmap <- H5Dread(cmapdset)
+            H5Dclose(cmapdset)
+
+            idx <- which(cmap > 0)
+            data.frame(assay=mod, primary=rownames(metadata)[idx], colname=colnames(modalities[[mod]])[cmap[idx]])
+        })
+        args$sampleMap <- do.call(rbind, samplemaps)
+    }
 
     # Close the connection
     H5Fclose(h5)
 
     # Create a MAE object
-    MultiAssayExperiment(modalities, metadata)
+    do.call(MultiAssayExperiment, args)
 }
 
