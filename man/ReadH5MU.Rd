@@ -2,10 +2,20 @@
 % Please edit documentation in R/read_h5mu.R
 \name{ReadH5MU}
 \alias{ReadH5MU}
-\title{Read an .h5mu file and create a MultiAssayExperiment}
+\title{Read an .h5mu file and create a \code{\link{MultiAssayExperiment}}.}
 \usage{
 ReadH5MU(file, backed = FALSE)
 }
+\arguments{
+\item{file}{Path to the .h5mu file.}
+
+\item{backed}{Whether to use file-backed mode.}
+}
+\value{
+A \code{\linkS4class{MultiAssayExperiment}}
+}
 \description{
-Read an .h5mu file and create a MultiAssayExperiment
+In file-backed mode, the main \code{X} matrices are not read into memory,
+but reference the HDF5 file and their required parts are read on demand.
+This requires the HDF5Array package to be installed.
 }

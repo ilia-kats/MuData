@@ -22,7 +22,7 @@ setMethod("WriteH5AD", c(object="SummarizedExperiment", file="H5IdComponent"), f
 })
 
 #' @importFrom rhdf5 H5Iget_type H5Gcreate H5Gclose
-#' @importFrom SingleCellExperiment reducedDims
+#' @importMethodsFrom SingleCellExperiment reducedDims
 setMethod("WriteH5AD", c(object="SingleCellExperiment", file="H5IdComponent"), function(object, file, overwrite) {
     if (!(H5Iget_type(file) %in% c("H5I_FILE", "H5I_GROUP")))
         stop("object must be a file or group")
@@ -48,6 +48,13 @@ setMethod("WriteH5AD", c(object="SingleCellExperiment", file="H5IdComponent"), f
     WriteH5AD(as(object, "SummarizedExperiment"), file, overwrite)
 })
 
+#' Save an experiment to an .h5ad file.
+#'
+#' @param object The object to save.
+#' @param file Name of the file to save to.
+#' @param overwrite Currently unused.
+#'
+#' @rdname WriteH5AD
 #' @export
 setMethod("WriteH5AD", c(object="ANY", file="character"), function(object, file, overwrite) {
     h5 <- open_h5(file)
@@ -56,16 +63,16 @@ setMethod("WriteH5AD", c(object="ANY", file="character"), function(object, file,
     invisible(NULL)
 })
 
-#' Save a MultiAssayExperimet to an .h5mu file
+#' Save a \code{\linkS4class{MultiAssayExperiment}} to an .h5mu file.
 #'
-#' Note than the primary key is used as obs_names
-#' so the behaviour of WriteH5MU when there are multiple samples
-#' for one primary key is not guaranteed.
+#' @param object A \code{\linkS4class{MultiAssayExperiment}}.
+#' @param file Name of the file to save to.
+#' @param overwrite Currently unused.
+#'
+#' @rdname WriteH5MU
 #'
 #' @importFrom rhdf5 H5Gcreate H5Gclose h5writeDataset
 #' @importMethodsFrom MultiAssayExperiment colData experiments sampleMap
-#' @importMethodsFrom SummarizedExperiment colData assay
-#' @importMethodsFrom SingleCellExperiment reducedDims
 #'
 #' @export
 setMethod("WriteH5MU", c(object="MultiAssayExperiment", file="character"), function(object, file, overwrite) {

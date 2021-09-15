@@ -2,10 +2,21 @@
 % Please edit documentation in R/read_h5mu.R
 \name{ReadH5AD}
 \alias{ReadH5AD}
-\title{Read an .h5ad file and create a SummarizedExperiment}
+\title{Read an .h5ad file and create a \code{\linkS4class{SummarizedExperiment}}.}
 \usage{
 ReadH5AD(file, backed = FALSE)
 }
+\arguments{
+\item{file}{Path to the .h5ad file.}
+
+\item{backed}{Whether to use file-backed mode.}
+}
+\value{
+A \code{\linkS4class{SingleCellExperiment}} if the .h5ad object has
+non-empty \code{.obsm}, otherwise a \code{\linkS4class{SummarizedExperiment}}.
+}
 \description{
-Read an .h5ad file and create a SummarizedExperiment
+In file-backed mode, the main \code{X} matrix is not read into memory,
+but references the HDF5 file and its required parts are read on demand.
+This requires the HDF5Array package to be installed.
 }

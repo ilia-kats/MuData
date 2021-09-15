@@ -192,7 +192,17 @@ read_modality <- function(view, backed=FALSE) {
 }
 
 
-#' Read an .h5ad file and create a SummarizedExperiment
+#' Read an .h5ad file and create a \code{\linkS4class{SummarizedExperiment}}.
+#'
+#' In file-backed mode, the main \code{X} matrix is not read into memory,
+#' but references the HDF5 file and its required parts are read on demand.
+#' This requires the HDF5Array package to be installed.
+#'
+#' @param file Path to the .h5ad file.
+#' @param backed Whether to use file-backed mode.
+#'
+#' @return A \code{\linkS4class{SingleCellExperiment}} if the .h5ad object has
+#'     non-empty \code{.obsm}, otherwise a \code{\linkS4class{SummarizedExperiment}}.
 #'
 #' @importFrom rhdf5 H5Fclose
 #' @export
@@ -203,7 +213,16 @@ ReadH5AD <- function(file, backed=FALSE) {
     res
 }
 
-#' Read an .h5mu file and create a MultiAssayExperiment
+#' Read an .h5mu file and create a \code{\link{MultiAssayExperiment}}.
+#'
+#' In file-backed mode, the main \code{X} matrices are not read into memory,
+#' but reference the HDF5 file and their required parts are read on demand.
+#' This requires the HDF5Array package to be installed.
+#'
+#' @param file Path to the .h5mu file.
+#' @param backed Whether to use file-backed mode.
+#'
+#' @return A \code{\linkS4class{MultiAssayExperiment}}
 #'
 #' @importFrom rhdf5 h5ls H5Fclose
 #' @importMethodsFrom rhdf5 &

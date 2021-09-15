@@ -2,12 +2,17 @@
 % Please edit documentation in R/write_h5mu.R
 \name{WriteH5MU,MultiAssayExperiment,character-method}
 \alias{WriteH5MU,MultiAssayExperiment,character-method}
-\title{Save a MultiAssayExperimet to an .h5mu file}
+\title{Save a \code{\linkS4class{MultiAssayExperiment}} to an .h5mu file.}
 \usage{
 \S4method{WriteH5MU}{MultiAssayExperiment,character}(object, file, overwrite = TRUE)
 }
+\arguments{
+\item{object}{A \code{\linkS4class{MultiAssayExperiment}}.}
+
+\item{file}{Name of the file to save to.}
+
+\item{overwrite}{Currently unused.}
+}
 \description{
-Note than the primary key is used as obs_names
-so the behaviour of WriteH5MU when there are multiple samples
-for one primary key is not guaranteed.
+Save a \code{\linkS4class{MultiAssayExperiment}} to an .h5mu file.
 }
