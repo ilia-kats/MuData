@@ -4,7 +4,7 @@
 \alias{WriteH5AD,ANY,character-method}
 \title{Save an experiment to an .h5ad file.}
 \usage{
-\S4method{WriteH5AD}{ANY,character}(object, file, overwrite = TRUE)
+\S4method{WriteH5AD}{ANY,character}(object, file, overwrite)
 }
 \arguments{
 \item{object}{The object to save.}
