@@ -222,9 +222,9 @@ read_modality <- function(view, backed=FALSE) {
 #' @importFrom rhdf5 H5Fclose
 #' @export
 ReadH5AD <- function(file, backed=FALSE) {
-    file <- H5Fopen(filename, flags="H5F_ACC_RDONLY", native=FALSE)
-    res <- read_modality(file, backed)
-    H5Fclose(file)
+    h5 <- H5Fopen(file, flags="H5F_ACC_RDONLY", native=FALSE)
+    res <- read_modality(h5, backed)
+    H5Fclose(h5)
     res
 }
 
