@@ -160,6 +160,7 @@ read_attribute <- function(attr) {
         H5Dread(attr)
 }
 
+#' @importFrom stats setNames
 #' @importFrom rhdf5 h5ls
 #' @importMethodsFrom rhdf5 &
 #' @importFrom S4Vectors SimpleList
@@ -170,12 +171,19 @@ read_modality <- function(view, backed=FALSE) {
     X <- read_matrix(h5autoclose(view & "X"), backed=backed)
     var <- read_with_index(h5autoclose(view & "var"))
     obs <- read_with_index(h5autoclose(view  & "obs"))
-
-    viewnames <- h5ls(view, recursive=FALSE)$name
     rownames(X) <- rownames(var)
     colnames(X) <- rownames(obs)
 
-    args <- list(assays=list(counts=X), rowData=var, colData=obs)
+    viewnames <- h5ls(view, recursive=FALSE)$name
+    layers <- list()
+    if ("layers" %in% viewnames) {
+        layers <- lapply(setNames(nm=h5ls(h5autoclose(view & "layers"), recursive=FALSE)$name), function(layer) {
+            read_matrix(h5autoclose(view & paste("layers", layer, sep="/")), backed=backed)
+        })
+    }
+
+    args <- list(assays=c(list(X), layers), rowData=var, colData=obs)
+
     if ("obsm" %in% viewnames) {
         obsmnames <- h5ls(h5autoclose(view & "obsm"), recursive=FALSE)$name
         obsm <- lapply(obsmnames, function(space) {

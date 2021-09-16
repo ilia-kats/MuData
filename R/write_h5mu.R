@@ -21,8 +21,8 @@ setMethod("WriteH5AD", c(object="mMatrix", file="H5IdComponent"), function(objec
     finalize_anndata_internal(file)
 })
 
-#' @importFrom rhdf5 H5Iget_type
-#' @importMethodsFrom SummarizedExperiment colData assay
+#' @importFrom rhdf5 H5Iget_type H5Gcreate H5Gclose
+#' @importMethodsFrom SummarizedExperiment colData assays
 setMethod("WriteH5AD", c(object="SummarizedExperiment", file="H5IdComponent"), function(object, file, overwrite) {
     if (!(H5Iget_type(file) %in% c("H5I_FILE", "H5I_GROUP")))
         stop("object must be a file or group")
@@ -30,7 +30,18 @@ setMethod("WriteH5AD", c(object="SummarizedExperiment", file="H5IdComponent"), f
     rdata <- rowData(object)
     if (ncol(rdata) > 0 || !is.null(rownames(rdata)))
         write_data_frame(file, "var", rdata)
-    WriteH5AD(assay(object), file, overwrite, write_dimnames=FALSE)
+
+    assays <- assays(object)
+    nassays <- length(assays)
+    if (nassays > 1) {
+        layersgrp <- H5Gcreate(file, "layers")
+        mapply(function(name, mat) {
+            write_matrix(layersgrp, name, mat)
+        }, names(assays[2:nassays]), assays[2:nassays])
+        H5Gclose(layersgrp)
+    }
+
+    WriteH5AD(assays[[1]], file, overwrite, write_dimnames=FALSE)
 })
 
 #' @importFrom rhdf5 H5Iget_type H5Gcreate H5Gclose
