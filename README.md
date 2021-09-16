@@ -1,6 +1,6 @@
-# MuDataSeurat
+# MuData
 
-`MuDataSeurat` is a package that provides I/O funcitonality for `.h5mu` files and [MultiAssayExperiment](http://waldronlab.io/MultiAssayExperiment/) objects.
+`MuData` is a package that provides I/O funcitonality for `.h5mu` files and [MultiAssayExperiment](http://waldronlab.io/MultiAssayExperiment/) objects.
 
 You can learn more about multimodal data containers in the [`mudata` documentation](https://mudata.readthedocs.io/en/latest/io/mudata.html).
 
@@ -12,9 +12,9 @@ remotes::install_github("pmbio/MuDataMAE")
 
 ## Quick start
 
-`MuDataMAE` provides a set of I/O operations for multimodal data.
+`MuData` provides a set of I/O operations for multimodal data.
 
-`MuDataMAE` implements `WriteH5MU()` that saves MultiAssayExperiment objects to `.h5mu` files that can be further integrated into workflows in multiple programming languages, including the [`muon` Python library](https://github.com/pmbio/muon) and the [`Muon.jl` Julia library](https://github.com/pmbio/Muon.jl). `ReadH5MU()` reads `.h5mu` files into MultiAssayExperiment objects.
+`MuData` implements `WriteH5MU()` that saves MultiAssayExperiment objects to `.h5mu` files that can be further integrated into workflows in multiple programming languages, including the [`muon` Python library](https://github.com/pmbio/muon) and the [`Muon.jl` Julia library](https://github.com/pmbio/Muon.jl). `ReadH5MU()` reads `.h5mu` files into MultiAssayExperiment objects.
 
 
 ### Writing files
@@ -29,7 +29,7 @@ data(miniACC)
 `WriteH5MU()` allows to save the object into a `.h5mu` file:
 
 ```R
-library(MuDataMAE)
+library(MuData)
 WriteH5MU(miniACC, "miniACC.h5mu")
 ```
 
@@ -43,6 +43,6 @@ miniACC <- ReadH5MU("miniACC.h5mu")
 
 Other R packages for multimodal I/O include:
 
-- [MuData](https://github.com/PMBio/MuDataSeurat) for [Seurat](https://github.com/satijalab/seurat/) objects
+- [MuDataSeurat](https://github.com/PMBio/MuDataSeurat) for [Seurat](https://github.com/satijalab/seurat/) objects
 - [SeuratDisk](https://github.com/mojaveazure/seurat-disk)
 
