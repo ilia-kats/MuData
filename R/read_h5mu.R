@@ -109,7 +109,7 @@ read_matrix <- function(dataset, backed=FALSE) {
         H5Aclose(encattr)
         if (encoding %in% c("csr_matrix", "csc_matrix")) {
             if (backed) {
-                cls <- ifelse(encoding == "csr_matrix", "CSR_H5ADMatrixSeed", "CSC_H5ADMatrixSeed")
+                cls <- ifelse(encoding == "csr_matrix", "CSC_H5ADMatrixSeed", "CSR_H5ADMatrixSeed")
                 seed <- HDF5Array::H5SparseMatrixSeed
             } else {
                 return(read_sparse_matrix(dataset, encoding))
