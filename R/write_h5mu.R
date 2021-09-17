@@ -1,8 +1,12 @@
 setGeneric("WriteH5AD", function(object, file, overwrite=TRUE, ...) standardGeneric("WriteH5AD"), signature=c("object", "file"))
 setGeneric("WriteH5MU", function(object, file, overwrite=TRUE) standardGeneric("WriteH5MU"), signature=c("object", "file"))
 
+#' @importClassesFrom Matrix Matrix
+#' @importClassesFrom DelayedArray DelayedMatrix
+setClassUnion("Matrix_OR_DelayedMatrix", c("matrix", "Matrix", "DelayedMatrix"))
+
 #' @importFrom rhdf5 H5Iget_type
-setMethod("WriteH5AD", c(object="mMatrix", file="H5IdComponent"), function(object, file, overwrite, write_dimnames=TRUE) {
+setMethod("WriteH5AD", c(object="Matrix_OR_DelayedMatrix", file="H5IdComponent"), function(object, file, overwrite, write_dimnames=TRUE) {
     if (!(H5Iget_type(file) %in% c("H5I_FILE", "H5I_GROUP")))
         stop("object must be a file or group")
     write_matrix(file, "X", object)
@@ -22,7 +26,7 @@ setMethod("WriteH5AD", c(object="mMatrix", file="H5IdComponent"), function(objec
 })
 
 #' @importFrom rhdf5 H5Iget_type H5Gcreate H5Gclose
-#' @importMethodsFrom SummarizedExperiment colData assays
+#' @importFrom SummarizedExperiment colData assays
 setMethod("WriteH5AD", c(object="SummarizedExperiment", file="H5IdComponent"), function(object, file, overwrite) {
     if (!(H5Iget_type(file) %in% c("H5I_FILE", "H5I_GROUP")))
         stop("object must be a file or group")
@@ -40,13 +44,11 @@ setMethod("WriteH5AD", c(object="SummarizedExperiment", file="H5IdComponent"), f
         }, names(assays[2:nassays]), assays[2:nassays])
         H5Gclose(layersgrp)
     }
-
     WriteH5AD(assays[[1]], file, overwrite, write_dimnames=FALSE)
 })
 
 #' @importFrom rhdf5 H5Iget_type H5Gcreate H5Gclose
-#' @importMethodsFrom SingleCellExperiment rowData colData colPairNames colPair rowPairNames rowPair
-#' @importMethodsFrom SingleCellExperiment reducedDims
+#' @importFrom SingleCellExperiment rowData colData colPairNames colPair rowPairNames rowPair reducedDims
 setMethod("WriteH5AD", c(object="SingleCellExperiment", file="H5IdComponent"), function(object, file, overwrite) {
     if (!(H5Iget_type(file) %in% c("H5I_FILE", "H5I_GROUP")))
         stop("object must be a file or group")
@@ -111,7 +113,7 @@ setMethod("WriteH5AD", c(object="ANY", file="character"), function(object, file,
 #' @rdname WriteH5MU
 #'
 #' @importFrom rhdf5 H5Gcreate H5Gclose h5writeDataset
-#' @importMethodsFrom MultiAssayExperiment colData experiments sampleMap
+#' @importFrom MultiAssayExperiment colData experiments sampleMap
 #'
 #' @export
 setMethod("WriteH5MU", c(object="MultiAssayExperiment", file="character"), function(object, file, overwrite) {
@@ -223,13 +225,13 @@ write_data_frame <- function(parent, key, df) {
     invisible(NULL)
 }
 
-.registeredDelayedArrayMethods <- FALSE
+.registeredHDF5ArrayMethods <- FALSE
 #' @importFrom rhdf5 h5write H5Dclose
-registerDelayedArrayMethods <- function() {
-    if (!.registeredDelayedArrayMethods) {
-        haveDelayedArray <- requireNamespace("DelayedArray", quietly=TRUE)
+#' @importFrom DelayedArray write_block start width
+registerHDF5ArrayMethods <- function() {
+    if (!.registeredHDF5ArrayMethods) {
         haveHDF5Array <- requireNamespace("HDF5Array", quietly=TRUE)
-        if (!haveDelayedArray || !haveHDF5Array)
+        if (!haveHDF5Array)
             return(FALSE)
         setClass("MuDataFileRealizationSink",
                  contains="HDF5RealizationSink",
@@ -237,16 +239,16 @@ registerDelayedArrayMethods <- function() {
                          datasetname="character"))
 
 
-        setMethod(DelayedArray::write_block, "MuDataFileRealizationSink", function(sink, viewport, block) {
+        setMethod(write_block, "MuDataFileRealizationSink", function(sink, viewport, block) {
             if (!is.array(block))
                 block <- as.array(block)
-            h5write(block, sink@parent, sink@datasetname, start=DelayedArray::start(viewport), count=DelayedArray::width(viewport))
+            h5write(block, sink@parent, sink@datasetname, start=start(viewport), count=width(viewport))
             sink
         })
 
-        .registeredDelayedArrayMethods <<- TRUE
+        .registeredHDF5ArrayMethods <<- TRUE
     }
-    .registeredDelayedArrayMethods
+    .registeredHDF5ArrayMethods
 }
 
 #' @importFrom rhdf5 h5createDataset H5Fget_name H5Iget_name
@@ -259,14 +261,15 @@ MuDataFileRealizationSink <- function(dim, type, parent, key, dimnames=NULL, as.
                                      filepath=file, name=path, chunkdim=chunkdim, parent=parent, datasetname=key)
 }
 
+#' @importFrom DelayedArray is_sparse type BLOCK_write_to_sink
 writeArrayToMuData <- function(x, parent, key, verbose=NA) {
-    if (!registerDelayedArrayMethods())
-        stop("The HDF5Array and DelayedArray packages must be installed to save DelayedArrays.")
-    as.sparse <- DelayedArray::is_sparse(x)
+    if (!registerHDF5ArrayMethods())
+        stop("The HDF5Array packages must be installed to save DelayedArrays.")
+    as.sparse <- is_sparse(x)
     sink_dimnames <- dimnames(x)
-    sink <- MuDataFileRealizationSink(dim(x), DelayedArray::type(x), parent, key, sink_dimnames, as.sparse)
+    sink <- MuDataFileRealizationSink(dim(x), type(x), parent, key, sink_dimnames, as.sparse)
 
     verbose <- DelayedArray:::normarg_verbose(verbose)
-    sink <- DelayedArray::BLOCK_write_to_sink(sink, x, verbose=verbose)
+    sink <- BLOCK_write_to_sink(sink, x, verbose=verbose)
     invisible(NULL)
 }

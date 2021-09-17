@@ -17,10 +17,10 @@ Imports: methods,
          rhdf5,
          MultiAssayExperiment,
          SingleCellExperiment,
-         SummarizedExperiment
+         SummarizedExperiment,
+         DelayedArray
 Suggests: 
     HDF5Array,
-    DelayedArray,
     testthat (>= 3.0.0)
 Depends: Matrix
 License: GPL-3
