@@ -83,6 +83,10 @@ setMethod("WriteH5AD", c(object="SingleCellExperiment", file="H5IdComponent"), f
     WriteH5AD(as(object, "SummarizedExperiment"), file, overwrite)
 })
 
+setMethod("WriteH5AD", c(object="ANY", file="H5IdComponent"), function(object, file, overwrite) {
+    warning(paste("Objects of class", class(object), "are currently unsupported, skipping..."))
+})
+
 #' Save an experiment to an .h5ad file.
 #'
 #' @param object The object to save.
