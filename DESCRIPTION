@@ -14,6 +14,7 @@ Authors@R:
            comment = c(ORCID = "0000-0001-5220-5671")))
 Description: Save MultiAssayExperiments to h5mu files supported by muon
 Imports: methods,
+         stats,
          rhdf5,
          MultiAssayExperiment,
          SingleCellExperiment,
