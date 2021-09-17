@@ -155,21 +155,21 @@ setMethod("WriteH5MU", c(object="MultiAssayExperiment", file="character"), funct
 #' @importFrom rhdf5 h5writeDataset h5writeAttribute H5Gcreate H5Gclose H5Fget_name H5Iget_name
 write_matrix <- function(parent, key, mat) {
     if (is.matrix(mat) || is.vector(mat)) {
-        h5writeDataset(mat, parent, key)
+        writeDataset(parent, key, mat)
     } else if (is(mat, "dgCMatrix") || is(mat, "dgRMatrix") || is(mat, "DelayedArray") && DelayedArray::is_sparse(mat)) {
         if (is(mat, "DelayedArray"))
             mat <- as(mat, "dgRMatrix")
 
         grp <- H5Gcreate(parent, key)
-        h5writeDataset(mat@p, grp, "indptr")
-        h5writeDataset(mat@x, grp, "data")
+        writeDataset(grp, "indptr", mat@p)
+        writeDataset(grp, "data", mat@x)
         h5writeAttribute(rev(dim(mat)), grp, "shape")
         h5writeAttribute("0.1.0", grp, "encoding-version", variableLengthString=TRUE, asScalar=TRUE)
         if (is(mat, "dgCMatrix")) {
-            h5writeDataset(mat@i, grp, "indices")
+            writeDataset(grp, "indices", mat@i)
             h5writeAttribute("csr_matrix", grp, "encoding-type", variableLengthString=TRUE, asScalar=TRUE)
         } else {
-            h5writeDataset(mat@j, grp, "indices")
+            writeDataset(grp, "indices", mat@j)
             h5writeAttribute("csc_matrix", grp, "encoding-type", variableLengthString=TRUE, asScalar=TRUE)
         }
         H5Gclose(grp)
@@ -191,16 +191,16 @@ write_data_frame <- function(parent, key, df) {
         v <- df[[col]]
         if (is.factor(v)) {
             categories[[col]] <- levels(v)
-            h5writeDataset(as.integer(v) - 1L, group, col)
+            writeDataset(group, col, as.integer(v) - 1L)
         } else {
-            h5writeDataset(v, group, col)
+            writeDataset(group, col, v)
         }
     }
     if (length(categories) > 0) {
         catgrp <- H5Gcreate(group, "__categories")
 
         mapply(function(colname, categories) {
-            h5writeDataset(categories, catgrp, colname, variableLengthString=TRUE)
+            writeDataset(categories, catgrp, colname, variableLengthString=TRUE)
             cat_dset <- catgrp & colname
             dset <- group & colname
             h5writeAttribute(as.integer(is.ordered(df[[colname]])), cat_dset, "ordered", asScalar=TRUE)
@@ -254,7 +254,7 @@ registerHDF5ArrayMethods <- function() {
 #' @importFrom rhdf5 h5createDataset H5Fget_name H5Iget_name
 MuDataFileRealizationSink <- function(dim, type, parent, key, dimnames=NULL, as.sparse=FALSE) {
     chunkdim <- HDF5Array::getHDF5DumpChunkDim(dim)
-    h5createDataset(parent, key, dim, storage.mode=type, chunk=chunkdim, level=9, shuffle=FALSE)
+    h5createDataset(parent, key, dim, storage.mode=type, chunk=chunkdim, level=9, shuffle=TRUE)
     file <- H5Fget_name(parent)
     path <- paste(H5Iget_name(parent), key, sep="/")
     new("MuDataFileRealizationSink", dim=dim, dimnames=dimnames, type=type, as_sparse=as.sparse,
@@ -272,4 +272,42 @@ writeArrayToMuData <- function(x, parent, key, verbose=NA) {
     verbose <- DelayedArray:::normarg_verbose(verbose)
     sink <- BLOCK_write_to_sink(sink, x, verbose=verbose)
     invisible(NULL)
+}
+
+# this is a straight port of the h5py guess_chunk function
+chunk_base <- 16 * 1024
+chunk_min <- 8 * 1024
+chunk_max <- 1024 * 1024
+guess_chunk <- function(shape, storage.mode) {
+    nbytes <- switch(storage.mode, double=8, integer=4, logical=1, character=8)
+    ndims <- length(shape)
+
+    dset_size <- prod(shape) * nbytes
+    target_size <- chunk_base * (2^log10(dset_size / 1024^2))
+    if (target_size > chunk_max)
+        target_size <- chunk_max
+    else if (target_size < chunk_min)
+        target_size <- chunk_min
+
+   idx <- 0
+   while(TRUE) {
+       chunk_bytes <- prod(shape) * nbytes
+       if ((chunk_bytes < target_size || abs(chunk_bytes - target_size) / target_size < 0.5) && chunk_bytes < chunk_max)
+           break
+       if (prod(shape) == 1)
+           break
+
+       shape[idx %% ndims + 1] <- ceiling(shape[idx %% ndims + 1] / 2)
+       idx <- idx + 1
+   }
+   as.integer(shape)
+}
+
+writeDataset <- function(parent, key, data) {
+    shape <- dim(data)
+    if (is.null(shape))
+        shape <- length(data)
+    chunksize <- guess_chunk(shape, storage.mode(data))
+    h5createDataset(parent, key, shape, storage.mode=storage.mode(data), chunk=chunksize, level=9, shuffle=TRUE)
+    h5writeDataset(data, parent, key)
 }
