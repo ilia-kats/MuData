@@ -14,5 +14,6 @@
 \item{overwrite}{Currently unused.}
 }
 \description{
-Save a \code{\linkS4class{MultiAssayExperiment}} to an .h5mu file.
+Note that NA values are not supported by HDF5, and therefore by h5mu. The behavior of this
+function if NAs are present is undefined.
 }

@@ -14,5 +14,6 @@
 \item{overwrite}{Currently unused.}
 }
 \description{
-Save an experiment to an .h5ad file.
+Note that NA values are not supported by HDF5, and therefore by h5ad. The behavior of this
+function if NAs are present is undefined.
 }

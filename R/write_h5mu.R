@@ -91,6 +91,9 @@ setMethod("WriteH5AD", c(object="ANY", file="H5IdComponent"), function(object, f
 
 #' Save an experiment to an .h5ad file.
 #'
+#' Note that NA values are not supported by HDF5, and therefore by h5ad. The behavior of this
+#' function if NAs are present is undefined.
+#'
 #' @param object The object to save.
 #' @param file Name of the file to save to.
 #' @param overwrite Currently unused.
@@ -105,6 +108,9 @@ setMethod("WriteH5AD", c(object="ANY", file="character"), function(object, file,
 })
 
 #' Save a \code{\linkS4class{MultiAssayExperiment}} to an .h5mu file.
+#'
+#' Note that NA values are not supported by HDF5, and therefore by h5mu. The behavior of this
+#' function if NAs are present is undefined.
 #'
 #' @param object A \code{\linkS4class{MultiAssayExperiment}}.
 #' @param file Name of the file to save to.
