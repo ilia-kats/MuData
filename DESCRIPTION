@@ -15,12 +15,14 @@ Author:
            comment = c(ORCID = "0000-0001-5220-5671")))
 Description: Save MultiAssayExperiments to h5mu files supported by muon
 Imports: methods,
+         stats,
          rhdf5,
          MultiAssayExperiment,
          SingleCellExperiment,
-         SummarizedExperiment
+         SummarizedExperiment,
+         DelayedArray
 Depends: Matrix, S4Vectors
-Suggests: 
+Suggests:
     rmarkdown,
     knitr
 VignetteBuilder: knitr
@@ -29,3 +31,4 @@ Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.2
+Config/testthat/edition: 3
