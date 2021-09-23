@@ -1,0 +1,123 @@
+---
+title: "Getting started with MuData for MultiAssayExperiment"
+author:
+- name: "Danila Bredikhin"
+  affiliation: "European Molecular Biology Laboratory, Heidelberg, Germany"
+  email: "danila.bredikhin@embl.de"
+- name: "Ilia Kats"
+  affiliation: "German Cancer Research Center, Heidelberg, Germany"
+  email: "i.kats@dkfz-heidelberg.de"
+date: "`r Sys.Date()`"
+output:
+  BiocStyle::html_document:
+    toc_float: true
+vignette: >
+  %\VignetteIndexEntry{Getting started with MuDataMae}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+collapse = TRUE,
+comment = "#>"
+)
+```
+
+# Introduction
+
+Multimodal data format — [MuData](https://mudata.readthedocs.io/) — [has been introduced](https://www.biorxiv.org/content/10.1101/2021.06.01.445670v1) to address the need for cross-platform standard for sharing large-scale multimodal omics data. Importantly, it develops ideas of and is compatible with [AnnData](https://anndata.readthedocs.io/) standard for storing raw and derived data for unimodal datasets.
+
+In Bioconductor, multimodal datasets have been stored in [MultiAssayExperiment](https://bioconductor.org/packages/MultiAssayExperiment) (MAE) objects. This `MuData` package provides functionality to read data from MuData files into MAE objects as well as to save MAE objects into H5MU files.
+
+# Installation
+
+Stable version of `MuData` will be available in future bioconductor versions.
+
+```{r, eval = FALSE}
+install("MuData")
+```
+
+The most recent dev build can be installed from GitHub:
+
+```{r, eval = FALSE}
+library(remotes)
+remotes::install_github("PMBio/MuDataMAE")
+```
+
+# Loading libraries
+
+```{r setup, message = FALSE}
+library(MuData)
+library(MultiAssayExperiment)
+
+library(rhdf5)
+```
+
+# Writing H5MU files
+
+We'll use a simple MAE object from the `MultiAssayExperiment` package that we'll then save in a H5MU file.
+
+```{r}
+data(miniACC)
+miniACC
+```
+
+We will now write its contents into an H5MU file with `WriteH5MU`:
+
+```{r}
+WriteH5MU(miniACC, "miniacc.h5mu")
+```
+
+# Reading H5MU files
+
+We can manually check the top level of the structure of the file:
+
+```{r}
+rhdf5::h5ls("miniacc.h5mu", recursive = FALSE)
+```
+
+Or dig deeper into the file:
+
+```{r}
+h5 <- rhdf5::H5Fopen("miniacc.h5mu")
+h5&'mod'
+H5Fclose(h5)
+```
+
+## Creating MAE objects from H5MU files
+
+This package provides `ReadH5MU` to create an object with data from an H5MU file. Since H5MU structure has been designed to accommodate more structured information than MAE, only some data will be read. For instance, MAE has no support for loading multimodal embeddings or pairwise graphs.
+
+```{r}
+acc <- ReadH5MU("miniacc.h5mu")
+acc
+```
+
+Importantly, we recover the information from the original MAE object:
+
+```{r}
+head(colData(miniACC)[,1:4])
+head(colData(acc)[,1:4])
+```
+
+Features metadata is also recovered:
+
+```{r}
+head(rowData(miniACC[["gistict"]]))
+head(rowData(acc[["gistict"]]))
+```
+
+# References
+
+- [Muon: multimodal omics analysis framework](https://www.biorxiv.org/content/10.1101/2021.06.01.445670) preprint
+
+- [mudata](https://mudata.readthedocs.io/) (Python) documentation
+
+- muon [documentation](https://muon.readthedocs.io/) and [web page](https://gtca.github.io/muon/)
+
+# Session Info
+
+```{r}
+sessionInfo()
+```
