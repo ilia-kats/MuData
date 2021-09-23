@@ -20,10 +20,6 @@ jobs:
         with:
           use-public-rspm: true
 
-      - name: Install a patched rhdf5
-        run: |
-          Rscript -e "remotes::install_github('ilia-kats/rhdf5@attribute-references')"
-
       - uses: r-lib/actions/setup-r-dependencies@v1
         with:
           extra-packages: pkgdown
