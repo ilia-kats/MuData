@@ -35,7 +35,7 @@ In Bioconductor, multimodal datasets have been stored in [MultiAssayExperiment](
 Stable version of `MuData` will be available in future bioconductor versions.
 
 ```{r, eval = FALSE}
-install("MuData")
+BiocManager::install("MuData")
 ```
 
 The most recent dev build can be installed from GitHub:
