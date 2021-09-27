@@ -16,7 +16,14 @@ WriteH5MU(object, file, overwrite = TRUE)
 
 \item{overwrite}{Currently unused.}
 }
+\value{
+NULL, invisibly
+}
 \description{
 Note that NA values are not supported by HDF5, and therefore by h5mu. The behavior of this
 function if NAs are present is undefined.
+}
+\examples{
+WriteH5MU(MultiAssayExperiment::miniACC, "miniacc.h5mu")
+
 }

@@ -12,7 +12,9 @@ Authors@R:
            role = c("aut"),
            email = "i.kats@dkfz-heidelberg.de",
            comment = c(ORCID = "0000-0001-5220-5671")))
-Description: Save MultiAssayExperiments to h5mu files supported by muon.
+Description: Save MultiAssayExperiments to h5mu files supported by muon and mudata.
+    Muon is a Python framework for multimodal omics data analysis. It uses an HDF5-based
+    format for data storage.
 Imports: methods,
          stats,
          rhdf5,

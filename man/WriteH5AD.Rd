@@ -32,7 +32,14 @@ WriteH5AD(object, file, overwrite = TRUE, ...)
 
 \item{write_dimnames}{Whether to export colnames and rownames.}
 }
+\value{
+NULL, invisibly
+}
 \description{
 Note that NA values are not supported by HDF5, and therefore by h5ad. The behavior of this
 function if NAs are present is undefined.
+}
+\examples{
+WriteH5AD(MultiAssayExperiment::miniACC[[1]], "miniacc.h5ad")
+
 }

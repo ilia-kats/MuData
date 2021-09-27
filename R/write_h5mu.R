@@ -19,9 +19,9 @@ setMethod("WriteH5AD", c(object="Matrix_OR_DelayedMatrix", file="H5IdComponent")
         rownames <- rownames(object)
         colnames <- colnames(object)
         if (is.null(rownames))
-            rownames <- as.character(1:nrow(object))
+            rownames <- as.character(seq_len(nrow(object)))
         if (is.null(colnames))
-            colnames <- as.character(1:ncol(object))
+            colnames <- as.character(seq_len(ncol(object)))
         var <- data.frame(row.names=rownames)
         obs <- data.frame(row.names=colnames)
         write_data_frame(file, "obs", obs)
@@ -95,7 +95,7 @@ setMethod("WriteH5AD", c(object="SingleCellExperiment", file="H5IdComponent"), f
 
 #' @rdname WriteH5AD
 setMethod("WriteH5AD", c(object="ANY", file="H5IdComponent"), function(object, file, overwrite) {
-    warning(paste("Objects of class", class(object), "are currently unsupported, skipping..."))
+    warning("Objects of class ", class(object), " are currently unsupported, skipping...")
 })
 
 #' Save an experiment to an .h5ad file.
@@ -106,6 +106,11 @@ setMethod("WriteH5AD", c(object="ANY", file="H5IdComponent"), function(object, f
 #' @param object The object to save.
 #' @param file Name of the file to save to.
 #' @param overwrite Currently unused.
+#'
+#' @returns NULL, invisibly
+#'
+#' @examples
+#' WriteH5AD(MultiAssayExperiment::miniACC[[1]], "miniacc.h5ad")
 #'
 #' @rdname WriteH5AD
 #' @export
@@ -124,6 +129,11 @@ setMethod("WriteH5AD", c(object="ANY", file="character"), function(object, file,
 #' @param object A \code{\linkS4class{MultiAssayExperiment}}.
 #' @param file Name of the file to save to.
 #' @param overwrite Currently unused.
+#'
+#' @returns NULL, invisibly
+#'
+#' @examples
+#' WriteH5MU(MultiAssayExperiment::miniACC, "miniacc.h5mu")
 #'
 #' @rdname WriteH5MU
 #'
@@ -150,7 +160,7 @@ setMethod("WriteH5MU", c(object="MultiAssayExperiment", file="character"), funct
         cmap <- samplemap[samplemap$assay == mname,]
         cmaporder <- match(globalrownames, cmap$primary)
         localorder <- match(cmap$colname, colnames(mod))
-        obsmap <- sapply(cmaporder, function(o)ifelse(is.na(o), 0L, localorder[o]))
+        obsmap <- vapply(cmaporder, function(o)ifelse(is.na(o), 0L, localorder[o]), 0L)
         h5writeDataset(obsmap, obsmapgrp, mname)
         h5writeDataset(as.integer(!is.na(cmaporder)), obsmgrp, mname)
 
@@ -192,7 +202,7 @@ write_matrix <- function(parent, key, mat) {
     } else if (is(mat, "DelayedArray") && requireNamespace("HDF5Array", quietly=TRUE)) {
         writeArrayToMuData(mat, parent, key)
     } else {
-        stop(paste0("Writing matrices of type ", class(mat), " is not implemented."))
+        stop("Writing matrices of type ", class(mat), " is not implemented.")
     }
 }
 

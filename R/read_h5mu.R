@@ -20,7 +20,7 @@ read_dataframe <- function(group) {
             attr <- H5Aopen(col, "categories")
             labels <- H5Aread(attr)
             if (!is(labels, "H5IdComponent")) {
-                warning(paste0("found categories attribute for column ", name, ", but it is not a reference"))
+                warning("found categories attribute for column ", name, ", but it is not a reference")
             } else {
                 values <- factor(as.integer(values), labels=H5Dread(labels))
                 H5Dclose(labels)
@@ -63,7 +63,7 @@ read_with_index <- function(dataset) {
         encoding <- H5Aread(encattr, "encoding-type")
         H5Aclose(encattr)
         if (encoding != "dataframe") {
-            warning(paste0("Unknown encoding ", encoding, " when attempting to read data frame"))
+            warning("Unknown encoding ", encoding, " when attempting to read data frame")
             return(data.frame())
         }
         read_dataframe(dataset)
@@ -117,7 +117,7 @@ read_matrix <- function(dataset, backed=FALSE) {
                 return(read_sparse_matrix(dataset, encoding))
             }
         } else {
-            warning(paste0("Unknown encoding ", encoding, "when attempting to read matrix"))
+            warning("Unknown encoding ", encoding, "when attempting to read matrix")
             return(matrix())
         }
     } else {
@@ -149,7 +149,7 @@ read_group <- function(group) {
     } else if (endsWith(encoding, "matrix")) {
         read_sparse_matrix(group)
     } else {
-        warning(paste0("Unknown encoding ", encoding))
+        warning("Unknown encoding ", encoding)
         invisible(NULL)
     }
 }
@@ -208,7 +208,7 @@ read_modality <- function(view, backed=FALSE) {
             for (name in names) {
                 cpair <- read_matrix(h5autoclose(view & paste(cp$name, name, sep="/")))
                 if (!is(cpair, "dsparseMatrix")) {
-                    warning(paste("Pairwise", cp$name, "matrix", name, "is not a sparse matrix. Only sparse matrices are currently supported, skipping..."))
+                    warning("Pairwise ", cp$name, " matrix ", name, " is not a sparse matrix. Only sparse matrices are currently supported, skipping...")
                 } else {
                     se <- cp$setter(se, name, value=cpair)
                 }
@@ -230,6 +230,10 @@ read_modality <- function(view, backed=FALSE) {
 #'
 #' @return A \code{\linkS4class{SingleCellExperiment}}.
 #'
+#' @examples
+#' WriteH5AD(MultiAssayExperiment::miniACC[[1]], "miniacc.h5ad")
+#' sce <- ReadH5AD("miniacc.h5ad")
+#'
 #' @importFrom rhdf5 H5Fclose
 #' @export
 ReadH5AD <- function(file, backed=FALSE) {
@@ -249,6 +253,10 @@ ReadH5AD <- function(file, backed=FALSE) {
 #' @param backed Whether to use file-backed mode.
 #'
 #' @return A \code{\linkS4class{MultiAssayExperiment}}
+#'
+#' @examples
+#' WriteH5MU(MultiAssayExperiment::miniACC, "miniacc.h5mu")
+#' mae <- ReadH5MU("miniacc.h5mu")
 #'
 #' @importFrom stats setNames
 #' @importFrom rhdf5 h5ls H5Fclose H5Lexists H5Dread H5Dclose

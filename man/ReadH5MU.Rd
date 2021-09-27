@@ -19,3 +19,8 @@ In file-backed mode, the main \code{X} matrices are not read into memory,
 but reference the HDF5 file and their required parts are read on demand.
 This requires the HDF5Array package to be installed.
 }
+\examples{
+WriteH5MU(MultiAssayExperiment::miniACC, "miniacc.h5mu")
+mae <- ReadH5MU("miniacc.h5mu")
+
+}
