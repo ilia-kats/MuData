@@ -1,4 +1,7 @@
+#' @param ... additional arguments.
+#' @rdname WriteH5AD
 setGeneric("WriteH5AD", function(object, file, overwrite=TRUE, ...) standardGeneric("WriteH5AD"), signature=c("object", "file"))
+#' @rdname WriteH5MU
 setGeneric("WriteH5MU", function(object, file, overwrite=TRUE) standardGeneric("WriteH5MU"), signature=c("object", "file"))
 
 #' @importClassesFrom Matrix Matrix
@@ -6,6 +9,8 @@ setGeneric("WriteH5MU", function(object, file, overwrite=TRUE) standardGeneric("
 setClassUnion("Matrix_OR_DelayedMatrix", c("matrix", "Matrix", "DelayedMatrix"))
 
 #' @importFrom rhdf5 H5Iget_type
+#' @param write_dimnames Whether to export colnames and rownames.
+#' @rdname WriteH5AD
 setMethod("WriteH5AD", c(object="Matrix_OR_DelayedMatrix", file="H5IdComponent"), function(object, file, overwrite, write_dimnames=TRUE) {
     if (!(H5Iget_type(file) %in% c("H5I_FILE", "H5I_GROUP")))
         stop("object must be a file or group")
@@ -27,6 +32,7 @@ setMethod("WriteH5AD", c(object="Matrix_OR_DelayedMatrix", file="H5IdComponent")
 
 #' @importFrom rhdf5 H5Iget_type H5Gcreate H5Gclose
 #' @importFrom SummarizedExperiment colData assays
+#' @rdname WriteH5AD
 setMethod("WriteH5AD", c(object="SummarizedExperiment", file="H5IdComponent"), function(object, file, overwrite) {
     if (!(H5Iget_type(file) %in% c("H5I_FILE", "H5I_GROUP")))
         stop("object must be a file or group")
@@ -49,6 +55,8 @@ setMethod("WriteH5AD", c(object="SummarizedExperiment", file="H5IdComponent"), f
 
 #' @importFrom rhdf5 H5Iget_type H5Gcreate H5Gclose
 #' @importFrom SingleCellExperiment rowData colData colPairNames colPair rowPairNames rowPair reducedDims
+#' @importFrom methods as
+#' @rdname WriteH5AD
 setMethod("WriteH5AD", c(object="SingleCellExperiment", file="H5IdComponent"), function(object, file, overwrite) {
     if (!(H5Iget_type(file) %in% c("H5I_FILE", "H5I_GROUP")))
         stop("object must be a file or group")
@@ -85,6 +93,7 @@ setMethod("WriteH5AD", c(object="SingleCellExperiment", file="H5IdComponent"), f
     WriteH5AD(as(object, "SummarizedExperiment"), file, overwrite)
 })
 
+#' @rdname WriteH5AD
 setMethod("WriteH5AD", c(object="ANY", file="H5IdComponent"), function(object, file, overwrite) {
     warning(paste("Objects of class", class(object), "are currently unsupported, skipping..."))
 })
@@ -159,6 +168,7 @@ setMethod("WriteH5MU", c(object="MultiAssayExperiment", file="character"), funct
 })
 
 #' @importFrom rhdf5 h5writeDataset h5writeAttribute H5Gcreate H5Gclose H5Fget_name H5Iget_name
+#' @importFrom methods is as
 write_matrix <- function(parent, key, mat) {
     if (is.matrix(mat) || is.vector(mat)) {
         writeDataset(parent, key, mat)
@@ -206,7 +216,7 @@ write_data_frame <- function(parent, key, df) {
         catgrp <- H5Gcreate(group, "__categories")
 
         mapply(function(colname, categories) {
-            writeDataset(categories, catgrp, colname, variableLengthString=TRUE)
+            writeDataset(categories, catgrp, colname)
             cat_dset <- catgrp & colname
             dset <- group & colname
             h5writeAttribute(as.integer(is.ordered(df[[colname]])), cat_dset, "ordered", asScalar=TRUE)
@@ -234,6 +244,7 @@ write_data_frame <- function(parent, key, df) {
 .registeredHDF5ArrayMethods <- FALSE
 #' @importFrom rhdf5 h5write H5Dclose
 #' @importFrom DelayedArray write_block start width
+#' @importFrom methods setClass
 registerHDF5ArrayMethods <- function() {
     if (!.registeredHDF5ArrayMethods) {
         haveHDF5Array <- requireNamespace("HDF5Array", quietly=TRUE)
@@ -258,6 +269,7 @@ registerHDF5ArrayMethods <- function() {
 }
 
 #' @importFrom rhdf5 h5createDataset H5Fget_name H5Iget_name
+#' @importFrom methods new
 MuDataFileRealizationSink <- function(dim, type, parent, key, dimnames=NULL, as.sparse=FALSE) {
     chunkdim <- HDF5Array::getHDF5DumpChunkDim(dim)
     h5createDataset(parent, key, dim, storage.mode=type, chunk=chunkdim, level=9, shuffle=TRUE)

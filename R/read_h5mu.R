@@ -1,5 +1,6 @@
 #' @importFrom rhdf5 H5Aexists H5Aopen H5Aread H5Aclose H5Dread H5Dclose
 #' @importMethodsFrom rhdf5 &
+#' @importFrom methods is
 read_dataframe <- function(group) {
     indexcol <- "_index"
     if (H5Aexists(group, "_index")) {
@@ -94,6 +95,7 @@ read_sparse_matrix <- function(group, encoding, backed=FALSE) {
 }
 
 #' @importFrom rhdf5 H5Iget_type H5Iget_name H5Aexists H5Aopen H5Aread H5Aclose H5Dread H5Dclose H5Gclose H5Fget_name
+#' @importFrom methods new
 read_matrix <- function(dataset, backed=FALSE) {
     if (backed) {
         have_delayedarray <- requireNamespace("HDF5Array", quietly=TRUE)
@@ -167,6 +169,7 @@ read_attribute <- function(attr) {
 #' @importFrom SingleCellExperiment SingleCellExperiment
 #' @importMethodsFrom SingleCellExperiment colPair<- rowPair<-
 #' @importFrom SummarizedExperiment SummarizedExperiment
+#' @importFrom methods is
 read_modality <- function(view, backed=FALSE) {
     X <- read_matrix(h5autoclose(view & "X"), backed=backed)
     var <- read_with_index(h5autoclose(view & "var"))
@@ -205,7 +208,7 @@ read_modality <- function(view, backed=FALSE) {
             for (name in names) {
                 cpair <- read_matrix(h5autoclose(view & paste(cp$name, name, sep="/")))
                 if (!is(cpair, "dsparseMatrix")) {
-                    warn(paste("Pairwise", cp$name, "matrix", name, "is not a sparse matrix. Only sparse matrices are currently supported, skipping..."))
+                    warning(paste("Pairwise", cp$name, "matrix", name, "is not a sparse matrix. Only sparse matrices are currently supported, skipping..."))
                 } else {
                     se <- cp$setter(se, name, value=cpair)
                 }

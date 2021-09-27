@@ -12,7 +12,7 @@ Authors@R:
            role = c("aut"),
            email = "i.kats@dkfz-heidelberg.de",
            comment = c(ORCID = "0000-0001-5220-5671")))
-Description: Save MultiAssayExperiments to h5mu files supported by muon
+Description: Save MultiAssayExperiments to h5mu files supported by muon.
 Imports: methods,
          stats,
          rhdf5,
@@ -22,8 +22,12 @@ Imports: methods,
          DelayedArray
 Depends: Matrix, S4Vectors
 Suggests:
+    HDF5Array,
     rmarkdown,
-    knitr
+    knitr,
+    fs,
+    testthat,
+    BiocStyle
 VignetteBuilder: knitr
 License: GPL-3
 Encoding: UTF-8
