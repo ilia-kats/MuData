@@ -108,6 +108,28 @@ head(rowData(miniACC[["gistict"]]))
 head(rowData(acc[["gistict"]]))
 ```
 
+### Backed objects
+
+It is possible to read H5MU files while keeping matrices (both `.X` and `.layers`) on disk.
+
+```{r}
+acc_b <- ReadH5MU("miniacc.h5mu", backed = TRUE)
+acc_b[["RNASeq2GeneNorm"]]@assays@data[[1]][1:5,1:3]
+```
+
+The data in the assay is a `DelayedMatrix` object:
+
+```{r}
+class(acc_b[["RNASeq2GeneNorm"]]@assays@data[[1]])
+```
+
+This is in contrast to the `acc` object that has matrices in memory:
+
+```{r}
+acc[["RNASeq2GeneNorm"]]@assays@data[[1]][1:5,1:3]
+print(class(acc[["RNASeq2GeneNorm"]]@assays@data[[1]]))
+```
+
 # References
 
 - [Muon: multimodal omics analysis framework](https://www.biorxiv.org/content/10.1101/2021.06.01.445670) preprint
