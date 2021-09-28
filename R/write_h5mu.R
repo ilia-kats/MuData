@@ -180,6 +180,8 @@ setMethod("WriteH5MU", c(object="MultiAssayExperiment", file="character"), funct
 #' @importFrom rhdf5 h5writeDataset h5writeAttribute H5Gcreate H5Gclose H5Fget_name H5Iget_name
 #' @importFrom methods is as
 write_matrix <- function(parent, key, mat) {
+    if (is(mat, "dgeMatrix"))
+        mat <- as.matrix(mat)
     if (is.matrix(mat) || is.vector(mat)) {
         writeDataset(parent, key, mat)
     } else if (is(mat, "dgCMatrix") || is(mat, "dgRMatrix") || is(mat, "DelayedArray") && DelayedArray::is_sparse(mat)) {
