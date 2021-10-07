@@ -1,8 +1,10 @@
 # MuData
 
+[Documentation](https://pmbio.github.io/MuDataMAE/) | [Preprint](https://www.biorxiv.org/content/10.1101/2021.06.01.445670v1) | [Discord](https://discord.com/invite/MMsgDhnSwQ)
+
 `MuData` is a package that provides I/O funcitonality for `.h5mu` files and [MultiAssayExperiment](http://waldronlab.io/MultiAssayExperiment/) objects.
 
-You can learn more about multimodal data containers in the [`mudata` documentation](https://mudata.readthedocs.io/en/latest/io/mudata.html).
+You can learn more about multimodal data containers in the reference [`mudata` documentation](https://mudata.readthedocs.io/en/latest/io/mudata.html).
 
 ## Installation
 `MuData` uses [`rhdf5`](https://bioconductor.org/packages/release/bioc/html/rhdf5.html) to access `.h5mu` and `.h5ad` files.
