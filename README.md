@@ -9,13 +9,12 @@ You can learn more about multimodal data containers in the reference [`mudata` d
 ## Installation
 `MuData` uses [`rhdf5`](https://bioconductor.org/packages/release/bioc/html/rhdf5.html) to access `.h5mu` and `.h5ad` files.
 We use `rhdf5` over `hdf5r` to stay compatible with the rest of the Bioconductor ecosystem.
-In particular, using `hdf5r` would make integrating with other packages building on `rhdf5`, such as `HDF5Array`, much more difficult, if not impossible.
-Unfortunately, `rhdf5` does not yet support all HDF5 features features that the `.h5ad`, and consequently `.h5mu` formats make use of.
-We have submitted a pull request implementing the missing features, but in the meantime, [our fork](https://github.com/ilia-kats/rhdf5/tree/attribute-references) of `rhdf5` must be used.
-`rhdf5` and `MuData` can be installed by running
+In particular, using `hdf5r` would make integrating with other packages building on `rhdf5`, such as `HDF5Array`, much more difficult, if not impossible. We have implemented necessary HDF5 features that the `.h5ad` and consequently `.h5mu` formats make use of upstream, including [file creation properties](https://github.com/grimbough/rhdf5/pull/95) and [object references](https://github.com/grimbough/rhdf5/pull/96).
+
+In the meantime, the most recent dev `rhdf5` version from GitHub must be used. `rhdf5` and `MuData` can be installed by running
 
 ```R
-remotes::install_github("ilia-kats/rhdf5@attribute-references")
+remotes::install_github("grimbough/rhdf5")
 remotes::install_github("pmbio/MuDataMAE")
 ```
 
