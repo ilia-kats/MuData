@@ -1,4 +1,4 @@
-#' @importFrom rhdf5 H5Aexists H5Aopen H5Aread H5Aclose H5Dread H5Dclose
+#' @importFrom rhdf5 H5Aexists H5Aopen H5Aread H5Aclose H5Dread H5Dclose H5Rdereference
 #' @importMethodsFrom rhdf5 &
 #' @importFrom methods is
 read_dataframe <- function(group) {
@@ -16,12 +16,17 @@ read_dataframe <- function(group) {
     col_list <- lapply(columnorder, function(name) {
         col <- group & name
         values <- H5Dread(col)
+        # h5py saves boolean arrays as HDF5 enums
+        if (is.factor(values) && levels(values) == c("FALSE", "TRUE")) {
+            values <- as.logical(values)
+        }
         if (H5Aexists(col, "categories")) {
             attr <- H5Aopen(col, "categories")
             labels <- H5Aread(attr)
-            if (!is(labels, "H5IdComponent")) {
+            if (!is(labels, "H5Ref")) {
                 warning("found categories attribute for column ", name, ", but it is not a reference")
             } else {
+                labels <- H5Rdereference(labels, h5loc=col)
                 values <- factor(as.integer(values), labels=H5Dread(labels))
                 H5Dclose(labels)
             }

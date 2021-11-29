@@ -208,7 +208,7 @@ write_matrix <- function(parent, key, mat) {
     }
 }
 
-#' @importFrom rhdf5 H5Gcreate H5Gclose h5writeDataset h5writeAttribute h5createAttribute H5Dclose
+#' @importFrom rhdf5 H5Gcreate H5Gclose h5writeDataset h5writeAttribute h5createAttribute H5Dclose H5Rcreate H5Screate_simple H5Tcopy H5Acreate H5Awrite H5Aclose H5Sclose
 write_data_frame <- function(parent, key, df) {
     group <- H5Gcreate(parent, key)
 
@@ -228,13 +228,19 @@ write_data_frame <- function(parent, key, df) {
         catgrp <- H5Gcreate(group, "__categories")
 
         mapply(function(colname, categories) {
-            writeDataset(categories, catgrp, colname)
+            writeDataset(catgrp, colname, categories)
             cat_dset <- catgrp & colname
             dset <- group & colname
+            catref <- H5Rcreate(cat_dset, H5Iget_name(cat_dset))
+            sid <- H5Screate("H5S_SCALAR")
+            tid <- H5Tcopy("H5T_STD_REF_OBJ")
+            refattr <- H5Acreate(dset, "categories", dtype_id=tid, h5space=sid)
+            H5Awrite(refattr, catref)
             h5writeAttribute(as.integer(is.ordered(df[[colname]])), cat_dset, "ordered", asScalar=TRUE)
-            h5writeAttribute(cat_dset, dset, "categories", asScalar=TRUE)
             H5Dclose(cat_dset)
             H5Dclose(dset)
+            H5Aclose(refattr)
+            H5Sclose(sid)
         }, names(categories), categories)
         H5Gclose(catgrp)
     }
@@ -338,6 +344,6 @@ writeDataset <- function(parent, key, data) {
     if (is.null(shape))
         shape <- length(data)
     chunksize <- guess_chunk(shape, storage.mode(data))
-    h5createDataset(parent, key, shape, storage.mode=storage.mode(data), chunk=chunksize, level=9, shuffle=TRUE)
-    h5writeDataset(data, parent, key)
+    h5createDataset(parent, key, shape, storage.mode=storage.mode(data), chunk=chunksize, level=9, shuffle=TRUE, encoding="UTF-8")
+    h5writeDataset(data, parent, key, variableLengthString=TRUE, encoding="UTF-8")
 }
