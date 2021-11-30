@@ -208,7 +208,7 @@ write_matrix <- function(parent, key, mat) {
     }
 }
 
-#' @importFrom rhdf5 H5Gcreate H5Gclose h5writeDataset h5writeAttribute h5createAttribute H5Dclose H5Rcreate H5Screate_simple H5Tcopy H5Acreate H5Awrite H5Aclose H5Sclose
+#' @importFrom rhdf5 H5Gcreate H5Gclose h5writeDataset h5writeAttribute h5createAttribute H5Dclose H5Rcreate H5Screate H5Tcopy H5Acreate H5Awrite H5Aclose H5Sclose
 write_data_frame <- function(parent, key, df) {
     group <- H5Gcreate(parent, key)
 
