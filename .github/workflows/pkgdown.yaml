@@ -19,16 +19,16 @@ jobs:
       - uses: r-lib/actions/setup-r@v1
         with:
           use-public-rspm: true
-
-      - uses: r-lib/actions/setup-r-dependencies@v1
-        with:
-          extra-packages: pkgdown
-          needs: website
       
       - name: Install the latest rhdf5 version
         if: always()
         run: Rscript -e "install.packages('remotes'); remotes:::install_github('grimbough/rhdf5')" 
         shell: bash
+
+      - uses: r-lib/actions/setup-r-dependencies@v1
+        with:
+          extra-packages: pkgdown
+          needs: website
 
       - name: Deploy package
         run: |

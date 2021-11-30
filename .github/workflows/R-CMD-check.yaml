@@ -38,15 +38,15 @@ jobs:
           r-version: ${{ matrix.config.r }}
           http-user-agent: ${{ matrix.config.http-user-agent }}
           use-public-rspm: true
-
-      - uses: r-lib/actions/setup-r-dependencies@v1
-        with:
-          extra-packages: rcmdcheck remotes
       
       - name: Install the latest rhdf5 version
         if: always()
         run: Rscript -e "install.packages('remotes'); remotes:::install_github('grimbough/rhdf5')" 
         shell: bash
+
+      - uses: r-lib/actions/setup-r-dependencies@v1
+        with:
+          extra-packages: rcmdcheck
 
       - uses: r-lib/actions/check-r-package@v1
 
