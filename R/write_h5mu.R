@@ -259,12 +259,13 @@ write_data_frame <- function(parent, key, df) {
     invisible(NULL)
 }
 
-.registeredHDF5ArrayMethods <- FALSE
+.registeredHDF5ArrayMethods <- new.env()
+.registeredHDF5ArrayMethods$registered <- FALSE
 #' @importFrom rhdf5 h5write H5Dclose
 #' @importFrom DelayedArray write_block start width
 #' @importFrom methods setClass
 registerHDF5ArrayMethods <- function() {
-    if (!.registeredHDF5ArrayMethods) {
+    if (!.registeredHDF5ArrayMethods$registered) {
         haveHDF5Array <- requireNamespace("HDF5Array", quietly=TRUE)
         if (!haveHDF5Array)
             return(FALSE)
@@ -281,9 +282,9 @@ registerHDF5ArrayMethods <- function() {
             sink
         })
 
-        .registeredHDF5ArrayMethods <<- TRUE
+        .registeredHDF5ArrayMethods$registered <- TRUE
     }
-    .registeredHDF5ArrayMethods
+    .registeredHDF5ArrayMethods$registered
 }
 
 #' @importFrom rhdf5 h5createDataset H5Fget_name H5Iget_name
