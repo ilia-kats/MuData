@@ -41,7 +41,12 @@ jobs:
 
       - uses: r-lib/actions/setup-r-dependencies@v1
         with:
-          extra-packages: rcmdcheck
+          extra-packages: rcmdcheck remotes
+      
+      - name: Install the latest rhdf5 version
+        if: always()
+        run: Rscript -e "remotes:::install_github('grimbough/rhdf5')" 
+        shell: bash
 
       - uses: r-lib/actions/check-r-package@v1
 
