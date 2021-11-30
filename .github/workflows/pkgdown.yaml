@@ -27,7 +27,7 @@ jobs:
       
       - name: Install the latest rhdf5 version
         if: always()
-        run: Rscript -e "remotes:::install_github('grimbough/rhdf5')" 
+        run: Rscript -e "install.packages('remotes'); remotes:::install_github('grimbough/rhdf5')" 
         shell: bash
 
       - name: Deploy package
