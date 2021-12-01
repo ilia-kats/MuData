@@ -41,7 +41,12 @@ jobs:
       
       - name: Install the latest rhdf5 version
         if: always()
-        run: install.packages('remotes'); remotes:::install_github('grimbough/rhdf5')
+        run: |
+          r = getOption("repos")
+          r["CRAN"] = "http://cran.us.r-project.org"
+          options(repos = r)
+          install.packages('remotes')
+          remotes:::install_github('grimbough/rhdf5')
         shell: Rscript {0}
 
       - uses: r-lib/actions/setup-r-dependencies@v1
