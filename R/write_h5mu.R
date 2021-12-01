@@ -110,7 +110,8 @@ setMethod("WriteH5AD", c(object="ANY", file="H5IdComponent"), function(object, f
 #' @returns NULL, invisibly
 #'
 #' @examples
-#' WriteH5AD(MultiAssayExperiment::miniACC[[1]], "miniacc.h5ad")
+#' data(miniACC, package="MultiAssayExperiment")
+#' WriteH5AD(miniACC[[1]], "miniacc.h5ad")
 #'
 #' @rdname WriteH5AD
 #' @export
@@ -133,7 +134,8 @@ setMethod("WriteH5AD", c(object="ANY", file="character"), function(object, file,
 #' @returns NULL, invisibly
 #'
 #' @examples
-#' WriteH5MU(MultiAssayExperiment::miniACC, "miniacc.h5mu")
+#' data(miniACC, package="MultiAssayExperiment")
+#' WriteH5MU(miniACC, "miniacc.h5mu")
 #'
 #' @rdname WriteH5MU
 #'

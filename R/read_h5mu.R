@@ -236,7 +236,8 @@ read_modality <- function(view, backed=FALSE) {
 #' @return A \code{\linkS4class{SingleCellExperiment}}.
 #'
 #' @examples
-#' WriteH5AD(MultiAssayExperiment::miniACC[[1]], "miniacc.h5ad")
+#' data(miniACC, package="MultiAssayExperiment")
+#' WriteH5AD(miniACC[[1]], "miniacc.h5ad")
 #' sce <- ReadH5AD("miniacc.h5ad")
 #'
 #' @importFrom rhdf5 H5Fclose
@@ -260,7 +261,8 @@ ReadH5AD <- function(file, backed=FALSE) {
 #' @return A \code{\linkS4class{MultiAssayExperiment}}
 #'
 #' @examples
-#' WriteH5MU(MultiAssayExperiment::miniACC, "miniacc.h5mu")
+#' data(miniACC, package="MultiAssayExperiment")
+#' WriteH5MU(miniACC, "miniacc.h5mu")
 #' mae <- ReadH5MU("miniacc.h5mu")
 #'
 #' @importFrom stats setNames

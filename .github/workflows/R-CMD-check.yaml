@@ -18,10 +18,9 @@ jobs:
       fail-fast: false
       matrix:
         config:
-          - {os: macOS-latest,   r: 'release'}
-          - {os: windows-latest, r: 'release'}
-          - {os: ubuntu-latest,   r: 'devel', http-user-agent: 'release'}
-          - {os: ubuntu-latest,   r: 'release'}
+          - {os: macOS-latest,   r: 'devel'}
+          - {os: windows-latest, r: 'devel'}
+          - {os: ubuntu-latest,  r: 'devel'}
 
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
@@ -35,19 +34,8 @@ jobs:
       - uses: r-lib/actions/setup-r@v1
         with:
           r-version: ${{ matrix.config.r }}
-          http-user-agent: ${{ matrix.config.http-user-agent }}
           use-public-rspm: true
       
-      - name: Install the latest rhdf5 version
-        if: always()
-        run: |
-          r = getOption("repos")
-          r["CRAN"] = "http://cran.us.r-project.org"
-          options(repos = r)
-          install.packages('remotes')
-          remotes:::install_github('grimbough/rhdf5', INSTALL_opts='--force-biarch')
-        shell: Rscript {0}
-
       - uses: r-lib/actions/setup-r-dependencies@v1
         with:
           extra-packages: rcmdcheck
