@@ -21,6 +21,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-home">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -33,18 +35,12 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">MuData</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.99.0</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-<li>
-  <a href="index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
 <li>
   <a href="reference/index.html">Reference</a>
 </li>
@@ -73,54 +69,54 @@
 
       </header><div class="row">
   <div class="contents col-md-9">
-<div id="mudata" class="section level1">
-<div class="page-header"><h1 class="hasAnchor">
-<a href="#mudata" class="anchor"></a>MuData</h1></div>
+<div class="section level1">
+<div class="page-header"><h1 id="mudata">MuData<a class="anchor" aria-label="anchor" href="#mudata"></a>
+</h1></div>
 
-<p><a href="https://pmbio.github.io/MuDataMAE/">Documentation</a> | <a href="https://www.biorxiv.org/content/10.1101/2021.06.01.445670v1">Preprint</a> | <a href="https://discord.com/invite/MMsgDhnSwQ">Discord</a></p>
-<p><code>MuData</code> is a package that provides I/O funcitonality for <code>.h5mu</code> files and <a href="http://waldronlab.io/MultiAssayExperiment/">MultiAssayExperiment</a> objects.</p>
-<p>You can learn more about multimodal data containers in the reference <a href="https://mudata.readthedocs.io/en/latest/io/mudata.html"><code>mudata</code> documentation</a>.</p>
-<div id="installation" class="section level2">
-<h2 class="hasAnchor">
-<a href="#installation" class="anchor"></a>Installation</h2>
-<p><code>MuData</code> uses <a href="https://bioconductor.org/packages/release/bioc/html/rhdf5.html"><code>rhdf5</code></a> to access <code>.h5mu</code> and <code>.h5ad</code> files. We use <code>rhdf5</code> over <code>hdf5r</code> to stay compatible with the rest of the Bioconductor ecosystem. In particular, using <code>hdf5r</code> would make integrating with other packages building on <code>rhdf5</code>, such as <code>HDF5Array</code>, much more difficult, if not impossible. We have implemented necessary HDF5 features that the <code>.h5ad</code> and consequently <code>.h5mu</code> formats make use of upstream, including <a href="https://github.com/grimbough/rhdf5/pull/95">file creation properties</a> and <a href="https://github.com/grimbough/rhdf5/pull/96">object references</a>.</p>
+<p><a href="https://pmbio.github.io/MuDataMAE/" class="external-link">Documentation</a> | <a href="https://www.biorxiv.org/content/10.1101/2021.06.01.445670v1" class="external-link">Preprint</a> | <a href="https://discord.com/invite/MMsgDhnSwQ" class="external-link">Discord</a></p>
+<p><code>MuData</code> is a package that provides I/O funcitonality for <code>.h5mu</code> files and <a href="http://waldronlab.io/MultiAssayExperiment/" class="external-link">MultiAssayExperiment</a> objects.</p>
+<p>You can learn more about multimodal data containers in the reference <a href="https://mudata.readthedocs.io/en/latest/io/mudata.html" class="external-link"><code>mudata</code> documentation</a>.</p>
+<div class="section level2">
+<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+</h2>
+<p><code>MuData</code> uses <a href="https://bioconductor.org/packages/release/bioc/html/rhdf5.html" class="external-link"><code>rhdf5</code></a> to access <code>.h5mu</code> and <code>.h5ad</code> files. We use <code>rhdf5</code> over <code>hdf5r</code> to stay compatible with the rest of the Bioconductor ecosystem. In particular, using <code>hdf5r</code> would make integrating with other packages building on <code>rhdf5</code>, such as <code>HDF5Array</code>, much more difficult, if not impossible. We have implemented necessary HDF5 features that the <code>.h5ad</code> and consequently <code>.h5mu</code> formats make use of upstream, including <a href="https://github.com/grimbough/rhdf5/pull/95" class="external-link">file creation properties</a> and <a href="https://github.com/grimbough/rhdf5/pull/96" class="external-link">object references</a>.</p>
 <p>In the meantime, the most recent dev <code>rhdf5</code> version from GitHub must be used. <code>rhdf5</code> and <code>MuData</code> can be installed by running</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"grimbough/rhdf5"</span><span class="op">)</span>
-<span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"pmbio/MuDataMAE"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"grimbough/rhdf5"</span><span class="op">)</span>
+<span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"pmbio/MuDataMAE"</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="quick-start" class="section level2">
-<h2 class="hasAnchor">
-<a href="#quick-start" class="anchor"></a>Quick start</h2>
+<div class="section level2">
+<h2 id="quick-start">Quick start<a class="anchor" aria-label="anchor" href="#quick-start"></a>
+</h2>
 <p><code>MuData</code> provides a set of I/O operations for multimodal data.</p>
-<p><code>MuData</code> implements <code><a href="reference/WriteH5MU.html">WriteH5MU()</a></code> that saves MultiAssayExperiment objects to <code>.h5mu</code> files that can be further integrated into workflows in multiple programming languages, including the <a href="https://github.com/pmbio/muon"><code>muon</code> Python library</a> and the <a href="https://github.com/pmbio/Muon.jl"><code>Muon.jl</code> Julia library</a>. <code><a href="reference/ReadH5MU.html">ReadH5MU()</a></code> reads <code>.h5mu</code> files into MultiAssayExperiment objects.</p>
-<div id="writing-files" class="section level3">
-<h3 class="hasAnchor">
-<a href="#writing-files" class="anchor"></a>Writing files</h3>
-<p>Start with an existing dataset, e.g. a <a href="http://waldronlab.io/MultiAssayExperiment/">MultiAssayExperiment</a> object with five distinct modalities:</p>
+<p><code>MuData</code> implements <code><a href="reference/WriteH5MU.html">WriteH5MU()</a></code> that saves MultiAssayExperiment objects to <code>.h5mu</code> files that can be further integrated into workflows in multiple programming languages, including the <a href="https://github.com/pmbio/muon" class="external-link"><code>muon</code> Python library</a> and the <a href="https://github.com/pmbio/Muon.jl" class="external-link"><code>Muon.jl</code> Julia library</a>. <code><a href="reference/ReadH5MU.html">ReadH5MU()</a></code> reads <code>.h5mu</code> files into MultiAssayExperiment objects.</p>
+<div class="section level3">
+<h3 id="writing-files">Writing files<a class="anchor" aria-label="anchor" href="#writing-files"></a>
+</h3>
+<p>Start with an existing dataset, e.g. a <a href="http://waldronlab.io/MultiAssayExperiment/" class="external-link">MultiAssayExperiment</a> object with five distinct modalities:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://waldronlab.io/MultiAssayExperiment/">MultiAssayExperiment</a></span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">miniACC</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://waldronlab.io/MultiAssayExperiment/" class="external-link">MultiAssayExperiment</a></span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">miniACC</span><span class="op">)</span></code></pre></div>
 <p><code><a href="reference/WriteH5MU.html">WriteH5MU()</a></code> allows to save the object into a <code>.h5mu</code> file:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">MuData</span><span class="op">)</span>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">MuData</span><span class="op">)</span>
 <span class="fu"><a href="reference/WriteH5MU.html">WriteH5MU</a></span><span class="op">(</span><span class="va">miniACC</span>, <span class="st">"miniACC.h5mu"</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="reading-files" class="section level3">
-<h3 class="hasAnchor">
-<a href="#reading-files" class="anchor"></a>Reading files</h3>
+<div class="section level3">
+<h3 id="reading-files">Reading files<a class="anchor" aria-label="anchor" href="#reading-files"></a>
+</h3>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">miniACC</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/ReadH5MU.html">ReadH5MU</a></span><span class="op">(</span><span class="st">"miniACC.h5mu"</span><span class="op">)</span></code></pre></div>
 </div>
 </div>
-<div id="relevant-projects" class="section level2">
-<h2 class="hasAnchor">
-<a href="#relevant-projects" class="anchor"></a>Relevant projects</h2>
+<div class="section level2">
+<h2 id="relevant-projects">Relevant projects<a class="anchor" aria-label="anchor" href="#relevant-projects"></a>
+</h2>
 <p>Other R packages for multimodal I/O include:</p>
 <ul>
 <li>
-<a href="https://github.com/PMBio/MuDataSeurat">MuDataSeurat</a> for <a href="https://github.com/satijalab/seurat/">Seurat</a> objects</li>
-<li><a href="https://github.com/mojaveazure/seurat-disk">SeuratDisk</a></li>
+<a href="https://github.com/PMBio/MuDataSeurat" class="external-link">MuDataSeurat</a> for <a href="https://github.com/satijalab/seurat/" class="external-link">Seurat</a> objects</li>
+<li><a href="https://github.com/mojaveazure/seurat-disk" class="external-link">SeuratDisk</a></li>
 </ul>
 </div>
 </div>
@@ -128,35 +124,47 @@
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <div class="license">
-<h2>License</h2>
+<h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
-<li><a href="https://www.r-project.org/Licenses/GPL-3">GPL-3</a></li>
-</ul>
-</div>
-<div class="developers">
-<h2>Developers</h2>
-<ul class="list-unstyled">
-<li>Danila Bredikhin <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0001-8089-6983" target="orcid.widget" aria-label="ORCID"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
-<li>Ilia Kats <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0001-5220-5671" target="orcid.widget" aria-label="ORCID"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<li><a href="https://www.r-project.org/Licenses/GPL-3" class="external-link">GPL-3</a></li>
 </ul>
 </div>
 
-  <div class="dev-status">
-<h2>Dev status</h2>
+
+<div class="citation">
+<h2 data-toc-skip>Citation</h2>
 <ul class="list-unstyled">
-<li><a href="https://github.com/PMBio/MuDataMAE/actions"><img src="https://github.com/PMBio/MuDataMAE/workflows/pkgdown/badge.svg" alt="pkgdown"></a></li>
+<li><a href="authors.html#citation">Citing MuData</a></li>
 </ul>
 </div>
+
+<div class="developers">
+<h2 data-toc-skip>Developers</h2>
+<ul class="list-unstyled">
+<li>Danila Bredikhin <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0001-8089-6983" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<li>Ilia Kats <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0001-5220-5671" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+</ul>
 </div>
+
+<div class="dev-status">
+<h2 data-toc-skip>Dev status</h2>
+<ul class="list-unstyled">
+<li><a href="https://github.com/PMBio/MuDataMAE/actions" class="external-link"><img src="https://github.com/PMBio/MuDataMAE/workflows/pkgdown/badge.svg" alt="pkgdown"></a></li>
+</ul>
+</div>
+
+  </div>
 </div>
 
 
       <footer><div class="copyright">
-  <p>Developed by Danila Bredikhin, Ilia Kats.</p>
+  <p></p>
+<p>Developed by Danila Bredikhin, Ilia Kats.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.0.</p>
 </div>
 
       </footer>
@@ -164,6 +172,8 @@
 
   
 
+
+  
 
   </body>
 </html>
