@@ -1,6 +1,5 @@
 library(MultiAssayExperiment)
 library(SingleCellExperiment)
-library(MuData)
 library(fs)  # for file_temp()
 
 fileh5mu <- paste0(file_temp(), ".h5mu")

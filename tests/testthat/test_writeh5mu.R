@@ -1,4 +1,3 @@
-library(MuData)
 library(MultiAssayExperiment)
 
 mae1_file <- tempfile()

@@ -30,7 +30,9 @@ Suggests:
     fs,
     testthat,
     BiocStyle,
-    covr
+    covr,
+    curatedTCGAData,
+    RaggedExperiment
 VignetteBuilder: knitr
 License: GPL-3
 Encoding: UTF-8
