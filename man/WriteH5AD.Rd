@@ -40,6 +40,7 @@ Note that NA values are not supported by HDF5, and therefore by h5ad. The behavi
 function if NAs are present is undefined.
 }
 \examples{
-WriteH5AD(MultiAssayExperiment::miniACC[[1]], "miniacc.h5ad")
+data(miniACC, package="MultiAssayExperiment")
+WriteH5AD(miniACC[[1]], "miniacc.h5ad")
 
 }

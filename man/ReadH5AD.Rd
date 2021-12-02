@@ -20,7 +20,8 @@ but references the HDF5 file and its required parts are read on demand.
 This requires the HDF5Array package to be installed.
 }
 \examples{
-WriteH5AD(MultiAssayExperiment::miniACC[[1]], "miniacc.h5ad")
+data(miniACC, package="MultiAssayExperiment")
+WriteH5AD(miniACC[[1]], "miniacc.h5ad")
 sce <- ReadH5AD("miniacc.h5ad")
 
 }

@@ -24,6 +24,7 @@ Note that NA values are not supported by HDF5, and therefore by h5mu. The behavi
 function if NAs are present is undefined.
 }
 \examples{
-WriteH5MU(MultiAssayExperiment::miniACC, "miniacc.h5mu")
+data(miniACC, package="MultiAssayExperiment")
+WriteH5MU(miniACC, "miniacc.h5mu")
 
 }
