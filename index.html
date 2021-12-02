@@ -79,11 +79,12 @@
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
-<p><code>MuData</code> uses <a href="https://bioconductor.org/packages/release/bioc/html/rhdf5.html" class="external-link"><code>rhdf5</code></a> to access <code>.h5mu</code> and <code>.h5ad</code> files. We use <code>rhdf5</code> over <code>hdf5r</code> to stay compatible with the rest of the Bioconductor ecosystem. In particular, using <code>hdf5r</code> would make integrating with other packages building on <code>rhdf5</code>, such as <code>HDF5Array</code>, much more difficult, if not impossible. We have implemented necessary HDF5 features that the <code>.h5ad</code> and consequently <code>.h5mu</code> formats make use of upstream, including <a href="https://github.com/grimbough/rhdf5/pull/95" class="external-link">file creation properties</a> and <a href="https://github.com/grimbough/rhdf5/pull/96" class="external-link">object references</a>.</p>
-<p>In the meantime, the most recent dev <code>rhdf5</code> version from GitHub must be used. <code>rhdf5</code> and <code>MuData</code> can be installed by running</p>
+<p><code>MuData</code> uses <a href="https://bioconductor.org/packages/release/bioc/html/rhdf5.html" class="external-link"><code>rhdf5</code></a> to access <code>.h5mu</code> and <code>.h5ad</code> files. In the meantime, the bioc-devel version of <code>rhdf5</code> must be used.</p>
+<p><code>rhdf5</code> and <code>MuData</code> can be installed by running</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"grimbough/rhdf5"</span><span class="op">)</span>
 <span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"pmbio/MuDataMAE"</span><span class="op">)</span></code></pre></div>
+<p>We use <code>rhdf5</code> over <code>hdf5r</code> to stay compatible with the rest of the Bioconductor ecosystem. In particular, using <code>hdf5r</code> would make integrating with other packages building on <code>rhdf5</code>, such as <code>HDF5Array</code>, much more difficult, if not impossible. We have implemented necessary HDF5 features that the <code>.h5ad</code> and consequently <code>.h5mu</code> formats make use of upstream, including <a href="https://github.com/grimbough/rhdf5/pull/95" class="external-link">file creation properties</a> and <a href="https://github.com/grimbough/rhdf5/pull/96" class="external-link">object references</a>.</p>
 </div>
 <div class="section level2">
 <h2 id="quick-start">Quick start<a class="anchor" aria-label="anchor" href="#quick-start"></a>
