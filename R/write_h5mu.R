@@ -271,10 +271,12 @@ registerHDF5ArrayMethods <- function() {
         haveHDF5Array <- requireNamespace("HDF5Array", quietly=TRUE)
         if (!haveHDF5Array)
             return(FALSE)
+
         setClass("MuDataFileRealizationSink",
                  contains="HDF5RealizationSink",
                  slots=c(parent="H5IdComponent",
-                         datasetname="character"))
+                         datasetname="character"),
+                 where=.registeredHDF5ArrayMethods)
 
 
         setMethod(write_block, "MuDataFileRealizationSink", function(sink, viewport, block) {
@@ -282,7 +284,7 @@ registerHDF5ArrayMethods <- function() {
                 block <- as.array(block)
             h5write(block, sink@parent, sink@datasetname, start=start(viewport), count=width(viewport))
             sink
-        })
+        }, where=.registeredHDF5ArrayMethods)
 
         .registeredHDF5ArrayMethods$registered <- TRUE
     }
