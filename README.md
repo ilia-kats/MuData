@@ -1,6 +1,6 @@
 # MuData
 
-[![pkgdown](https://github.com/PMBio/MuDataMAE/workflows/pkgdown/badge.svg)](https://github.com/PMBio/MuDataMAE/actions)
+[![pkgdown](https://github.com/PMBio/MuDataMAE/workflows/R-CMD-check/badge.svg)](https://github.com/PMBio/MuDataMAE/actions) [![pkgdown](https://github.com/PMBio/MuDataMAE/workflows/pkgdown/badge.svg)](https://github.com/PMBio/MuDataMAE/actions)
 
 [Documentation](https://pmbio.github.io/MuDataMAE/) | [Preprint](https://www.biorxiv.org/content/10.1101/2021.06.01.445670v1) | [Discord](https://discord.com/invite/MMsgDhnSwQ)
 
