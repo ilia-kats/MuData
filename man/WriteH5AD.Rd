@@ -4,6 +4,7 @@
 \alias{WriteH5AD}
 \alias{WriteH5AD,Matrix_OR_DelayedMatrix,H5IdComponent-method}
 \alias{WriteH5AD,SummarizedExperiment,H5IdComponent-method}
+\alias{WriteH5AD,RangedSummarizedExperiment,H5IdComponent-method}
 \alias{WriteH5AD,SingleCellExperiment,H5IdComponent-method}
 \alias{WriteH5AD,ANY,H5IdComponent-method}
 \alias{WriteH5AD,ANY,character-method}
@@ -14,6 +15,8 @@ WriteH5AD(object, file, overwrite = TRUE, ...)
 \S4method{WriteH5AD}{Matrix_OR_DelayedMatrix,H5IdComponent}(object, file, overwrite, write_dimnames = TRUE)
 
 \S4method{WriteH5AD}{SummarizedExperiment,H5IdComponent}(object, file, overwrite)
+
+\S4method{WriteH5AD}{RangedSummarizedExperiment,H5IdComponent}(object, file, overwrite)
 
 \S4method{WriteH5AD}{SingleCellExperiment,H5IdComponent}(object, file, overwrite)
 

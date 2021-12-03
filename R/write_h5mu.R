@@ -53,6 +53,12 @@ setMethod("WriteH5AD", c(object="SummarizedExperiment", file="H5IdComponent"), f
     WriteH5AD(assays[[1]], file, overwrite, write_dimnames=FALSE)
 })
 
+#' @rdname WriteH5AD
+setMethod("WriteH5AD", c(object="RangedSummarizedExperiment", file="H5IdComponent"), function(object, file, overwrite) {
+    warning("Ranged data is currently unsupported. Coercing to SummarizedExperiment...")
+    WriteH5AD(as(object, "SummarizedExperiment"), file, overwrite)
+})
+
 #' @importFrom rhdf5 H5Iget_type H5Gcreate H5Gclose
 #' @importFrom SingleCellExperiment rowData colData colPairNames colPair rowPairNames rowPair reducedDims
 #' @importFrom methods as
