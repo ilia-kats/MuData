@@ -91,3 +91,14 @@ test_that("a MAE object can be created from an .h5mu file", {
     expect_equal(names(mae)[1], "Affy")
     expect_equal(length(reducedDims(mae[["Affy"]])), 1)
 })
+
+test_that("read/write DelayedArrays", {
+    mae <- ReadH5MU(fileh5mu)
+    mae_backed <- ReadH5MU(fileh5mu, backed=TRUE)
+    file2 <- paste0(file_temp(), ".h5mu")
+    WriteH5MU(mae_backed, file2)
+    mae2 <- ReadH5MU(file2)
+    for (i in 1:length(assays(mae))) {
+        expect_equal(mae[[i]], mae2[[i]])
+    }
+})
