@@ -10,7 +10,7 @@ You can learn more about multimodal data containers in the reference [`mudata` d
 
 ## Installation
 
-`MuData` uses [`rhdf5`](https://bioconductor.org/packages/release/bioc/html/rhdf5.html) to access `.h5mu` and `.h5ad` files. In the meantime, the bioc-devel version of `rhdf5` must be used. 
+`MuData` uses [`rhdf5`](https://bioconductor.org/packages/devel/bioc/html/rhdf5.html) to access `.h5mu` and `.h5ad` files. In the meantime, the bioc-devel version of `rhdf5` must be used. 
 
 `rhdf5` and `MuData` can be installed by running
 
