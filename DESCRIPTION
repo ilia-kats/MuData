@@ -34,7 +34,8 @@ Suggests:
     BiocStyle,
     covr,
     curatedTCGAData,
-    RaggedExperiment
+    RaggedExperiment,
+    SingleCellMultiModal
 VignetteBuilder: knitr
 License: GPL-3
 Encoding: UTF-8
