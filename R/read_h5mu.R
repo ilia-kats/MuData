@@ -27,7 +27,12 @@ read_dataframe <- function(group) {
                 warning("found categories attribute for column ", name, ", but it is not a reference")
             } else {
                 labels <- H5Rdereference(labels, h5loc=col)
-                values <- factor(as.integer(values), labels=H5Dread(labels))
+	        labels_items <- H5Dread(labels)
+		n_labels <- length(unique(values))
+		if (length(labels_items) > n_labels) {
+			labels_items <- labels_items[1:n_labels]
+		}
+                values <- factor(as.integer(values), labels=labels_items)
                 H5Dclose(labels)
             }
             H5Aclose(attr)
