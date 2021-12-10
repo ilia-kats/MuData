@@ -20,6 +20,9 @@ jobs:
         with:
           r-version: devel
           use-public-rspm: true
+
+      - name: Install system dependencies
+        run: sudo apt-get install libmagick++-dev
       
       - uses: r-lib/actions/setup-r-dependencies@v1
         with:

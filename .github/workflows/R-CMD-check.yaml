@@ -35,6 +35,15 @@ jobs:
         with:
           r-version: ${{ matrix.config.r }}
           use-public-rspm: true
+
+      - name: Install system dependencies
+        run: |
+          if [ $RUNNER_OS == "Linux" ] ; then
+            sudo apt-get install libmagick++-dev
+          elif [ $RUNNER_OS == "macOS" ] ; then
+            brew install imagemagick@6
+          fi
+        shell: bash
       
       - uses: r-lib/actions/setup-r-dependencies@v1
         with:
