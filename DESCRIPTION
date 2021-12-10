@@ -33,8 +33,6 @@ Suggests:
     testthat,
     BiocStyle,
     covr,
-    curatedTCGAData,
-    RaggedExperiment,
     SingleCellMultiModal,
     CiteFuse,
     scater
