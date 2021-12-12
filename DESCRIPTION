@@ -1,5 +1,5 @@
 Package: MuData
-Title: Save MultiAssayExperiments to h5mu files
+Title: Serialization for MultiAssayExperiment objects
 Version: 0.99.0
 Authors@R:
     c(person(given = "Danila",

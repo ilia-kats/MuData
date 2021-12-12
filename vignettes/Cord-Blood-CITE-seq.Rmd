@@ -1,5 +1,5 @@
 ---
-title: "CITE-seq data with MuData and MultiAssayExperiment"
+title: "CITE-seq data with MultiAssayExperiment and MuData"
 author:
 - name: "Danila Bredikhin"
   affiliation: "European Molecular Biology Laboratory, Heidelberg, Germany"

@@ -51,6 +51,11 @@ setMethod("WriteH5AD", c(object="SummarizedExperiment", file="H5IdComponent"), f
         H5Gclose(layersgrp)
     }
     WriteH5AD(assays[[1]], file, overwrite, write_dimnames=FALSE)
+
+    naltexps <- length(altExps(sce_citeseq))
+    if (naltexps > 1) {
+        warning("Alternative experiments are currently unsupported. Construct a MultiAssayExperiment object or write them as individual H5AD files.")
+    }
 })
 
 #' @rdname WriteH5AD
