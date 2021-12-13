@@ -121,8 +121,8 @@
 <p>We will make the ADT modality a <code>SingleCellExperiment</code> object and add an assay with CLR-transformed counts:</p>
 <p>adt_counts &lt;- mae[[“scADT”]]mae[[“scADT”]] &lt;- SingleCellExperiment(adt_counts)assays(mae[[“scADT”]])[[“clr”]] &lt;- clr(adt_counts)</p>
 <p>We will also generate reduced dimensions taking advantage of the functionality in the <a href="https://bioconductor.org/packages/release/bioc/vignettes/scater/inst/doc/overview.html" class="external-link"><code>scater</code> package</a>:</p>
-<p>mae[[“scADT”]] &lt;- runPCA(mae[[“scADT”]], exprs_values = “clr”, ncomponents = 20)#&gt; Warning in check_numbers(k = k, nu = nu, nv = nv, limit = min(dim(x)) - : more #&gt; singular values/vectors requested than available #&gt; Warning in (function (A, nv = 5, nu = nv, maxit = 1000, work = nv + 7, reorth = #&gt; TRUE, : You’re computing too large a percentage of total singular values, use a #&gt; standard svd instead. #&gt; Warning in (function (A, nv = 5, nu = nv, maxit = 1000, work = nv + 7, reorth #&gt; = TRUE, : did not converge–results might be invalid!; try increasing work or #&gt; maxit</p>
-<p>plotReducedDim(mae[[“scADT”]], dimred = “PCA”, by_exprs_values = “clr”, colour_by = “CD3”)/tmp/RtmpTr2FBy/file2bc630ef6333/articles/Cord-Blood-CITE-seq_files/figure-html/unnamed-chunk-8-1.pngplotReducedDim(mae[[“scADT”]], dimred = “PCA”, by_exprs_values = “clr”, colour_by = “CD14”)/tmp/RtmpTr2FBy/file2bc630ef6333/articles/Cord-Blood-CITE-seq_files/figure-html/unnamed-chunk-8-2.png</p>
+<p>mae[[“scADT”]] &lt;- runPCA(mae[[“scADT”]], exprs_values = “clr”, ncomponents = 20)#&gt; Warning in check_numbers(k = k, nu = nu, nv = nv, limit = min(dim(x)) - : more #&gt; singular values/vectors requested than available #&gt; Warning in (function (A, nv = 5, nu = nv, maxit = 1000, work = nv + 7, reorth = #&gt; TRUE, : You’re computing too large a percentage of total singular values, use a #&gt; standard svd instead.</p>
+<p>plotReducedDim(mae[[“scADT”]], dimred = “PCA”, by_exprs_values = “clr”, colour_by = “CD3”)/tmp/Rtmpx8BRQ3/file144e1165382b6/articles/Cord-Blood-CITE-seq_files/figure-html/unnamed-chunk-8-1.pngplotReducedDim(mae[[“scADT”]], dimred = “PCA”, by_exprs_values = “clr”, colour_by = “CD14”)/tmp/Rtmpx8BRQ3/file144e1165382b6/articles/Cord-Blood-CITE-seq_files/figure-html/unnamed-chunk-8-2.png</p>
 <div class="section level2">
 <h2 id="writing-h5mu-files">Writing H5MU files<a class="anchor" aria-label="anchor" href="#writing-h5mu-files"></a>
 </h2>
@@ -153,7 +153,7 @@
 <div class="section level2">
 <h2 id="session-info">Session Info<a class="anchor" aria-label="anchor" href="#session-info"></a>
 </h2>
-<p>sessionInfo()#&gt; R Under development (unstable) (2021-12-11 r81350) #&gt; Platform: x86_64-pc-linux-gnu (64-bit) #&gt; Running under: Ubuntu 20.04.3 LTS #&gt; #&gt; Matrix products: default #&gt; BLAS: /usr/lib/x86_64-linux-gnu/blas/libblas.so.3.9.0 #&gt; LAPACK: /usr/lib/x86_64-linux-gnu/lapack/liblapack.so.3.9.0 #&gt; #&gt; locale: #&gt; [1] LC_CTYPE=C.UTF-8 LC_NUMERIC=C LC_TIME=C.UTF-8<br>
+<p>sessionInfo()#&gt; R Under development (unstable) (2021-12-11 r81355) #&gt; Platform: x86_64-pc-linux-gnu (64-bit) #&gt; Running under: Ubuntu 20.04.3 LTS #&gt; #&gt; Matrix products: default #&gt; BLAS: /usr/lib/x86_64-linux-gnu/blas/libblas.so.3.9.0 #&gt; LAPACK: /usr/lib/x86_64-linux-gnu/lapack/liblapack.so.3.9.0 #&gt; #&gt; locale: #&gt; [1] LC_CTYPE=C.UTF-8 LC_NUMERIC=C LC_TIME=C.UTF-8<br>
 #&gt; [4] LC_COLLATE=C.UTF-8 LC_MONETARY=C.UTF-8 LC_MESSAGES=C.UTF-8<br>
 #&gt; [7] LC_PAPER=C.UTF-8 LC_NAME=C LC_ADDRESS=C<br>
 #&gt; [10] LC_TELEPHONE=C LC_MEASUREMENT=C.UTF-8 LC_IDENTIFICATION=C<br>
