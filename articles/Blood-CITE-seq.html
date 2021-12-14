@@ -121,7 +121,7 @@
 <p>sce_citeseq &lt;- CiteFuse::normaliseExprs(sce_citeseq, altExp_name = “ADT”, transform = “log”)altExp(sce_citeseq, “ADT”) # new assay: logcounts#&gt; class: SummarizedExperiment #&gt; dim: 49 500 #&gt; metadata(0): #&gt; assays(2): counts logcounts #&gt; rownames(49): B220 (CD45R) B7-H1 (PD-L1) … TCRb TCRg #&gt; rowData names(0): #&gt; colnames(500): AAGCCGCGTTGTCTTT GATCGCGGTTATCGGT … TTGGCAACACTAGTAC #&gt; GCTGCGAGTTGTGGCC #&gt; colData names(0):</p>
 <p>We will also generate reduced dimensions:</p>
 <p>sce_citeseq &lt;- scater::runPCA(sce_citeseq, exprs_values = “logcounts”, ncomponents = 20)</p>
-<p>scater::plotReducedDim(sce_citeseq, dimred = “PCA”, by_exprs_values = “logcounts”, colour_by = “CD27”)/tmp/RtmpYFch4x/file2bee4028d3ad/articles/Blood-CITE-seq_files/figure-html/unnamed-chunk-9-1.png</p>
+<p>scater::plotReducedDim(sce_citeseq, dimred = “PCA”, by_exprs_values = “logcounts”, colour_by = “CD27”)/tmp/Rtmpe9psKV/file2bcb43454773/articles/Blood-CITE-seq_files/figure-html/unnamed-chunk-9-1.png</p>
 </div>
 <div class="section level2">
 <h2 id="making-a-multiassayexperiment-object">Making a MultiAssayExperiment object<a class="anchor" aria-label="anchor" href="#making-a-multiassayexperiment-object"></a>
