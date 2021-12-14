@@ -76,7 +76,7 @@
       German Cancer Research Center, Heidelberg, Germany<br><a class="author_email" href="mailto:#"></a><a href="mailto:i.kats@dkfz-heidelberg.de" class="email">i.kats@dkfz-heidelberg.de</a>
       </address>
                   
-            <h4 data-toc-skip class="date">2021-12-13</h4>
+            <h4 data-toc-skip class="date">2021-12-14</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/PMBio/MuDataMAE/blob/HEAD/vignettes/Cord-Blood-CITE-seq.Rmd" class="external-link"><code>vignettes/Cord-Blood-CITE-seq.Rmd</code></a></small>
       <div class="d-none name"><code>Cord-Blood-CITE-seq.Rmd</code></div>
@@ -122,7 +122,7 @@
 <p>adt_counts &lt;- mae[[“scADT”]]mae[[“scADT”]] &lt;- SingleCellExperiment(adt_counts)assays(mae[[“scADT”]])[[“clr”]] &lt;- clr(adt_counts)</p>
 <p>We will also generate reduced dimensions taking advantage of the functionality in the <a href="https://bioconductor.org/packages/release/bioc/vignettes/scater/inst/doc/overview.html" class="external-link"><code>scater</code> package</a>:</p>
 <p>mae[[“scADT”]] &lt;- runPCA(mae[[“scADT”]], exprs_values = “clr”, ncomponents = 20)#&gt; Warning in check_numbers(k = k, nu = nu, nv = nv, limit = min(dim(x)) - : more #&gt; singular values/vectors requested than available #&gt; Warning in (function (A, nv = 5, nu = nv, maxit = 1000, work = nv + 7, reorth = #&gt; TRUE, : You’re computing too large a percentage of total singular values, use a #&gt; standard svd instead.</p>
-<p>plotReducedDim(mae[[“scADT”]], dimred = “PCA”, by_exprs_values = “clr”, colour_by = “CD3”)/tmp/Rtmpx8BRQ3/file144e1165382b6/articles/Cord-Blood-CITE-seq_files/figure-html/unnamed-chunk-8-1.pngplotReducedDim(mae[[“scADT”]], dimred = “PCA”, by_exprs_values = “clr”, colour_by = “CD14”)/tmp/Rtmpx8BRQ3/file144e1165382b6/articles/Cord-Blood-CITE-seq_files/figure-html/unnamed-chunk-8-2.png</p>
+<p>plotReducedDim(mae[[“scADT”]], dimred = “PCA”, by_exprs_values = “clr”, colour_by = “CD3”)/tmp/RtmpYFch4x/file2bee4028d3ad/articles/Cord-Blood-CITE-seq_files/figure-html/unnamed-chunk-8-1.pngplotReducedDim(mae[[“scADT”]], dimred = “PCA”, by_exprs_values = “clr”, colour_by = “CD14”)/tmp/RtmpYFch4x/file2bee4028d3ad/articles/Cord-Blood-CITE-seq_files/figure-html/unnamed-chunk-8-2.png</p>
 <div class="section level2">
 <h2 id="writing-h5mu-files">Writing H5MU files<a class="anchor" aria-label="anchor" href="#writing-h5mu-files"></a>
 </h2>
