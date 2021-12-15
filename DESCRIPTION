@@ -1,6 +1,6 @@
 Package: MuData
 Title: Serialization for MultiAssayExperiment objects
-Version: 0.99.0
+Version: 0.99.1
 Authors@R:
     c(person(given = "Danila",
            family = "Bredikhin",
