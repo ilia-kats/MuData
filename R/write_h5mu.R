@@ -32,6 +32,8 @@ setMethod("WriteH5AD", c(object="Matrix_OR_DelayedMatrix", file="H5IdComponent")
 
 #' @importFrom rhdf5 H5Iget_type H5Gcreate H5Gclose
 #' @importFrom SummarizedExperiment colData assays
+#' @importFrom methods hasMethod
+#' @importFrom SingleCellExperiment altExps
 #' @rdname WriteH5AD
 setMethod("WriteH5AD", c(object="SummarizedExperiment", file="H5IdComponent"), function(object, file, overwrite) {
     if (!(H5Iget_type(file) %in% c("H5I_FILE", "H5I_GROUP")))

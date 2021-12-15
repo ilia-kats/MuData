@@ -30,7 +30,7 @@ read_dataframe <- function(group) {
 	        labels_items <- H5Dread(labels)
 		n_labels <- length(unique(values))
 		if (length(labels_items) > n_labels) {
-			labels_items <- labels_items[1:n_labels]
+			labels_items <- labels_items[seq_len(n_labels)]
 		}
                 values <- factor(as.integer(values), labels=labels_items)
                 H5Dclose(labels)
