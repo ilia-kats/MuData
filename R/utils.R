@@ -70,10 +70,11 @@ open_and_check_mudata <- function(filename) {
 
 #' @importFrom rhdf5 h5ls H5Aexists H5Aopen H5Aread H5Aclose
 check_mod_order <- function(h5) {
-    assays <- setNames(nm=h5ls(h5autoclose(h5 & "mod"), recursive=FALSE)$name)
+    mods <- h5 & "mod"
+    assays <- setNames(nm=h5ls(mods, recursive=FALSE)$name)
     mod_order <- names(assays)
-    if (H5Aexists(h5 & "mod", "order")) {
-        attr <- H5Aopen(h5autoclose(h5 & "mod"), "order")
+    if (H5Aexists(mods, "order")) {
+        attr <- H5Aopen(mods, "order")
         mod_order_candidate <- H5Aread(attr)
         H5Aclose(attr)
 
@@ -81,6 +82,7 @@ check_mod_order <- function(h5) {
             mod_order <- mod_order_candidate
         }
     }
+    H5Gclose(mods)
     mod_order
 }
 
