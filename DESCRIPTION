@@ -1,5 +1,5 @@
 Package: MuData
-Title: Serialization for MultiAssayExperiment objects
+Title: Serialization for MultiAssayExperiment Objects
 Version: 0.99.2
 Authors@R:
     c(person(given = "Danila",
@@ -15,8 +15,8 @@ Authors@R:
 Description: Save MultiAssayExperiments to h5mu files supported by muon and mudata.
     Muon is a Python framework for multimodal omics data analysis. It uses an HDF5-based
     format for data storage.
-URL: https://github.com/PMBio/MuDataMAE
-BugReports: https://github.com/PMBio/MuDataMAE/issues
+URL: https://github.com/ilia-kats/MuData
+BugReports: https://github.com/ilia-kats/MuData/issues
 Imports: methods,
          stats,
          rhdf5,

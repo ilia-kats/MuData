@@ -154,7 +154,7 @@ setMethod("WriteH5AD", c(object="ANY", file="character"), function(object, file,
 #'
 #' @rdname WriteH5MU
 #'
-#' @importFrom rhdf5 H5Gcreate H5Gclose h5writeDataset
+#' @importFrom rhdf5 H5Gcreate H5Gclose h5writeDataset h5writeAttribute
 #' @importFrom MultiAssayExperiment colData experiments sampleMap
 #'
 #' @export
@@ -183,6 +183,7 @@ setMethod("WriteH5MU", c(object="MultiAssayExperiment", file="character"), funct
 
         data.frame(row.names = rownames(mod))
     }, names(object), object)
+    h5writeAttribute(names(object), mods, "order")
     H5Gclose(mods)
     H5Gclose(obsmgrp)
     H5Gclose(obsmapgrp)

@@ -283,6 +283,9 @@ ReadH5MU <- function(file, backed=FALSE) {
     # Check all the assays are written
     assays <- setNames(nm=h5ls(h5autoclose(h5 & "mod"), recursive=FALSE)$name)
 
+    # Read modality order if available and matches available assays
+    mod_order <- check_mod_order(h5)
+
     # Create global colData
     metadata <- read_with_index(h5autoclose(h5 & "obs"))
 
@@ -290,6 +293,7 @@ ReadH5MU <- function(file, backed=FALSE) {
     modalities <- lapply(assays, function(mod) {
         read_modality(h5autoclose(h5 & paste("mod", mod, sep="/")), backed)
     })
+    modalities <- modalities[mod_order]
 
     args <- list(experiments=modalities, colData=metadata)
 

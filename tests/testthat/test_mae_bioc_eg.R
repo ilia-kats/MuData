@@ -72,17 +72,22 @@ test_that("a model can be created from a simple MAE object", {
 
     # Writing
     outfile <- fileh5mu
-    expect_error(WriteH5MU(myMultiAssay, outfile), NA)
+    # Warning for: Ranged data is currently unsupported
+    expect_warning(WriteH5MU(myMultiAssay, outfile))
 
     # Read back
     h5 <- H5Fopen(outfile)
 
     # Check all the assays are written
     assays <- names(h5$mod)
-    assays_orig <- sort(names(assays(myMultiAssay)))
-    expect_equal(assays, assays_orig)
-
+    assays_orig <- names(assays(myMultiAssay))
+    expect_equal(assays, sort(assays_orig))
     H5Fclose(h5)
+
+    # Check that the order of the assays is preserved
+    mdata <- ReadH5MU(outfile)
+    assays <- names(assays(mdata))
+    expect_equal(assays, assays_orig)
 })
 
 
