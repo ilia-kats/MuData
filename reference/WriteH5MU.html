@@ -35,7 +35,7 @@ function if NAs are present is undefined."><!-- mathjax --><script src="https://
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
       <ul class="navbar-nav"><li class="nav-item">
-  <a class="external-link nav-link" href="https://github.com/PMBio/MuDataMAE/" aria-label="github">
+  <a class="external-link nav-link" href="https://github.com/ilia-kats/MuData/" aria-label="github">
     <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
@@ -48,7 +48,7 @@ function if NAs are present is undefined."><!-- mathjax --><script src="https://
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="" class="logo" alt=""><h1>Save a <code><a href="http://waldronlab.io/MultiAssayExperiment/reference/MultiAssayExperiment-class.html" class="external-link">MultiAssayExperiment</a></code> to an .h5mu file.</h1>
-      <small class="dont-index">Source: <a href="https://github.com/PMBio/MuDataMAE/blob/HEAD/R/write_h5mu.R" class="external-link"><code>R/write_h5mu.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/ilia-kats/MuData/blob/HEAD/R/write_h5mu.R" class="external-link"><code>R/write_h5mu.R</code></a></small>
       <div class="d-none name"><code>WriteH5MU.Rd</code></div>
     </div>
 
@@ -83,6 +83,7 @@ function if NAs are present is undefined.</p>
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">miniACC</span>, package<span class="op">=</span><span class="st">"MultiAssayExperiment"</span><span class="op">)</span></span>
 <span class="r-in"><span class="fu">WriteH5MU</span><span class="op">(</span><span class="va">miniACC</span>, <span class="st">"miniacc.h5mu"</span><span class="op">)</span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in H5Fcreate(filename, fcpl = h5p_create, native = FALSE):</span> HDF5. File accessibility. Unable to open file.</span>
 <span class="r-in"></span>
 </code></pre></div>
     </div>
