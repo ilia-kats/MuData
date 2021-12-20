@@ -26,22 +26,20 @@ comment = "#>"
 
 ## Introduction
 
-CITE-seq data provide RNA and surface protein counts for the same cells. This tutorial shows how MuData can be integrated into with Bioconductor workflows to analyse CITE-seq data.
+CITE-seq data provide RNA and surface protein counts for the same cells. 
+This tutorial shows how MuData can be integrated into with Bioconductor 
+workflows to analyse CITE-seq data.
 
 ## Installation
-
-Stable version of `MuData` will be available in future bioconductor versions.
-
-```{r, eval = FALSE}
-BiocManager::install("MuData")
-```
 
 The most recent dev build can be installed from GitHub:
 
 ```{r, eval = FALSE}
 library(remotes)
-remotes::install_github("PMBio/MuDataMAE")
+remotes::install_github("ilia-kats/MuData")
 ```
+
+Stable version of `MuData` will be available in future bioconductor versions.
 
 ## Loading libraries
 
@@ -57,7 +55,10 @@ library(rhdf5)
 
 ## Loading data
 
-We will use CITE-seq data accessible with the [`SingleCellMultiModal` Bioconductor package](https://bioconductor.org/packages/release/data/experiment/vignettes/SingleCellMultiModal/inst/doc/CITEseq.html), which was originally described in [Stoeckius et al., 2017](https://www.nature.com/articles/nmeth.4380).
+We will use CITE-seq data accessible with the 
+[`SingleCellMultiModal` Bioconductor package](https://bioconductor.org/packages/release/data/experiment/vignettes/SingleCellMultiModal/inst/doc/CITEseq.html), 
+which was originally described in 
+[Stoeckius et al., 2017](https://www.nature.com/articles/nmeth.4380).
 
 ```{r}
 mae <- CITEseq(
@@ -67,37 +68,53 @@ mae <- CITEseq(
 mae
 ```
 
-We see two modalities in the object — `scRNAseq` and `scADT`, the latter providing counts for antibody-derived tags. Notably, each experiment is a matrix.
+We see two modalities in the object — `scRNAseq` and `scADT`, the latter 
+providing counts for antibody-derived tags. Notably, each experiment is a matrix.
 
 ## Processing ADT data
 
-While CITE-seq analysis workflows such as [CiteFuse](http://www.bioconductor.org/packages/release/bioc/html/CiteFuse.html) should be consulted for more details, below we exemplify simple data transformation in order to demonstrate how their output can be saved to an H5MU file later on.
+While CITE-seq analysis workflows such as 
+[CiteFuse](http://www.bioconductor.org/packages/release/bioc/html/CiteFuse.html) 
+should be consulted for more details, below we exemplify simple data 
+transformation in order to demonstrate how their output can be saved 
+to an H5MU file later on.
 
-For ADT counts, we will apply CLR transformation following [Hao et al., 2020](https://doi.org/10.1016/j.cell.2021.04.048):
+For ADT counts, we will apply CLR transformation following 
+[Hao et al., 2020](https://doi.org/10.1016/j.cell.2021.04.048):
 
 ```{r}
 # Define CLR transformation as in the Seurat workflow
-clr <- function(data) t(apply(data, 1, function(x) log1p(x / (exp(sum(log1p(x[x > 0]), na.rm = TRUE) / length(x))))))
+clr <- function(data) t(
+  apply(data, 1, function(x) log1p(
+    x / (exp(sum(log1p(x[x > 0]), na.rm = TRUE) / length(x)))
+  ))
+)
 ```
 
-We will make the ADT modality a `SingleCellExperiment` object and add an assay with CLR-transformed counts:
+We will make the ADT modality a `SingleCellExperiment` object and add an assay 
+with CLR-transformed counts:
 
 ```{r}
 adt_counts <- mae[["scADT"]]
 
 mae[["scADT"]] <- SingleCellExperiment(adt_counts)
-assays(mae[["scADT"]])[["clr"]] <- clr(adt_counts)
+assay(mae[["scADT"]], "clr") <- clr(adt_counts)
 ```
 
-We will also generate reduced dimensions taking advantage of the functionality in the [`scater` package](https://bioconductor.org/packages/release/bioc/vignettes/scater/inst/doc/overview.html):
+We will also generate reduced dimensions taking advantage of the functionality 
+in the [`scater` package](https://bioconductor.org/packages/release/bioc/vignettes/scater/inst/doc/overview.html):
 
 ```{r}
-mae[["scADT"]] <- runPCA(mae[["scADT"]], exprs_values = "clr", ncomponents = 20)
+mae[["scADT"]] <- runPCA(
+  mae[["scADT"]], exprs_values = "clr", ncomponents = 20
+)
 ```
 
 ```{r}
-plotReducedDim(mae[["scADT"]], dimred = "PCA", by_exprs_values = "clr", colour_by = "CD3")
-plotReducedDim(mae[["scADT"]], dimred = "PCA", by_exprs_values = "clr", colour_by = "CD14")
+plotReducedDim(mae[["scADT"]], dimred = "PCA",
+               by_exprs_values = "clr", colour_by = "CD3")
+plotReducedDim(mae[["scADT"]], dimred = "PCA",
+               by_exprs_values = "clr", colour_by = "CD14")
 ```
 
 ## Writing H5MU files
@@ -108,14 +125,16 @@ We can write the contents of the MultiAssayExperiment object into an H5MU file:
 WriteH5MU(mae, "cord_blood_citeseq.h5mu")
 ```
 
-We can check that both modalities were written to the file, whether it was a `matrix` for RNA or `SingleCellExperiment` for ADT:
+We can check that both modalities were written to the file, whether it was a 
+`matrix` for RNA or `SingleCellExperiment` for ADT:
 
 ```{r}
 h5 <- rhdf5::H5Fopen("cord_blood_citeseq.h5mu")
 h5&'mod'
 ```
 
-... both assays for ADT — raw counts are stored in `X` and CLR-transformed counts are in the corresponding layer:
+... both assays for ADT — raw counts are stored in `X` and CLR-transformed 
+counts are in the corresponding layer:
 
 ```{r}
 h5&'mod'&'scADT'

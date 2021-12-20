@@ -26,24 +26,28 @@ comment = "#>"
 
 ## Introduction
 
-Multimodal data format — [MuData](https://mudata.readthedocs.io/) — [has been introduced](https://www.biorxiv.org/content/10.1101/2021.06.01.445670v1) to address the need for cross-platform standard for sharing large-scale multimodal omics data. Importantly, it develops ideas of and is compatible with [AnnData](https://anndata.readthedocs.io/) standard for storing raw and derived data for unimodal datasets.
+Multimodal data format — [MuData](https://mudata.readthedocs.io/) — 
+[has been introduced](https://www.biorxiv.org/content/10.1101/2021.06.01.445670v1) 
+to address the need for cross-platform standard for sharing 
+large-scale multimodal omics data. Importantly, it develops ideas of and is 
+compatible with [AnnData](https://anndata.readthedocs.io/) standard for storing 
+raw and derived data for unimodal datasets.
 
-In Bioconductor, multimodal datasets have been stored in [MultiAssayExperiment](https://bioconductor.org/packages/MultiAssayExperiment) (MAE) objects. This `MuData` package provides functionality to read data from MuData files into MAE objects as well as to save MAE objects into H5MU files.
+In Bioconductor, multimodal datasets have been stored in 
+[MultiAssayExperiment](https://bioconductor.org/packages/MultiAssayExperiment) 
+(MAE) objects. This `MuData` package provides functionality to read data from 
+MuData files into MAE objects as well as to save MAE objects into H5MU files.
 
 ## Installation
-
-Stable version of `MuData` will be available in future bioconductor versions.
-
-```{r, eval = FALSE}
-BiocManager::install("MuData")
-```
 
 The most recent dev build can be installed from GitHub:
 
 ```{r, eval = FALSE}
 library(remotes)
-remotes::install_github("PMBio/MuDataMAE")
+remotes::install_github("ilia-kats/MuData")
 ```
+
+Stable version of `MuData` will be available in future bioconductor versions.
 
 ## Loading libraries
 
@@ -56,7 +60,8 @@ library(rhdf5)
 
 ## Writing H5MU files
 
-We'll use a simple MAE object from the `MultiAssayExperiment` package that we'll then save in a H5MU file.
+We'll use a simple MAE object from the `MultiAssayExperiment` package that 
+we'll then save in a H5MU file.
 
 ```{r}
 data(miniACC)
@@ -87,7 +92,10 @@ rhdf5::H5close()
 
 ### Creating MAE objects from H5MU files
 
-This package provides `ReadH5MU` to create an object with data from an H5MU file. Since H5MU structure has been designed to accommodate more structured information than MAE, only some data will be read. For instance, MAE has no support for loading multimodal embeddings or pairwise graphs.
+This package provides `ReadH5MU` to create an object with data from an H5MU 
+file. Since H5MU structure has been designed to accommodate more structured 
+information than MAE, only some data will be read. For instance, MAE has no 
+support for loading multimodal embeddings or pairwise graphs.
 
 ```{r}
 acc <- ReadH5MU("miniacc.h5mu")
@@ -110,24 +118,25 @@ head(rowData(acc[["gistict"]]))
 
 #### Backed objects
 
-It is possible to read H5MU files while keeping matrices (both `.X` and `.layers`) on disk.
+It is possible to read H5MU files while keeping matrices (both `.X` and 
+`.layers`) on disk.
 
 ```{r}
 acc_b <- ReadH5MU("miniacc.h5mu", backed = TRUE)
-assays(acc_b[["RNASeq2GeneNorm"]])[[1]][1:5,1:3]
+assay(acc_b, "RNASeq2GeneNorm")[1:5,1:3]
 ```
 
 The data in the assay is a `DelayedMatrix` object:
 
 ```{r}
-class(assays(acc_b[["RNASeq2GeneNorm"]])[[1]])
+class(assay(acc_b, "RNASeq2GeneNorm"))
 ```
 
 This is in contrast to the `acc` object that has matrices in memory:
 
 ```{r}
-assays(acc[["RNASeq2GeneNorm"]])[[1]][1:5,1:3]
-print(class(assays(acc[["RNASeq2GeneNorm"]])[[1]]))
+assay(acc, "RNASeq2GeneNorm")[1:5,1:3]
+class(assay(acc, "RNASeq2GeneNorm"))
 ```
 
 ## References

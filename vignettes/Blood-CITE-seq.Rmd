@@ -26,22 +26,20 @@ comment = "#>"
 
 ## Introduction
 
-CITE-seq data provide RNA and surface protein counts for the same cells. This tutorial shows how MuData can be integrated into with Bioconductor workflows to analyse CITE-seq data.
+CITE-seq data provide RNA and surface protein counts for the same cells. 
+This tutorial shows how MuData can be integrated into with Bioconductor 
+workflows to analyse CITE-seq data.
 
 ## Installation
-
-Stable version of `MuData` will be available in future bioconductor versions.
-
-```{r, eval = FALSE}
-BiocManager::install("MuData")
-```
 
 The most recent dev build can be installed from GitHub:
 
 ```{r, eval = FALSE}
 library(remotes)
-remotes::install_github("PMBio/MuDataMAE")
+remotes::install_github("ilia-kats/MuData")
 ```
+
+Stable version of `MuData` will be available in future bioconductor versions.
 
 ## Loading libraries
 
@@ -57,20 +55,28 @@ library(rhdf5)
 
 ## Loading data
 
-We will use CITE-seq data available within [`CiteFuse` Bioconductor package](http://www.bioconductor.org/packages/release/bioc/html/CiteFuse.html).
+We will use CITE-seq data available within 
+[`CiteFuse` Bioconductor package](http://www.bioconductor.org/packages/release/bioc/html/CiteFuse.html).
 
 ```{r}
 data("CITEseq_example", package = "CiteFuse")
 lapply(CITEseq_example, dim)
 ```
 
-This dataset contains three matrices — one with `RNA` counts, one with antibody-derived tags (`ADT`) counts and one with hashtag oligonucleotide (`HTO`) counts.
+This dataset contains three matrices — one with `RNA` counts, one with 
+antibody-derived tags (`ADT`) counts and one with hashtag oligonucleotide 
+(`HTO`) counts.
 
 ## Processing count matrices
 
-While CITE-seq analysis workflows such as [CiteFuse](http://www.bioconductor.org/packages/release/bioc/vignettes/CiteFuse/inst/doc/CiteFuse.html) should be consulted for more details, below we exemplify simple data transformations in order to demonstrate how their output can be saved to an H5MU file later on.
+While CITE-seq analysis workflows such as 
+[CiteFuse](http://www.bioconductor.org/packages/release/bioc/vignettes/CiteFuse/inst/doc/CiteFuse.html) 
+should be consulted for more details, below we exemplify simple data 
+transformations in order to demonstrate how their output can be saved to 
+an H5MU file later on.
 
-Following the CiteFuse tutorial, we start with creating a `SingleCellExperiment` object with the three matrices:
+Following the CiteFuse tutorial, we start with creating a `SingleCellExperiment` 
+object with the three matrices:
 
 ```{r}
 sce_citeseq <- preprocessing(CITEseq_example)
@@ -87,23 +93,29 @@ sce_citeseq  # new assay: logcounts
 To the ADT modality, we will add an assay with normalised counts:
 
 ```{r}
-sce_citeseq <- CiteFuse::normaliseExprs(sce_citeseq, altExp_name = "ADT", transform = "log")
+sce_citeseq <- CiteFuse::normaliseExprs(
+  sce_citeseq, altExp_name = "ADT", transform = "log"
+)
 altExp(sce_citeseq, "ADT")  # new assay: logcounts
 ```
 
 We will also generate reduced dimensions:
 
 ```{r}
-sce_citeseq <- scater::runPCA(sce_citeseq, exprs_values = "logcounts", ncomponents = 20)
+sce_citeseq <- scater::runPCA(
+  sce_citeseq, exprs_values = "logcounts", ncomponents = 20
+)
 ```
 
 ```{r}
-scater::plotReducedDim(sce_citeseq, dimred = "PCA", by_exprs_values = "logcounts", colour_by = "CD27")
+scater::plotReducedDim(sce_citeseq, dimred = "PCA", 
+                       by_exprs_values = "logcounts", colour_by = "CD27")
 ```
 
 ## Making a MultiAssayExperiment object
 
-An appropriate structure for multimodal datasets is [`MultiAssayExperiment`](https://bioconductor.org/packages/MultiAssayExperiment/).
+An appropriate structure for multimodal datasets is 
+[`MultiAssayExperiment`](https://bioconductor.org/packages/MultiAssayExperiment/).
 
 We will make a respective MultiAssayExperiment object from `sce_citeseq`:
 
@@ -135,7 +147,8 @@ h5 <- rhdf5::H5Fopen("citefuse_example.h5mu")
 h5&'mod'
 ```
 
-... both assays for ADT — raw counts are stored in `X` and normalised counts are in the corresponding layer:
+... both assays for ADT — raw counts are stored in `X` and normalised counts 
+are in the corresponding layer:
 
 ```{r}
 h5&'mod'&'ADT'
