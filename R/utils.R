@@ -68,7 +68,7 @@ open_and_check_mudata <- function(filename) {
     H5Fopen(filename, flags="H5F_ACC_RDONLY", native=FALSE)
 }
 
-#' @importFrom rhdf5
+#' @importFrom rhdf5 h5ls H5Aexists H5Aopen H5Aread H5Aclose
 check_mod_order <- function(h5) {
     assays <- setNames(nm=h5ls(h5autoclose(h5 & "mod"), recursive=FALSE)$name)
     mod_order <- names(assays)
