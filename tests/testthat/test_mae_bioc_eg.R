@@ -7,12 +7,12 @@ fileh5mu <- paste0(file_temp(), ".h5mu")
 test_that("a model can be created from a simple MAE object", {
     # This is adapted from
     # https://www.bioconductor.org/packages/release/bioc/vignettes/MultiAssayExperiment/inst/doc/MultiAssayExperiment.html
-    
+
     # colData
     patient.data <- data.frame(sex=c("M", "F", "M", "F"),
         age=38:41,
         row.names=c("Jack", "Jill", "Bob", "Barbara"))
-    
+
     # assays
     arraydat <- matrix(seq(101, 108), ncol=4,
                        dimnames=list(c("ENST00000294241", "ENST00000355076"),
@@ -73,7 +73,7 @@ test_that("a model can be created from a simple MAE object", {
     # Writing
     outfile <- fileh5mu
     # Warning for: Ranged data is currently unsupported
-    expect_warning(WriteH5MU(myMultiAssay, outfile))
+    expect_warning(writeH5MU(myMultiAssay, outfile))
 
     # Read back
     h5 <- H5Fopen(outfile)
@@ -85,24 +85,24 @@ test_that("a model can be created from a simple MAE object", {
     H5Fclose(h5)
 
     # Check that the order of the assays is preserved
-    mdata <- ReadH5MU(outfile)
+    mdata <- readH5MU(outfile)
     assays <- names(assays(mdata))
     expect_equal(assays, assays_orig)
 })
 
 
 test_that("a MAE object can be created from an .h5mu file", {
-    mae <- ReadH5MU(fileh5mu)
+    mae <- readH5MU(fileh5mu)
     expect_equal(names(mae)[1], "Affy")
     expect_equal(length(reducedDims(mae[["Affy"]])), 1)
 })
 
 test_that("read/write DelayedArrays", {
-    mae <- ReadH5MU(fileh5mu)
-    mae_backed <- ReadH5MU(fileh5mu, backed=TRUE)
+    mae <- readH5MU(fileh5mu)
+    mae_backed <- readH5MU(fileh5mu, backed=TRUE)
     file2 <- paste0(file_temp(), ".h5mu")
-    WriteH5MU(mae_backed, file2)
-    mae2 <- ReadH5MU(file2)
+    writeH5MU(mae_backed, file2)
+    mae2 <- readH5MU(file2)
     for (i in 1:length(assays(mae))) {
         expect_equal(mae[[i]], mae2[[i]])
     }

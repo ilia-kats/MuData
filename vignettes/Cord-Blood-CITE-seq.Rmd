@@ -122,7 +122,7 @@ plotReducedDim(mae[["scADT"]], dimred = "PCA",
 We can write the contents of the MultiAssayExperiment object into an H5MU file:
 
 ```{r}
-WriteH5MU(mae, "cord_blood_citeseq.h5mu")
+writeH5MU(mae, "cord_blood_citeseq.h5mu")
 ```
 
 We can check that both modalities were written to the file, whether it was a 

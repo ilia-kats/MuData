@@ -1,8 +1,8 @@
 #' @param ... additional arguments.
-#' @rdname WriteH5AD
-setGeneric("WriteH5AD", function(object, file, overwrite=TRUE, ...) standardGeneric("WriteH5AD"), signature=c("object", "file"))
-#' @rdname WriteH5MU
-setGeneric("WriteH5MU", function(object, file, overwrite=TRUE) standardGeneric("WriteH5MU"), signature=c("object", "file"))
+#' @rdname writeH5AD
+setGeneric("writeH5AD", function(object, file, overwrite=TRUE, ...) standardGeneric("writeH5AD"), signature=c("object", "file"))
+#' @rdname writeH5MU
+setGeneric("writeH5MU", function(object, file, overwrite=TRUE) standardGeneric("writeH5MU"), signature=c("object", "file"))
 
 #' @importClassesFrom Matrix Matrix
 #' @importClassesFrom DelayedArray DelayedMatrix
@@ -10,8 +10,8 @@ setClassUnion("Matrix_OR_DelayedMatrix", c("matrix", "Matrix", "DelayedMatrix"))
 
 #' @importFrom rhdf5 H5Iget_type
 #' @param write_dimnames Whether to export colnames and rownames.
-#' @rdname WriteH5AD
-setMethod("WriteH5AD", c(object="Matrix_OR_DelayedMatrix", file="H5IdComponent"), function(object, file, overwrite, write_dimnames=TRUE) {
+#' @rdname writeH5AD
+setMethod("writeH5AD", c(object="Matrix_OR_DelayedMatrix", file="H5IdComponent"), function(object, file, overwrite, write_dimnames=TRUE) {
     if (!(H5Iget_type(file) %in% c("H5I_FILE", "H5I_GROUP")))
         stop("object must be a file or group")
     write_matrix(file, "X", object)
@@ -34,8 +34,8 @@ setMethod("WriteH5AD", c(object="Matrix_OR_DelayedMatrix", file="H5IdComponent")
 #' @importFrom SummarizedExperiment colData assays
 #' @importFrom methods hasMethod
 #' @importFrom SingleCellExperiment altExps
-#' @rdname WriteH5AD
-setMethod("WriteH5AD", c(object="SummarizedExperiment", file="H5IdComponent"), function(object, file, overwrite) {
+#' @rdname writeH5AD
+setMethod("writeH5AD", c(object="SummarizedExperiment", file="H5IdComponent"), function(object, file, overwrite) {
     if (!(H5Iget_type(file) %in% c("H5I_FILE", "H5I_GROUP")))
         stop("object must be a file or group")
     write_data_frame(file, "obs", colData(object))
@@ -52,7 +52,7 @@ setMethod("WriteH5AD", c(object="SummarizedExperiment", file="H5IdComponent"), f
         }, names(assays[2:nassays]), assays[2:nassays])
         H5Gclose(layersgrp)
     }
-    WriteH5AD(assays[[1]], file, overwrite, write_dimnames=FALSE)
+    writeH5AD(assays[[1]], file, overwrite, write_dimnames=FALSE)
 
     if (hasMethod("altExps", class(object))) {
         naltexps <- length(altExps(object))
@@ -62,17 +62,17 @@ setMethod("WriteH5AD", c(object="SummarizedExperiment", file="H5IdComponent"), f
     }
 })
 
-#' @rdname WriteH5AD
-setMethod("WriteH5AD", c(object="RangedSummarizedExperiment", file="H5IdComponent"), function(object, file, overwrite) {
+#' @rdname writeH5AD
+setMethod("writeH5AD", c(object="RangedSummarizedExperiment", file="H5IdComponent"), function(object, file, overwrite) {
     warning("Ranged data is currently unsupported. Coercing to SummarizedExperiment...")
-    WriteH5AD(as(object, "SummarizedExperiment"), file, overwrite)
+    writeH5AD(as(object, "SummarizedExperiment"), file, overwrite)
 })
 
 #' @importFrom rhdf5 H5Iget_type H5Gcreate H5Gclose
 #' @importFrom SingleCellExperiment rowData colData colPairNames colPair rowPairNames rowPair reducedDims
 #' @importFrom methods as
-#' @rdname WriteH5AD
-setMethod("WriteH5AD", c(object="SingleCellExperiment", file="H5IdComponent"), function(object, file, overwrite) {
+#' @rdname writeH5AD
+setMethod("writeH5AD", c(object="SingleCellExperiment", file="H5IdComponent"), function(object, file, overwrite) {
     if (!(H5Iget_type(file) %in% c("H5I_FILE", "H5I_GROUP")))
         stop("object must be a file or group")
 
@@ -105,11 +105,11 @@ setMethod("WriteH5AD", c(object="SingleCellExperiment", file="H5IdComponent"), f
             H5Gclose(pairgrp)
         }
     })
-    WriteH5AD(as(object, "SummarizedExperiment"), file, overwrite)
+    writeH5AD(as(object, "SummarizedExperiment"), file, overwrite)
 })
 
-#' @rdname WriteH5AD
-setMethod("WriteH5AD", c(object="ANY", file="H5IdComponent"), function(object, file, overwrite) {
+#' @rdname writeH5AD
+setMethod("writeH5AD", c(object="ANY", file="H5IdComponent"), function(object, file, overwrite) {
     warning("Objects of class ", class(object), " are currently unsupported, skipping...")
 })
 
@@ -126,13 +126,13 @@ setMethod("WriteH5AD", c(object="ANY", file="H5IdComponent"), function(object, f
 #'
 #' @examples
 #' data(miniACC, package="MultiAssayExperiment")
-#' WriteH5AD(miniACC[[1]], "miniacc.h5ad")
+#' writeH5AD(miniACC[[1]], "miniacc.h5ad")
 #'
-#' @rdname WriteH5AD
+#' @rdname writeH5AD
 #' @export
-setMethod("WriteH5AD", c(object="ANY", file="character"), function(object, file, overwrite) {
+setMethod("writeH5AD", c(object="ANY", file="character"), function(object, file, overwrite) {
     h5 <- open_h5(file)
-    WriteH5AD(object, h5, overwrite)
+    writeH5AD(object, h5, overwrite)
     finalize_anndata(h5)
     invisible(NULL)
 })
@@ -150,15 +150,15 @@ setMethod("WriteH5AD", c(object="ANY", file="character"), function(object, file,
 #'
 #' @examples
 #' data(miniACC, package="MultiAssayExperiment")
-#' WriteH5MU(miniACC, "miniacc.h5mu")
+#' writeH5MU(miniACC, "miniacc.h5mu")
 #'
-#' @rdname WriteH5MU
+#' @rdname writeH5MU
 #'
 #' @importFrom rhdf5 H5Gcreate H5Gclose h5writeDataset h5writeAttribute
 #' @importFrom MultiAssayExperiment colData experiments sampleMap
 #'
 #' @export
-setMethod("WriteH5MU", c(object="MultiAssayExperiment", file="character"), function(object, file, overwrite) {
+setMethod("writeH5MU", c(object="MultiAssayExperiment", file="character"), function(object, file, overwrite) {
     h5 <- open_h5(file)
 
     obs <- as.data.frame(colData(object), stringsAsFactors = FALSE)
@@ -171,7 +171,7 @@ setMethod("WriteH5MU", c(object="MultiAssayExperiment", file="character"), funct
     globalrownames <- rownames(obs)
     vars <- mapply(function(mname, mod) {
         mod_group <- H5Gcreate(mods, mname)
-        WriteH5AD(mod, mod_group)
+        writeH5AD(mod, mod_group)
         H5Gclose(mod_group)
 
         cmap <- samplemap[samplemap$assay == mname,]

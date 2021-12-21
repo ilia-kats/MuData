@@ -137,7 +137,7 @@ mae <- MultiAssayExperiment(experiments)
 We can write the contents of the MultiAssayExperiment object into an H5MU file:
 
 ```{r}
-WriteH5MU(mae, "citefuse_example.h5mu")
+writeH5MU(mae, "citefuse_example.h5mu")
 ```
 
 We can check that all the modalities were written to the file:

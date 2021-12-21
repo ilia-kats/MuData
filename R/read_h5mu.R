@@ -242,12 +242,12 @@ read_modality <- function(view, backed=FALSE) {
 #'
 #' @examples
 #' data(miniACC, package="MultiAssayExperiment")
-#' WriteH5AD(miniACC[[1]], "miniacc.h5ad")
-#' sce <- ReadH5AD("miniacc.h5ad")
+#' writeH5AD(miniACC[[1]], "miniacc.h5ad")
+#' sce <- readH5AD("miniacc.h5ad")
 #'
 #' @importFrom rhdf5 H5Fclose
 #' @export
-ReadH5AD <- function(file, backed=FALSE) {
+readH5AD <- function(file, backed=FALSE) {
     h5 <- H5Fopen(file, flags="H5F_ACC_RDONLY", native=FALSE)
     res <- read_modality(h5, backed)
     H5Fclose(h5)
@@ -267,8 +267,8 @@ ReadH5AD <- function(file, backed=FALSE) {
 #'
 #' @examples
 #' data(miniACC, package="MultiAssayExperiment")
-#' WriteH5MU(miniACC, "miniacc.h5mu")
-#' mae <- ReadH5MU("miniacc.h5mu")
+#' writeH5MU(miniACC, "miniacc.h5mu")
+#' mae <- readH5MU("miniacc.h5mu")
 #'
 #' @importFrom stats setNames
 #' @importFrom rhdf5 h5ls H5Fclose H5Lexists H5Dread H5Dclose
@@ -276,7 +276,7 @@ ReadH5AD <- function(file, backed=FALSE) {
 #' @importFrom MultiAssayExperiment MultiAssayExperiment
 #'
 #' @export
-ReadH5MU <- function(file, backed=FALSE) {
+readH5MU <- function(file, backed=FALSE) {
     # Connect to the the file
     h5 <- open_and_check_mudata(file)
 

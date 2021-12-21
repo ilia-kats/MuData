@@ -71,7 +71,7 @@ miniACC
 We will now write its contents into an H5MU file with `WriteH5MU`:
 
 ```{r}
-WriteH5MU(miniACC, "miniacc.h5mu")
+writeH5MU(miniACC, "miniacc.h5mu")
 ```
 
 ## Reading H5MU files
@@ -98,7 +98,7 @@ information than MAE, only some data will be read. For instance, MAE has no
 support for loading multimodal embeddings or pairwise graphs.
 
 ```{r}
-acc <- ReadH5MU("miniacc.h5mu")
+acc <- readH5MU("miniacc.h5mu")
 acc
 ```
 
@@ -122,7 +122,7 @@ It is possible to read H5MU files while keeping matrices (both `.X` and
 `.layers`) on disk.
 
 ```{r}
-acc_b <- ReadH5MU("miniacc.h5mu", backed = TRUE)
+acc_b <- readH5MU("miniacc.h5mu", backed = TRUE)
 assay(acc_b, "RNASeq2GeneNorm")[1:5,1:3]
 ```
 

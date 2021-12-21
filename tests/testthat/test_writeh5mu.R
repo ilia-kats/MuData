@@ -7,5 +7,5 @@ test_that("a MAE object with a single matrix can be written to H5MU", {
   rownames(colData(se)) <- paste("obs-", 1:ncol(se), sep = "")
   mae <- MultiAssayExperiment(list(x = se))
 
-  expect_error(WriteH5MU(mae, mae1_file), NA)
+  expect_error(writeH5MU(mae, mae1_file), NA)
 })
