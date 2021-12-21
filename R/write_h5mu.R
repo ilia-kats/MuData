@@ -8,6 +8,9 @@ setGeneric("writeH5MU", function(object, file, overwrite=TRUE) standardGeneric("
 #' @importClassesFrom DelayedArray DelayedMatrix
 setClassUnion("Matrix_OR_DelayedMatrix", c("matrix", "Matrix", "DelayedMatrix"))
 
+#' @importClassesFrom S4Vectors DataFrame
+setClassUnion("data.frame_OR_DataFrame", c("data.frame", "DataFrame"))
+
 #' @importFrom rhdf5 H5Iget_type
 #' @param write_dimnames Whether to export colnames and rownames.
 #' @rdname writeH5AD
@@ -32,6 +35,7 @@ setMethod("writeH5AD", c(object="Matrix_OR_DelayedMatrix", file="H5IdComponent")
 
 #' @importFrom rhdf5 H5Iget_type H5Gcreate H5Gclose
 #' @importFrom SummarizedExperiment colData assays
+#' @importFrom S4Vectors metadata
 #' @importFrom methods hasMethod
 #' @importFrom SingleCellExperiment altExps
 #' @rdname writeH5AD
@@ -53,6 +57,8 @@ setMethod("writeH5AD", c(object="SummarizedExperiment", file="H5IdComponent"), f
         H5Gclose(layersgrp)
     }
     writeH5AD(assays[[1]], file, overwrite, write_dimnames=FALSE)
+
+    writeList(file, "uns", metadata(object))
 
     if (hasMethod("altExps", class(object))) {
         naltexps <- length(altExps(object))
@@ -155,7 +161,7 @@ setMethod("writeH5AD", c(object="ANY", file="character"), function(object, file,
 #' @rdname writeH5MU
 #'
 #' @importFrom rhdf5 H5Gcreate H5Gclose h5writeDataset h5writeAttribute
-#' @importFrom MultiAssayExperiment colData experiments sampleMap
+#' @importFrom MultiAssayExperiment colData experiments sampleMap metadata
 #'
 #' @export
 setMethod("writeH5MU", c(object="MultiAssayExperiment", file="character"), function(object, file, overwrite) {
@@ -190,6 +196,8 @@ setMethod("writeH5MU", c(object="MultiAssayExperiment", file="character"), funct
 
     var <- do.call(rbind, vars)
     write_data_frame(h5, "var", var)
+
+    writeList(h5, "uns", metadata(object))
 
     finalize_mudata(h5)
     invisible(NULL)
@@ -360,11 +368,51 @@ guess_chunk <- function(shape, storage.mode) {
    as.integer(shape)
 }
 
-writeDataset <- function(parent, key, data) {
+#' @importFrom rhdf5 h5createDataset h5writeDataset
+writeDataset <- function(parent, key, data, scalar=FALSE) {
     shape <- dim(data)
     if (is.null(shape))
         shape <- length(data)
-    chunksize <- guess_chunk(shape, storage.mode(data))
-    h5createDataset(parent, key, shape, storage.mode=storage.mode(data), chunk=chunksize, level=9, shuffle=TRUE, encoding="UTF-8")
+    if (length(shape) == 1 && shape == 1 && scalar) {
+        shape <- chunksize <- NULL
+        level <- 0
+    } else {
+        chunksize <- guess_chunk(shape, storage.mode(data))
+        level <- 9
+    }
+    h5createDataset(parent, key, shape, storage.mode=storage.mode(data), chunk=chunksize, level=level, shuffle=TRUE, encoding="UTF-8")
     h5writeDataset(data, parent, key, variableLengthString=TRUE, encoding="UTF-8")
+}
+
+#' @importFrom rhdf5 H5Gcreate H5Gclose
+#' @importFrom methods slotNames slot
+write_elem <- function(parent, key, data) {
+    if (is(data, "list_OR_List"))
+        writeList(parent, key, data)
+    else if (is(data, "Matrix_OR_DelayedMatrix") || is(data, "vector_OR_Vector"))
+        writeDataset(parent, key, data, scalar=TRUE)
+    else if (is(data, "data.frame_OR_DataFrame"))
+        write_data_frame(parent, key, data)
+    else if (isS4(data)) {
+        grp <- H5Gcreate(parent, key)
+        for (slotnm in slotNames(data)) {
+            write_elem(grp, slotnm, slot(data, slotnm))
+        }
+        H5Gclose(grp)
+    } else
+        warning(paste("Cannot write object of class", class(data), "skipping..."))
+}
+
+#' @importFrom rhdf5 H5Gcreate H5Gclose
+writeList <- function(parent, key, data) {
+    if (length(data) > 0) {
+        nms <- names(data)
+        if (is.null(nms))
+            nms <- as.character(1:length(data))
+        grp <- H5Gcreate(parent, key)
+        mapply(function(name, data) {
+            write_elem(grp, name, data)
+        }, nms, data)
+        H5Gclose(grp)
+    }
 }

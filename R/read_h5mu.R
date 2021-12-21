@@ -149,19 +149,27 @@ read_matrix <- function(dataset, backed=FALSE) {
     }
 }
 
-#' @importFrom rhdf5 H5Aopen H5Aread H5Aclose
-read_group <- function(group) {
-    encattr <- H5Aopen(group, "encoding-type")
-    encoding <- H5Aread(encattr)
-    H5Aclose(encattr)
-    if (encoding == "dataframe") {
-        read_dataframe(group)
-    } else if (endsWith(encoding, "matrix")) {
-        read_sparse_matrix(group)
-    } else {
-        warning("Unknown encoding ", encoding)
-        invisible(NULL)
+#' @importFrom rhdf5 H5Aopen H5Aread H5Aclose H5Aexists h5ls
+#' @importFrom stats setNames
+read_group <- function(group, read_uns=FALSE) {
+    if (H5Aexists(group, "encoding-type")) {
+        encattr <- H5Aopen(group, "encoding-type")
+        encoding <- H5Aread(encattr)
+        H5Aclose(encattr)
+
+        if (encoding == "dataframe") {
+            return(read_dataframe(group))
+        } else if (endsWith(encoding, "matrix")) {
+            return(read_sparse_matrix(group))
+        } else {
+            warning("Unknown encoding ", encoding)
+            if (!read_uns)
+                return(invisible(NULL))
+        }
     }
+
+    objects <- h5ls(group, recursive=FALSE, datasetinfo=FALSE)$name
+    lapply(setNames(nm=objects), function(x)read_attribute(h5autoclose(group & x)))
 }
 
 #' @importFrom rhdf5 H5Iget_type H5Dread
@@ -178,7 +186,7 @@ read_attribute <- function(attr) {
 #' @importFrom S4Vectors SimpleList
 #' @importFrom SingleCellExperiment SingleCellExperiment
 #' @importMethodsFrom SingleCellExperiment colPair<- rowPair<-
-#' @importFrom SummarizedExperiment SummarizedExperiment
+#' @importFrom SummarizedExperiment SummarizedExperiment metadata<-
 #' @importFrom methods is
 read_modality <- function(view, backed=FALSE) {
     X <- read_matrix(h5autoclose(view & "X"), backed=backed)
@@ -225,6 +233,9 @@ read_modality <- function(view, backed=FALSE) {
             }
         }
     }
+
+    if ("uns" %in% viewnames)
+        metadata(se) <- read_group(h5autoclose(view & "uns"))
     se
 }
 
@@ -312,6 +323,9 @@ readH5MU <- function(file, backed=FALSE) {
         rownames(sampleMap) <- NULL
         args$sampleMap <- sampleMap
     }
+
+    if (H5Lexists(h5, "uns"))
+        args$metadata <- read_group(h5autoclose(h5 & "uns"))
 
     # Close the connection
     H5Fclose(h5)
