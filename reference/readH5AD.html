@@ -80,10 +80,8 @@ This requires the HDF5Array package to be installed.</p>
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">miniACC</span>, package<span class="op">=</span><span class="st">"MultiAssayExperiment"</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">WriteH5AD</span><span class="op">(</span><span class="va">miniACC</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>, <span class="st">"miniacc.h5ad"</span><span class="op">)</span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in WriteH5AD(miniACC[[1]], "miniacc.h5ad"):</span> could not find function "WriteH5AD"</span>
+<span class="r-in"><span class="fu"><a href="writeH5AD.html">writeH5AD</a></span><span class="op">(</span><span class="va">miniACC</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>, <span class="st">"miniacc.h5ad"</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">sce</span> <span class="op">&lt;-</span> <span class="fu">readH5AD</span><span class="op">(</span><span class="st">"miniacc.h5ad"</span><span class="op">)</span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in H5Fopen(file, flags = "H5F_ACC_RDONLY", native = FALSE):</span> HDF5. File accessibility. Unable to open file.</span>
 <span class="r-in"></span>
 </code></pre></div>
     </div>

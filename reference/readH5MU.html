@@ -80,11 +80,8 @@ This requires the HDF5Array package to be installed.</p>
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">miniACC</span>, package<span class="op">=</span><span class="st">"MultiAssayExperiment"</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">WriteH5MU</span><span class="op">(</span><span class="va">miniACC</span>, <span class="st">"miniacc.h5mu"</span><span class="op">)</span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in WriteH5MU(miniACC, "miniacc.h5mu"):</span> could not find function "WriteH5MU"</span>
+<span class="r-in"><span class="fu"><a href="writeH5MU.html">writeH5MU</a></span><span class="op">(</span><span class="va">miniACC</span>, <span class="st">"miniacc.h5mu"</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">mae</span> <span class="op">&lt;-</span> <span class="fu">readH5MU</span><span class="op">(</span><span class="st">"miniacc.h5mu"</span><span class="op">)</span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>cannot open file 'miniacc.h5mu': No such file or directory</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in file(con, "rb"):</span> cannot open the connection</span>
 <span class="r-in"></span>
 </code></pre></div>
     </div>
