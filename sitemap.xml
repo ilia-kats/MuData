@@ -22,18 +22,18 @@
     <loc>/index.html</loc>
   </url>
   <url>
-    <loc>/reference/ReadH5AD.html</loc>
-  </url>
-  <url>
-    <loc>/reference/ReadH5MU.html</loc>
-  </url>
-  <url>
-    <loc>/reference/WriteH5AD.html</loc>
-  </url>
-  <url>
-    <loc>/reference/WriteH5MU.html</loc>
-  </url>
-  <url>
     <loc>/reference/index.html</loc>
+  </url>
+  <url>
+    <loc>/reference/readH5AD.html</loc>
+  </url>
+  <url>
+    <loc>/reference/readH5MU.html</loc>
+  </url>
+  <url>
+    <loc>/reference/writeH5AD.html</loc>
+  </url>
+  <url>
+    <loc>/reference/writeH5MU.html</loc>
   </url>
 </urlset>
