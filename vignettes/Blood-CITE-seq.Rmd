@@ -144,21 +144,23 @@ We can check that all the modalities were written to the file:
 
 ```{r}
 h5 <- rhdf5::H5Fopen("citefuse_example.h5mu")
-h5&'mod'
+h5ls(H5Gopen(h5, "mod"), recursive = FALSE)
 ```
 
 ... both assays for ADT — raw counts are stored in `X` and normalised counts 
 are in the corresponding layer:
 
 ```{r}
-h5&'mod'&'ADT'
-h5&'mod'&'ADT'&'layers'
+h5ls(H5Gopen(h5, "mod/ADT"), FALSE)
+h5ls(H5Gopen(h5, "mod/ADT/layers"), FALSE)
 ```
 
 ... as well as reduced dimensions (PCA):
 
 ```{r}
-h5&'mod'&'RNA'&'obsm'
+h5ls(H5Gopen(h5, "mod/RNA/obsm"), FALSE)
+# There is an alternative way to access groups:
+# h5&'mod'&'RNA'&'obsm'
 rhdf5::H5close()
 ```
 
