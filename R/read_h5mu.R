@@ -110,8 +110,7 @@ read_matrix <- function(dataset, backed=FALSE) {
     if (backed) {
         have_delayedarray <- requireNamespace("HDF5Array", quietly=TRUE)
         if (!have_delayedarray) {
-            warning("Could not load the HDF5Array package. HDF5Array is required for backed matrices. Loading matrix into memory...")
-            backed <- FALSE
+            stop("Could not load the HDF5Array package. HDF5Array is required for backed matrices.")
         }
     }
 
