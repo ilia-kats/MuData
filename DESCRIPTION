@@ -19,12 +19,11 @@ URL: https://github.com/ilia-kats/MuData
 BugReports: https://github.com/ilia-kats/MuData/issues
 Imports: methods,
          stats,
-         rhdf5,
          MultiAssayExperiment,
          SingleCellExperiment,
          SummarizedExperiment,
          DelayedArray
-Depends: Matrix, S4Vectors
+Depends: Matrix, S4Vectors, rhdf5
 Suggests:
     HDF5Array,
     rmarkdown,
