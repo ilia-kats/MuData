@@ -1,6 +1,6 @@
 Package: MuData
 Title: Serialization for MultiAssayExperiment Objects
-Version: 0.99.4
+Version: 0.99.5
 Authors@R:
     c(person(given = "Danila",
            family = "Bredikhin",
@@ -22,8 +22,9 @@ Imports: methods,
          MultiAssayExperiment,
          SingleCellExperiment,
          SummarizedExperiment,
-         DelayedArray
-Depends: Matrix, S4Vectors, rhdf5
+         DelayedArray,
+	 rhdf5
+Depends: Matrix, S4Vectors
 Suggests:
     HDF5Array,
     rmarkdown,
