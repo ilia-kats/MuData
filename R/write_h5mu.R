@@ -408,7 +408,7 @@ writeList <- function(parent, key, data) {
     if (length(data) > 0) {
         nms <- names(data)
         if (is.null(nms))
-            nms <- as.character(1:length(data))
+            nms <- as.character(seq_along(data))
         grp <- H5Gcreate(parent, key)
         mapply(function(name, data) {
             write_elem(grp, name, data)

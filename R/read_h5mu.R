@@ -24,14 +24,15 @@ read_dataframe <- function(group) {
             attr <- H5Aopen(col, "categories")
             labels <- H5Aread(attr)
             if (!is(labels, "H5Ref")) {
-                warning("found categories attribute for column ", name, ", but it is not a reference")
+                warning("found categories attribute for column ", 
+                        name, ", but it is not a reference")
             } else {
                 labels <- H5Rdereference(labels, h5loc=col)
-	        labels_items <- H5Dread(labels)
-		n_labels <- length(unique(values))
-		if (length(labels_items) > n_labels) {
-			labels_items <- labels_items[seq_len(n_labels)]
-		}
+                labels_items <- H5Dread(labels)
+                n_labels <- length(unique(values))
+                if (length(labels_items) > n_labels) {
+                    labels_items <- labels_items[seq_len(n_labels)]
+                }
                 values <- factor(as.integer(values), labels=labels_items)
                 H5Dclose(labels)
             }
@@ -73,7 +74,8 @@ read_with_index <- function(dataset) {
         encoding <- H5Aread(encattr, "encoding-type")
         H5Aclose(encattr)
         if (encoding != "dataframe") {
-            warning("Unknown encoding ", encoding, " when attempting to read data frame")
+            warning("Unknown encoding ", encoding, 
+                    " when attempting to read data frame")
             return(data.frame())
         }
         read_dataframe(dataset)
