@@ -219,7 +219,23 @@ read_modality <- function(view, backed=FALSE) {
         args$reducedDims <- obsm
     }
 
-    se <- do.call(SingleCellExperiment, args)
+    objectclass <- NULL
+    if (H5Aexists(view, "origin-class")) {
+        originattr <- H5Aopen(view, "origin-class")
+        objectclass <- H5Aread(originattr)
+        H5Aclose(originattr)
+
+	if (objectclass == "SummarizedExperiment") {
+		se <- do.call(SummarizedExperiment, args)
+	} else {
+		if (objectclass != "SingleCellExperiment") {
+            		message("Reading as SingleCellExperiment where the original object class is ", objectclass)
+		}
+		se <- do.call(SingleCellExperiment, args)
+	}
+    }
+    if (is.null(objectclass))
+	se <- do.call(SingleCellExperiment, args)
 
     for (cp in list(list(name="obsp", setter=`colPair<-`), list(name="varp", setter=`rowPair<-`))) {
         if (cp$name %in% viewnames) {

@@ -30,6 +30,7 @@ setMethod("writeH5AD", c(object="Matrix_OR_DelayedMatrix", file="H5IdComponent")
         write_data_frame(file, "obs", obs)
         write_data_frame(file, "var", var)
     }
+    write_object_class(file, class(object)[1])
     finalize_anndata_internal(file)
 })
 
@@ -57,6 +58,7 @@ setMethod("writeH5AD", c(object="SummarizedExperiment", file="H5IdComponent"), f
         H5Gclose(layersgrp)
     }
     writeH5AD(assays[[1]], file, overwrite, write_dimnames=FALSE)
+    write_object_class(file, class(object)[1])
 
     writeList(file, "uns", metadata(object))
 
@@ -112,6 +114,7 @@ setMethod("writeH5AD", c(object="SingleCellExperiment", file="H5IdComponent"), f
         }
     })
     writeH5AD(as(object, "SummarizedExperiment"), file, overwrite)
+    write_object_class(file, class(object)[1])
 })
 
 #' @rdname writeH5AD
@@ -139,6 +142,7 @@ setMethod("writeH5AD", c(object="ANY", file="H5IdComponent"), function(object, f
 setMethod("writeH5AD", c(object="ANY", file="character"), function(object, file, overwrite) {
     h5 <- open_h5(file)
     writeH5AD(object, h5, overwrite)
+    write_object_class(h5, class(object)[1])
     finalize_anndata(h5)
     invisible(NULL)
 })
@@ -199,6 +203,7 @@ setMethod("writeH5MU", c(object="MultiAssayExperiment", file="character"), funct
 
     writeList(h5, "uns", metadata(object))
 
+    write_object_class(h5, class(object)[1])
     finalize_mudata(h5)
     invisible(NULL)
 })

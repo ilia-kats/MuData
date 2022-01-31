@@ -46,6 +46,11 @@ finalize_anndata_internal <- function(h5) {
     h5writeAttribute(.version, h5, "encoder-version", variableLengthString=TRUE, asScalar=TRUE)
 }
 
+#' @importFrom rhdf5 h5writeAttribute
+write_object_class <- function(h5, objectclass) {
+    h5writeAttribute(objectclass, h5, "origin-class", variableLengthString=TRUE, asScalar=TRUE)
+}
+
 #' @importFrom rhdf5 H5Fget_name H5Fclose
 finalize_anndata <- function(h5) {
     filename <- H5Fget_name(h5)

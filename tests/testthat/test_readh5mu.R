@@ -16,6 +16,10 @@ test_that("a MAE object written to H5MU can be read", {
   expect_error(mae_ <- readH5MU(mae1_file), NA)
   # backed
   expect_error(mae_b <- readH5MU(mae1_file, backed = TRUE), NA)
+
+  # Modality class is recovered
+  expect_equal(class(mae_[[1]])[1], class(se)[1])
+  expect_equal(class(mae_b[[1]])[1], class(se)[1])
 })
 
 test_that("a SE object written to H5AD can be read", {
@@ -40,6 +44,10 @@ test_that("a SE object written to H5AD can be read", {
   # Simple metadata is recovered
   expect_equal(metadata(se_)$origin, "SummarizedExperiment")
   expect_equal(metadata(se_b)$origin, "SummarizedExperiment")
+
+  # Object class is recovered
+  expect_equal(class(se_)[1], class(se)[1])
+  expect_equal(class(se_b)[1], class(se)[1])
 })
 
 test_that("a SE object with a sparse matrix written to H5AD can be read", {
