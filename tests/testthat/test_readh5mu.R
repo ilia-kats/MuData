@@ -20,6 +20,10 @@ test_that("a MAE object written to H5MU can be read", {
   # Modality class is recovered
   expect_equal(class(mae_[[1]])[1], class(se)[1])
   expect_equal(class(mae_b[[1]])[1], class(se)[1])
+
+  # MAE class is also recovered
+  expect_equal(class(mae_)[1], class(mae)[1])
+  expect_equal(class(mae_b)[1], class(mae)[1])
 })
 
 test_that("a SE object written to H5AD can be read", {

@@ -219,7 +219,6 @@ read_modality <- function(view, backed=FALSE) {
         args$reducedDims <- obsm
     }
 
-    objectclass <- NULL
     if (H5Aexists(view, "origin-class")) {
         originattr <- H5Aopen(view, "origin-class")
         objectclass <- H5Aread(originattr)
@@ -233,9 +232,9 @@ read_modality <- function(view, backed=FALSE) {
 		}
 		se <- do.call(SingleCellExperiment, args)
 	}
-    }
-    if (is.null(objectclass))
+    } else {
 	se <- do.call(SingleCellExperiment, args)
+    }
 
     for (cp in list(list(name="obsp", setter=`colPair<-`), list(name="varp", setter=`rowPair<-`))) {
         if (cp$name %in% viewnames) {
