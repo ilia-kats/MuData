@@ -41,7 +41,8 @@ writeH5AD <- function(object, file, overwrite) {
         warning("Ranged data is currently unsupported. Coercing to SummarizedExperiment...")
         object <- as(object, "SummarizedExperiment")
     }
-    if (is(object, "SingleCellExperiiment")) {
+        browser()
+    if (is(object, "SingleCellExperiment")) {
         write_data_frame(file, "var", rowData(object))
         obsm <- reducedDims(object)
         if (length(obsm) > 0) {
@@ -103,18 +104,16 @@ writeH5AD <- function(object, file, overwrite) {
     }
     if (is(object, "Matrix_OR_DelayedMatrix")) {
         write_matrix(file, "X", object)
-        if (write_dimnames) {
-            rownames <- rownames(object)
-            colnames <- colnames(object)
-            if (is.null(rownames))
-                rownames <- as.character(seq_len(nrow(object)))
-            if (is.null(colnames))
-                colnames <- as.character(seq_len(ncol(object)))
-            var <- data.frame(row.names=rownames)
-            obs <- data.frame(row.names=colnames)
-            write_data_frame(file, "obs", obs)
-            write_data_frame(file, "var", var)
-        }
+        rownames <- rownames(object)
+        colnames <- colnames(object)
+        if (is.null(rownames))
+            rownames <- as.character(seq_len(nrow(object)))
+        if (is.null(colnames))
+            colnames <- as.character(seq_len(ncol(object)))
+        var <- data.frame(row.names=rownames)
+        obs <- data.frame(row.names=colnames)
+        write_data_frame(file, "obs", obs)
+        write_data_frame(file, "var", var)
         written_object <- TRUE
     }
 
