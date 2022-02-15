@@ -41,7 +41,6 @@ writeH5AD <- function(object, file, overwrite) {
         warning("Ranged data is currently unsupported. Coercing to SummarizedExperiment...")
         object <- as(object, "SummarizedExperiment")
     }
-        browser()
     if (is(object, "SingleCellExperiment")) {
         write_data_frame(file, "var", rowData(object))
         obsm <- reducedDims(object)
