@@ -79,7 +79,7 @@
       German Cancer Research Center, Heidelberg, Germany<br><a class="author_email" href="mailto:#"></a><a href="mailto:i.kats@dkfz-heidelberg.de" class="email">i.kats@dkfz-heidelberg.de</a>
       </address>
                   
-            <h4 data-toc-skip class="date">2022-02-08</h4>
+            <h4 data-toc-skip class="date">2022-02-15</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/ilia-kats/MuData/blob/HEAD/vignettes/Cord-Blood-CITE-seq.Rmd" class="external-link"><code>vignettes/Cord-Blood-CITE-seq.Rmd</code></a></small>
       <div class="d-none name"><code>Cord-Blood-CITE-seq.Rmd</code></div>
@@ -177,7 +177,10 @@
 <span class="co">#&gt; singular values/vectors requested than available</span>
 <span class="co">#&gt; Warning in (function (A, nv = 5, nu = nv, maxit = 1000, work = nv + 7, reorth =</span>
 <span class="co">#&gt; TRUE, : You're computing too large a percentage of total singular values, use a</span>
-<span class="co">#&gt; standard svd instead.</span></code></pre></div>
+<span class="co">#&gt; standard svd instead.</span>
+<span class="co">#&gt; Warning in (function (A, nv = 5, nu = nv, maxit = 1000, work = nv + 7, reorth</span>
+<span class="co">#&gt; = TRUE, : did not converge--results might be invalid!; try increasing work or</span>
+<span class="co">#&gt; maxit</span></code></pre></div>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/scater/man/plotReducedDim.html" class="external-link">plotReducedDim</a></span><span class="op">(</span><span class="va">mae</span><span class="op">[[</span><span class="st">"scADT"</span><span class="op">]</span><span class="op">]</span>, dimred <span class="op">=</span> <span class="st">"PCA"</span>,
                by_exprs_values <span class="op">=</span> <span class="st">"clr"</span>, colour_by <span class="op">=</span> <span class="st">"CD3"</span><span class="op">)</span></code></pre></div>
@@ -192,7 +195,263 @@
 </h2>
 <p>We can write the contents of the MultiAssayExperiment object into an H5MU file:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/writeH5MU.html">writeH5MU</a></span><span class="op">(</span><span class="va">mae</span>, <span class="st">"cord_blood_citeseq.h5mu"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="../reference/writeH5MU.html">writeH5MU</a></span><span class="op">(</span><span class="va">mae</span>, <span class="st">"cord_blood_citeseq.h5mu"</span><span class="op">)</span>
+<span class="co">#&gt; Called from: writeH5AD(mod, mod_group)</span>
+<span class="co">#&gt; debug: if (is(object, "SingleCellExperiment")) {</span>
+<span class="co">#&gt;     write_data_frame(file, "var", rowData(object))</span>
+<span class="co">#&gt;     obsm &lt;- reducedDims(object)</span>
+<span class="co">#&gt;     if (length(obsm) &gt; 0) {</span>
+<span class="co">#&gt;         obsmgrp &lt;- H5Gcreate(file, "obsm")</span>
+<span class="co">#&gt;         mapply(function(name, data) {</span>
+<span class="co">#&gt;             if (is.data.frame(data)) {</span>
+<span class="co">#&gt;                 rownames(data) &lt;- rownames(colData(object))</span>
+<span class="co">#&gt;                 write_data_frame(obsmgrp, name, data)</span>
+<span class="co">#&gt;             }</span>
+<span class="co">#&gt;             else {</span>
+<span class="co">#&gt;                 if (length(dim(data)) == 1) </span>
+<span class="co">#&gt;                   data &lt;- as.vector(data)</span>
+<span class="co">#&gt;                 else data &lt;- t(data)</span>
+<span class="co">#&gt;                 write_matrix(obsmgrp, name, data)</span>
+<span class="co">#&gt;             }</span>
+<span class="co">#&gt;         }, names(obsm), obsm)</span>
+<span class="co">#&gt;         H5Gclose(obsmgrp)</span>
+<span class="co">#&gt;     }</span>
+<span class="co">#&gt;     lapply(list(list(name = "obsp", names = colPairNames, getter = colPair), </span>
+<span class="co">#&gt;         list(name = "varp", names = rowPairNames, getter = rowPair)), </span>
+<span class="co">#&gt;         function(cp) {</span>
+<span class="co">#&gt;             names &lt;- cp$names(object)</span>
+<span class="co">#&gt;             if (length(names) &gt; 0) {</span>
+<span class="co">#&gt;                 pairgrp &lt;- H5Gcreate(file, cp$name)</span>
+<span class="co">#&gt;                 lapply(names, function(cname) {</span>
+<span class="co">#&gt;                   write_matrix(pairgrp, cname, cp$getter(object, </span>
+<span class="co">#&gt;                     cname, asSparse = TRUE))</span>
+<span class="co">#&gt;                 })</span>
+<span class="co">#&gt;                 H5Gclose(pairgrp)</span>
+<span class="co">#&gt;             }</span>
+<span class="co">#&gt;         })</span>
+<span class="co">#&gt;     object &lt;- as(object, "SummarizedExperiment")</span>
+<span class="co">#&gt;     written_object &lt;- TRUE</span>
+<span class="co">#&gt; }</span>
+<span class="co">#&gt; debug: write_data_frame(file, "var", rowData(object))</span>
+<span class="co">#&gt; debug: obsm &lt;- reducedDims(object)</span>
+<span class="co">#&gt; debug: if (length(obsm) &gt; 0) {</span>
+<span class="co">#&gt;     obsmgrp &lt;- H5Gcreate(file, "obsm")</span>
+<span class="co">#&gt;     mapply(function(name, data) {</span>
+<span class="co">#&gt;         if (is.data.frame(data)) {</span>
+<span class="co">#&gt;             rownames(data) &lt;- rownames(colData(object))</span>
+<span class="co">#&gt;             write_data_frame(obsmgrp, name, data)</span>
+<span class="co">#&gt;         }</span>
+<span class="co">#&gt;         else {</span>
+<span class="co">#&gt;             if (length(dim(data)) == 1) </span>
+<span class="co">#&gt;                 data &lt;- as.vector(data)</span>
+<span class="co">#&gt;             else data &lt;- t(data)</span>
+<span class="co">#&gt;             write_matrix(obsmgrp, name, data)</span>
+<span class="co">#&gt;         }</span>
+<span class="co">#&gt;     }, names(obsm), obsm)</span>
+<span class="co">#&gt;     H5Gclose(obsmgrp)</span>
+<span class="co">#&gt; }</span>
+<span class="co">#&gt; debug: obsmgrp &lt;- H5Gcreate(file, "obsm")</span>
+<span class="co">#&gt; debug: mapply(function(name, data) {</span>
+<span class="co">#&gt;     if (is.data.frame(data)) {</span>
+<span class="co">#&gt;         rownames(data) &lt;- rownames(colData(object))</span>
+<span class="co">#&gt;         write_data_frame(obsmgrp, name, data)</span>
+<span class="co">#&gt;     }</span>
+<span class="co">#&gt;     else {</span>
+<span class="co">#&gt;         if (length(dim(data)) == 1) </span>
+<span class="co">#&gt;             data &lt;- as.vector(data)</span>
+<span class="co">#&gt;         else data &lt;- t(data)</span>
+<span class="co">#&gt;         write_matrix(obsmgrp, name, data)</span>
+<span class="co">#&gt;     }</span>
+<span class="co">#&gt; }, names(obsm), obsm)</span>
+<span class="co">#&gt; debug: H5Gclose(obsmgrp)</span>
+<span class="co">#&gt; debug: lapply(list(list(name = "obsp", names = colPairNames, getter = colPair), </span>
+<span class="co">#&gt;     list(name = "varp", names = rowPairNames, getter = rowPair)), </span>
+<span class="co">#&gt;     function(cp) {</span>
+<span class="co">#&gt;         names &lt;- cp$names(object)</span>
+<span class="co">#&gt;         if (length(names) &gt; 0) {</span>
+<span class="co">#&gt;             pairgrp &lt;- H5Gcreate(file, cp$name)</span>
+<span class="co">#&gt;             lapply(names, function(cname) {</span>
+<span class="co">#&gt;                 write_matrix(pairgrp, cname, cp$getter(object, </span>
+<span class="co">#&gt;                   cname, asSparse = TRUE))</span>
+<span class="co">#&gt;             })</span>
+<span class="co">#&gt;             H5Gclose(pairgrp)</span>
+<span class="co">#&gt;         }</span>
+<span class="co">#&gt;     })</span>
+<span class="co">#&gt; debug: object &lt;- as(object, "SummarizedExperiment")</span>
+<span class="co">#&gt; debug: written_object &lt;- TRUE</span>
+<span class="co">#&gt; debug: if (is(object, "SummarizedExperiment")) {</span>
+<span class="co">#&gt;     write_data_frame(file, "obs", colData(object))</span>
+<span class="co">#&gt;     rdata &lt;- rowData(object)</span>
+<span class="co">#&gt;     if (ncol(rdata) &gt; 0 || !is.null(rownames(rdata))) </span>
+<span class="co">#&gt;         write_data_frame(file, "var", rdata)</span>
+<span class="co">#&gt;     assays &lt;- assays(object)</span>
+<span class="co">#&gt;     nassays &lt;- length(assays)</span>
+<span class="co">#&gt;     write_matrix(file, "X", assays[[1]])</span>
+<span class="co">#&gt;     if (nassays &gt; 1) {</span>
+<span class="co">#&gt;         layersgrp &lt;- H5Gcreate(file, "layers")</span>
+<span class="co">#&gt;         mapply(function(name, mat) {</span>
+<span class="co">#&gt;             write_matrix(layersgrp, name, mat)</span>
+<span class="co">#&gt;         }, names(assays[2:nassays]), assays[2:nassays])</span>
+<span class="co">#&gt;         H5Gclose(layersgrp)</span>
+<span class="co">#&gt;     }</span>
+<span class="co">#&gt;     writeList(file, "uns", metadata(object))</span>
+<span class="co">#&gt;     if (hasMethod("altExps", class(object))) {</span>
+<span class="co">#&gt;         naltexps &lt;- length(altExps(object))</span>
+<span class="co">#&gt;         if (naltexps &gt; 1) {</span>
+<span class="co">#&gt;             warning("Alternative experiments are currently unsupported. Construct a MultiAssayExperiment object or write them as individual H5AD files.")</span>
+<span class="co">#&gt;         }</span>
+<span class="co">#&gt;     }</span>
+<span class="co">#&gt;     written_object &lt;- TRUE</span>
+<span class="co">#&gt; }</span>
+<span class="co">#&gt; debug: write_data_frame(file, "obs", colData(object))</span>
+<span class="co">#&gt; debug: rdata &lt;- rowData(object)</span>
+<span class="co">#&gt; debug: if (ncol(rdata) &gt; 0 || !is.null(rownames(rdata))) write_data_frame(file, </span>
+<span class="co">#&gt;     "var", rdata)</span>
+<span class="co">#&gt; debug: assays &lt;- assays(object)</span>
+<span class="co">#&gt; debug: nassays &lt;- length(assays)</span>
+<span class="co">#&gt; debug: write_matrix(file, "X", assays[[1]])</span>
+<span class="co">#&gt; debug: if (nassays &gt; 1) {</span>
+<span class="co">#&gt;     layersgrp &lt;- H5Gcreate(file, "layers")</span>
+<span class="co">#&gt;     mapply(function(name, mat) {</span>
+<span class="co">#&gt;         write_matrix(layersgrp, name, mat)</span>
+<span class="co">#&gt;     }, names(assays[2:nassays]), assays[2:nassays])</span>
+<span class="co">#&gt;     H5Gclose(layersgrp)</span>
+<span class="co">#&gt; }</span>
+<span class="co">#&gt; debug: layersgrp &lt;- H5Gcreate(file, "layers")</span>
+<span class="co">#&gt; debug: mapply(function(name, mat) {</span>
+<span class="co">#&gt;     write_matrix(layersgrp, name, mat)</span>
+<span class="co">#&gt; }, names(assays[2:nassays]), assays[2:nassays])</span>
+<span class="co">#&gt; debug: H5Gclose(layersgrp)</span>
+<span class="co">#&gt; debug: writeList(file, "uns", metadata(object))</span>
+<span class="co">#&gt; debug: if (hasMethod("altExps", class(object))) {</span>
+<span class="co">#&gt;     naltexps &lt;- length(altExps(object))</span>
+<span class="co">#&gt;     if (naltexps &gt; 1) {</span>
+<span class="co">#&gt;         warning("Alternative experiments are currently unsupported. Construct a MultiAssayExperiment object or write them as individual H5AD files.")</span>
+<span class="co">#&gt;     }</span>
+<span class="co">#&gt; }</span>
+<span class="co">#&gt; debug: written_object &lt;- TRUE</span>
+<span class="co">#&gt; debug: if (is(object, "Matrix_OR_DelayedMatrix")) {</span>
+<span class="co">#&gt;     write_matrix(file, "X", object)</span>
+<span class="co">#&gt;     rownames &lt;- rownames(object)</span>
+<span class="co">#&gt;     colnames &lt;- colnames(object)</span>
+<span class="co">#&gt;     if (is.null(rownames)) </span>
+<span class="co">#&gt;         rownames &lt;- as.character(seq_len(nrow(object)))</span>
+<span class="co">#&gt;     if (is.null(colnames)) </span>
+<span class="co">#&gt;         colnames &lt;- as.character(seq_len(ncol(object)))</span>
+<span class="co">#&gt;     var &lt;- data.frame(row.names = rownames)</span>
+<span class="co">#&gt;     obs &lt;- data.frame(row.names = colnames)</span>
+<span class="co">#&gt;     write_data_frame(file, "obs", obs)</span>
+<span class="co">#&gt;     write_data_frame(file, "var", var)</span>
+<span class="co">#&gt;     written_object &lt;- TRUE</span>
+<span class="co">#&gt; }</span>
+<span class="co">#&gt; debug: if (!written_object) {</span>
+<span class="co">#&gt;     warning("Objects of class ", class(object), " are currently unsupported, skipping...")</span>
+<span class="co">#&gt; } else {</span>
+<span class="co">#&gt;     write_object_class(file, cls[1])</span>
+<span class="co">#&gt;     finalize_anndata_internal(file)</span>
+<span class="co">#&gt;     if (need_finalize) </span>
+<span class="co">#&gt;         finalize_anndata(file)</span>
+<span class="co">#&gt; }</span>
+<span class="co">#&gt; debug: write_object_class(file, cls[1])</span>
+<span class="co">#&gt; debug: finalize_anndata_internal(file)</span>
+<span class="co">#&gt; debug: if (need_finalize) finalize_anndata(file)</span>
+<span class="co">#&gt; debug: invisible(NULL)</span>
+<span class="co">#&gt; Called from: writeH5AD(mod, mod_group)</span>
+<span class="co">#&gt; debug: if (is(object, "SingleCellExperiment")) {</span>
+<span class="co">#&gt;     write_data_frame(file, "var", rowData(object))</span>
+<span class="co">#&gt;     obsm &lt;- reducedDims(object)</span>
+<span class="co">#&gt;     if (length(obsm) &gt; 0) {</span>
+<span class="co">#&gt;         obsmgrp &lt;- H5Gcreate(file, "obsm")</span>
+<span class="co">#&gt;         mapply(function(name, data) {</span>
+<span class="co">#&gt;             if (is.data.frame(data)) {</span>
+<span class="co">#&gt;                 rownames(data) &lt;- rownames(colData(object))</span>
+<span class="co">#&gt;                 write_data_frame(obsmgrp, name, data)</span>
+<span class="co">#&gt;             }</span>
+<span class="co">#&gt;             else {</span>
+<span class="co">#&gt;                 if (length(dim(data)) == 1) </span>
+<span class="co">#&gt;                   data &lt;- as.vector(data)</span>
+<span class="co">#&gt;                 else data &lt;- t(data)</span>
+<span class="co">#&gt;                 write_matrix(obsmgrp, name, data)</span>
+<span class="co">#&gt;             }</span>
+<span class="co">#&gt;         }, names(obsm), obsm)</span>
+<span class="co">#&gt;         H5Gclose(obsmgrp)</span>
+<span class="co">#&gt;     }</span>
+<span class="co">#&gt;     lapply(list(list(name = "obsp", names = colPairNames, getter = colPair), </span>
+<span class="co">#&gt;         list(name = "varp", names = rowPairNames, getter = rowPair)), </span>
+<span class="co">#&gt;         function(cp) {</span>
+<span class="co">#&gt;             names &lt;- cp$names(object)</span>
+<span class="co">#&gt;             if (length(names) &gt; 0) {</span>
+<span class="co">#&gt;                 pairgrp &lt;- H5Gcreate(file, cp$name)</span>
+<span class="co">#&gt;                 lapply(names, function(cname) {</span>
+<span class="co">#&gt;                   write_matrix(pairgrp, cname, cp$getter(object, </span>
+<span class="co">#&gt;                     cname, asSparse = TRUE))</span>
+<span class="co">#&gt;                 })</span>
+<span class="co">#&gt;                 H5Gclose(pairgrp)</span>
+<span class="co">#&gt;             }</span>
+<span class="co">#&gt;         })</span>
+<span class="co">#&gt;     object &lt;- as(object, "SummarizedExperiment")</span>
+<span class="co">#&gt;     written_object &lt;- TRUE</span>
+<span class="co">#&gt; }</span>
+<span class="co">#&gt; debug: if (is(object, "SummarizedExperiment")) {</span>
+<span class="co">#&gt;     write_data_frame(file, "obs", colData(object))</span>
+<span class="co">#&gt;     rdata &lt;- rowData(object)</span>
+<span class="co">#&gt;     if (ncol(rdata) &gt; 0 || !is.null(rownames(rdata))) </span>
+<span class="co">#&gt;         write_data_frame(file, "var", rdata)</span>
+<span class="co">#&gt;     assays &lt;- assays(object)</span>
+<span class="co">#&gt;     nassays &lt;- length(assays)</span>
+<span class="co">#&gt;     write_matrix(file, "X", assays[[1]])</span>
+<span class="co">#&gt;     if (nassays &gt; 1) {</span>
+<span class="co">#&gt;         layersgrp &lt;- H5Gcreate(file, "layers")</span>
+<span class="co">#&gt;         mapply(function(name, mat) {</span>
+<span class="co">#&gt;             write_matrix(layersgrp, name, mat)</span>
+<span class="co">#&gt;         }, names(assays[2:nassays]), assays[2:nassays])</span>
+<span class="co">#&gt;         H5Gclose(layersgrp)</span>
+<span class="co">#&gt;     }</span>
+<span class="co">#&gt;     writeList(file, "uns", metadata(object))</span>
+<span class="co">#&gt;     if (hasMethod("altExps", class(object))) {</span>
+<span class="co">#&gt;         naltexps &lt;- length(altExps(object))</span>
+<span class="co">#&gt;         if (naltexps &gt; 1) {</span>
+<span class="co">#&gt;             warning("Alternative experiments are currently unsupported. Construct a MultiAssayExperiment object or write them as individual H5AD files.")</span>
+<span class="co">#&gt;         }</span>
+<span class="co">#&gt;     }</span>
+<span class="co">#&gt;     written_object &lt;- TRUE</span>
+<span class="co">#&gt; }</span>
+<span class="co">#&gt; debug: if (is(object, "Matrix_OR_DelayedMatrix")) {</span>
+<span class="co">#&gt;     write_matrix(file, "X", object)</span>
+<span class="co">#&gt;     rownames &lt;- rownames(object)</span>
+<span class="co">#&gt;     colnames &lt;- colnames(object)</span>
+<span class="co">#&gt;     if (is.null(rownames)) </span>
+<span class="co">#&gt;         rownames &lt;- as.character(seq_len(nrow(object)))</span>
+<span class="co">#&gt;     if (is.null(colnames)) </span>
+<span class="co">#&gt;         colnames &lt;- as.character(seq_len(ncol(object)))</span>
+<span class="co">#&gt;     var &lt;- data.frame(row.names = rownames)</span>
+<span class="co">#&gt;     obs &lt;- data.frame(row.names = colnames)</span>
+<span class="co">#&gt;     write_data_frame(file, "obs", obs)</span>
+<span class="co">#&gt;     write_data_frame(file, "var", var)</span>
+<span class="co">#&gt;     written_object &lt;- TRUE</span>
+<span class="co">#&gt; }</span>
+<span class="co">#&gt; debug: write_matrix(file, "X", object)</span>
+<span class="co">#&gt; debug: rownames &lt;- rownames(object)</span>
+<span class="co">#&gt; debug: colnames &lt;- colnames(object)</span>
+<span class="co">#&gt; debug: if (is.null(rownames)) rownames &lt;- as.character(seq_len(nrow(object)))</span>
+<span class="co">#&gt; debug: if (is.null(colnames)) colnames &lt;- as.character(seq_len(ncol(object)))</span>
+<span class="co">#&gt; debug: var &lt;- data.frame(row.names = rownames)</span>
+<span class="co">#&gt; debug: obs &lt;- data.frame(row.names = colnames)</span>
+<span class="co">#&gt; debug: write_data_frame(file, "obs", obs)</span>
+<span class="co">#&gt; debug: write_data_frame(file, "var", var)</span>
+<span class="co">#&gt; debug: written_object &lt;- TRUE</span>
+<span class="co">#&gt; debug: if (!written_object) {</span>
+<span class="co">#&gt;     warning("Objects of class ", class(object), " are currently unsupported, skipping...")</span>
+<span class="co">#&gt; } else {</span>
+<span class="co">#&gt;     write_object_class(file, cls[1])</span>
+<span class="co">#&gt;     finalize_anndata_internal(file)</span>
+<span class="co">#&gt;     if (need_finalize) </span>
+<span class="co">#&gt;         finalize_anndata(file)</span>
+<span class="co">#&gt; }</span>
+<span class="co">#&gt; debug: write_object_class(file, cls[1])</span>
+<span class="co">#&gt; debug: finalize_anndata_internal(file)</span>
+<span class="co">#&gt; debug: if (need_finalize) finalize_anndata(file)</span>
+<span class="co">#&gt; debug: invisible(NULL)</span></code></pre></div>
 <p>We can check that both modalities were written to the file, whether it was a <code>matrix</code> for RNA or <code>SingleCellExperiment</code> for ADT:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">h5</span> <span class="op">&lt;-</span> <span class="fu">rhdf5</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/rhdf5/man/H5Fopen.html" class="external-link">H5Fopen</a></span><span class="op">(</span><span class="st">"cord_blood_citeseq.h5mu"</span><span class="op">)</span>
@@ -237,7 +496,7 @@
 </h2>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span>
-<span class="co">#&gt; R Under development (unstable) (2022-02-06 r81658)</span>
+<span class="co">#&gt; R Under development (unstable) (2022-02-13 r81727)</span>
 <span class="co">#&gt; Platform: x86_64-pc-linux-gnu (64-bit)</span>
 <span class="co">#&gt; Running under: Ubuntu 20.04.3 LTS</span>
 <span class="co">#&gt; </span>
@@ -269,18 +528,18 @@
 <span class="co">#&gt; </span>
 <span class="co">#&gt; loaded via a namespace (and not attached):</span>
 <span class="co">#&gt;   [1] AnnotationHub_3.3.8           BiocFileCache_2.3.4          </span>
-<span class="co">#&gt;   [3] systemfonts_1.0.3             BiocParallel_1.29.12         </span>
+<span class="co">#&gt;   [3] systemfonts_1.0.4             BiocParallel_1.29.12         </span>
 <span class="co">#&gt;   [5] digest_0.6.29                 htmltools_0.5.2              </span>
 <span class="co">#&gt;   [7] viridis_0.6.2                 magick_2.7.3                 </span>
 <span class="co">#&gt;   [9] fansi_1.0.2                   magrittr_2.0.2               </span>
 <span class="co">#&gt;  [11] memoise_2.0.1                 ScaledMatrix_1.3.0           </span>
-<span class="co">#&gt;  [13] SpatialExperiment_1.5.2       limma_3.51.3                 </span>
+<span class="co">#&gt;  [13] SpatialExperiment_1.5.2       limma_3.51.4                 </span>
 <span class="co">#&gt;  [15] Biostrings_2.63.1             R.utils_2.11.0               </span>
 <span class="co">#&gt;  [17] pkgdown_2.0.2                 colorspace_2.0-2             </span>
 <span class="co">#&gt;  [19] blob_1.2.2                    rappdirs_0.3.3               </span>
 <span class="co">#&gt;  [21] ggrepel_0.9.1                 textshaping_0.3.6            </span>
 <span class="co">#&gt;  [23] xfun_0.29                     dplyr_1.0.8                  </span>
-<span class="co">#&gt;  [25] crayon_1.4.2                  RCurl_1.98-1.5               </span>
+<span class="co">#&gt;  [25] crayon_1.5.0                  RCurl_1.98-1.6               </span>
 <span class="co">#&gt;  [27] jsonlite_1.7.3                glue_1.6.1                   </span>
 <span class="co">#&gt;  [29] gtable_0.3.0                  zlibbioc_1.41.0              </span>
 <span class="co">#&gt;  [31] XVector_0.35.0                DelayedArray_0.21.2          </span>
@@ -299,7 +558,7 @@
 <span class="co">#&gt;  [57] rlang_1.0.1                   later_1.3.0                  </span>
 <span class="co">#&gt;  [59] AnnotationDbi_1.57.1          munsell_0.5.0                </span>
 <span class="co">#&gt;  [61] BiocVersion_3.15.0            tools_4.2.0                  </span>
-<span class="co">#&gt;  [63] cachem_1.0.6                  cli_3.1.1                    </span>
+<span class="co">#&gt;  [63] cachem_1.0.6                  cli_3.2.0                    </span>
 <span class="co">#&gt;  [65] generics_0.1.2                RSQLite_2.2.9                </span>
 <span class="co">#&gt;  [67] ExperimentHub_2.3.5           evaluate_0.14                </span>
 <span class="co">#&gt;  [69] stringr_1.4.0                 fastmap_1.1.0                </span>
