@@ -15,16 +15,12 @@ read_dataframe <- function(group) {
 
     col_list <- lapply(columnorder, function(name) {
         col <- group & name
-        values <- H5Dread(col)
-        # h5py saves boolean arrays as HDF5 enums
-        if (is.factor(values) && levels(values) == c("FALSE", "TRUE")) {
-            values <- as.logical(values)
-        }
+        values <- read_attribute(col)
         if (H5Aexists(col, "categories")) {
             attr <- H5Aopen(col, "categories")
             labels <- H5Aread(attr)
             if (!is(labels, "H5Ref")) {
-                warning("found categories attribute for column ", 
+                warning("found categories attribute for column ",
                         name, ", but it is not a reference")
             } else {
                 labels <- H5Rdereference(labels, h5loc=col)
@@ -74,7 +70,7 @@ read_with_index <- function(dataset) {
         encoding <- H5Aread(encattr, "encoding-type")
         H5Aclose(encattr)
         if (encoding != "dataframe") {
-            warning("Unknown encoding ", encoding, 
+            warning("Unknown encoding ", encoding,
                     " when attempting to read data frame")
             return(data.frame())
         }
@@ -177,8 +173,14 @@ read_group <- function(group, read_uns=FALSE) {
 read_attribute <- function(attr) {
     if (H5Iget_type(attr) == "H5I_GROUP")
         read_group(attr)
-    else
-        H5Dread(attr)
+    else {
+        values <- H5Dread(attr)
+        # h5py saves boolean arrays as HDF5 enums
+        if (is.factor(values) && levels(values) == c("FALSE", "TRUE")) {
+            values <- as.logical(values)
+        }
+        values
+    }
 }
 
 #' @importFrom stats setNames

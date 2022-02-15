@@ -2,12 +2,9 @@
 % Please edit documentation in R/write_h5mu.R
 \name{writeH5MU}
 \alias{writeH5MU}
-\alias{writeH5MU,MultiAssayExperiment,character-method}
 \title{Save a \code{\linkS4class{MultiAssayExperiment}} to an .h5mu file.}
 \usage{
-writeH5MU(object, file, overwrite = TRUE)
-
-\S4method{writeH5MU}{MultiAssayExperiment,character}(object, file, overwrite = TRUE)
+writeH5MU(object, file, overwrite)
 }
 \arguments{
 \item{object}{A \code{\linkS4class{MultiAssayExperiment}}.}

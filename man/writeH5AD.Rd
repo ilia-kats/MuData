@@ -2,27 +2,9 @@
 % Please edit documentation in R/write_h5mu.R
 \name{writeH5AD}
 \alias{writeH5AD}
-\alias{writeH5AD,Matrix_OR_DelayedMatrix,H5IdComponent-method}
-\alias{writeH5AD,SummarizedExperiment,H5IdComponent-method}
-\alias{writeH5AD,RangedSummarizedExperiment,H5IdComponent-method}
-\alias{writeH5AD,SingleCellExperiment,H5IdComponent-method}
-\alias{writeH5AD,ANY,H5IdComponent-method}
-\alias{writeH5AD,ANY,character-method}
 \title{Save an experiment to an .h5ad file.}
 \usage{
-writeH5AD(object, file, overwrite = TRUE, ...)
-
-\S4method{writeH5AD}{Matrix_OR_DelayedMatrix,H5IdComponent}(object, file, overwrite, write_dimnames = TRUE)
-
-\S4method{writeH5AD}{SummarizedExperiment,H5IdComponent}(object, file, overwrite)
-
-\S4method{writeH5AD}{RangedSummarizedExperiment,H5IdComponent}(object, file, overwrite)
-
-\S4method{writeH5AD}{SingleCellExperiment,H5IdComponent}(object, file, overwrite)
-
-\S4method{writeH5AD}{ANY,H5IdComponent}(object, file, overwrite)
-
-\S4method{writeH5AD}{ANY,character}(object, file, overwrite)
+writeH5AD(object, file, overwrite)
 }
 \arguments{
 \item{object}{The object to save.}
@@ -30,10 +12,6 @@ writeH5AD(object, file, overwrite = TRUE, ...)
 \item{file}{Name of the file to save to.}
 
 \item{overwrite}{Currently unused.}
-
-\item{...}{additional arguments.}
-
-\item{write_dimnames}{Whether to export colnames and rownames.}
 }
 \value{
 NULL, invisibly

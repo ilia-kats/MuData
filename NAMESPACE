@@ -2,8 +2,8 @@
 
 export(readH5AD)
 export(readH5MU)
-exportMethods(writeH5AD)
-exportMethods(writeH5MU)
+export(writeH5AD)
+export(writeH5MU)
 import(Matrix)
 importClassesFrom(DelayedArray,DelayedMatrix)
 importClassesFrom(Matrix,Matrix)

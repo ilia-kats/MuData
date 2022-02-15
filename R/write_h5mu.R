@@ -1,126 +1,9 @@
-#' @param ... additional arguments.
-#' @rdname writeH5AD
-setGeneric("writeH5AD", function(object, file, overwrite=TRUE, ...) standardGeneric("writeH5AD"), signature=c("object", "file"))
-#' @rdname writeH5MU
-setGeneric("writeH5MU", function(object, file, overwrite=TRUE) standardGeneric("writeH5MU"), signature=c("object", "file"))
-
 #' @importClassesFrom Matrix Matrix
 #' @importClassesFrom DelayedArray DelayedMatrix
 setClassUnion("Matrix_OR_DelayedMatrix", c("matrix", "Matrix", "DelayedMatrix"))
 
 #' @importClassesFrom S4Vectors DataFrame
 setClassUnion("data.frame_OR_DataFrame", c("data.frame", "DataFrame"))
-
-#' @importFrom rhdf5 H5Iget_type
-#' @param write_dimnames Whether to export colnames and rownames.
-#' @rdname writeH5AD
-setMethod("writeH5AD", c(object="Matrix_OR_DelayedMatrix", file="H5IdComponent"), function(object, file, overwrite, write_dimnames=TRUE) {
-    if (!(H5Iget_type(file) %in% c("H5I_FILE", "H5I_GROUP")))
-        stop("object must be a file or group")
-    write_matrix(file, "X", object)
-    if (write_dimnames) {
-        rownames <- rownames(object)
-        colnames <- colnames(object)
-        if (is.null(rownames))
-            rownames <- as.character(seq_len(nrow(object)))
-        if (is.null(colnames))
-            colnames <- as.character(seq_len(ncol(object)))
-        var <- data.frame(row.names=rownames)
-        obs <- data.frame(row.names=colnames)
-        write_data_frame(file, "obs", obs)
-        write_data_frame(file, "var", var)
-    }
-    write_object_class(file, class(object)[1])
-    finalize_anndata_internal(file)
-})
-
-#' @importFrom rhdf5 H5Iget_type H5Gcreate H5Gclose
-#' @importFrom SummarizedExperiment colData assays
-#' @importFrom S4Vectors metadata
-#' @importFrom methods hasMethod
-#' @importFrom SingleCellExperiment altExps
-#' @rdname writeH5AD
-setMethod("writeH5AD", c(object="SummarizedExperiment", file="H5IdComponent"), function(object, file, overwrite) {
-    if (!(H5Iget_type(file) %in% c("H5I_FILE", "H5I_GROUP")))
-        stop("object must be a file or group")
-    write_data_frame(file, "obs", colData(object))
-    rdata <- rowData(object)
-    if (ncol(rdata) > 0 || !is.null(rownames(rdata)))
-        write_data_frame(file, "var", rdata)
-
-    assays <- assays(object)
-    nassays <- length(assays)
-    if (nassays > 1) {
-        layersgrp <- H5Gcreate(file, "layers")
-        mapply(function(name, mat) {
-            write_matrix(layersgrp, name, mat)
-        }, names(assays[2:nassays]), assays[2:nassays])
-        H5Gclose(layersgrp)
-    }
-    writeH5AD(assays[[1]], file, overwrite, write_dimnames=FALSE)
-    write_object_class(file, class(object)[1])
-
-    writeList(file, "uns", metadata(object))
-
-    if (hasMethod("altExps", class(object))) {
-        naltexps <- length(altExps(object))
-        if (naltexps > 1) {
-            warning("Alternative experiments are currently unsupported. Construct a MultiAssayExperiment object or write them as individual H5AD files.")
-        }
-    }
-})
-
-#' @rdname writeH5AD
-setMethod("writeH5AD", c(object="RangedSummarizedExperiment", file="H5IdComponent"), function(object, file, overwrite) {
-    warning("Ranged data is currently unsupported. Coercing to SummarizedExperiment...")
-    writeH5AD(as(object, "SummarizedExperiment"), file, overwrite)
-})
-
-#' @importFrom rhdf5 H5Iget_type H5Gcreate H5Gclose
-#' @importFrom SingleCellExperiment rowData colData colPairNames colPair rowPairNames rowPair reducedDims
-#' @importFrom methods as
-#' @rdname writeH5AD
-setMethod("writeH5AD", c(object="SingleCellExperiment", file="H5IdComponent"), function(object, file, overwrite) {
-    if (!(H5Iget_type(file) %in% c("H5I_FILE", "H5I_GROUP")))
-        stop("object must be a file or group")
-
-    write_data_frame(file, "var", rowData(object))
-    obsm <- reducedDims(object)
-    if (length(obsm) > 0) {
-        obsmgrp <- H5Gcreate(file, "obsm")
-        mapply(function(name, data) {
-            if (is.data.frame(data)) {
-                rownames(data) <- rownames(colData(object))
-                write_data_frame(obsmgrp, name, data)
-            } else {
-                if (length(dim(data)) == 1)
-                    data <- as.vector(data)
-                else
-                    data <- t(data)
-                write_matrix(obsmgrp, name, data)
-            }
-        }, names(obsm), obsm)
-        H5Gclose(obsmgrp)
-    }
-
-    lapply(list(list(name="obsp", names=colPairNames, getter=colPair), list(name="varp", names=rowPairNames, getter=rowPair)), function(cp) {
-        names <- cp$names(object)
-        if (length(names) > 0) {
-            pairgrp <- H5Gcreate(file, cp$name)
-            lapply(names, function(cname) {
-                write_matrix(pairgrp, cname, cp$getter(object, cname, asSparse=TRUE))
-            })
-            H5Gclose(pairgrp)
-        }
-    })
-    writeH5AD(as(object, "SummarizedExperiment"), file, overwrite)
-    write_object_class(file, class(object)[1])
-})
-
-#' @rdname writeH5AD
-setMethod("writeH5AD", c(object="ANY", file="H5IdComponent"), function(object, file, overwrite) {
-    warning("Objects of class ", class(object), " are currently unsupported, skipping...")
-})
 
 #' Save an experiment to an .h5ad file.
 #'
@@ -137,15 +20,114 @@ setMethod("writeH5AD", c(object="ANY", file="H5IdComponent"), function(object, f
 #' data(miniACC, package="MultiAssayExperiment")
 #' writeH5AD(miniACC[[1]], "miniacc.h5ad")
 #'
-#' @rdname writeH5AD
+#' @importFrom rhdf5 H5Iget_type H5Gcreate H5Gclose
+#' @importFrom SummarizedExperiment colData assays
+#' @importFrom S4Vectors metadata
+#' @importFrom methods hasMethod as
+#' @importFrom SingleCellExperiment altExps rowData colData colPairNames colPair rowPairNames rowPair reducedDims
+#'
 #' @export
-setMethod("writeH5AD", c(object="ANY", file="character"), function(object, file, overwrite) {
-    h5 <- open_h5(file)
-    writeH5AD(object, h5, overwrite)
-    write_object_class(h5, class(object)[1])
-    finalize_anndata(h5)
+writeH5AD <- function(object, file, overwrite) {
+    need_finalize <- FALSE
+    written_object <- FALSE
+    if (is.character(file)) {
+        file <- open_h5(file)
+        need_finalize <- TRUE
+    } else if (!(H5Iget_type(file) %in% c("H5I_FILE", "H5I_GROUP")))
+        stop("file must be a character, file or group")
+
+    cls <- class(object)
+    if (is(object)[1] == "RangedSummarizedExperiment") {
+        warning("Ranged data is currently unsupported. Coercing to SummarizedExperiment...")
+        object <- as(object, "SummarizedExperiment")
+    }
+    if (is(object, "SingleCellExperiiment")) {
+        write_data_frame(file, "var", rowData(object))
+        obsm <- reducedDims(object)
+        if (length(obsm) > 0) {
+            obsmgrp <- H5Gcreate(file, "obsm")
+            mapply(function(name, data) {
+                if (is.data.frame(data)) {
+                    rownames(data) <- rownames(colData(object))
+                    write_data_frame(obsmgrp, name, data)
+                } else {
+                    if (length(dim(data)) == 1)
+                        data <- as.vector(data)
+                    else
+                        data <- t(data)
+                    write_matrix(obsmgrp, name, data)
+                }
+            }, names(obsm), obsm)
+            H5Gclose(obsmgrp)
+        }
+
+        lapply(list(list(name="obsp", names=colPairNames, getter=colPair), list(name="varp", names=rowPairNames, getter=rowPair)), function(cp) {
+            names <- cp$names(object)
+            if (length(names) > 0) {
+                pairgrp <- H5Gcreate(file, cp$name)
+                lapply(names, function(cname) {
+                    write_matrix(pairgrp, cname, cp$getter(object, cname, asSparse=TRUE))
+                })
+                H5Gclose(pairgrp)
+            }
+        })
+        object <- as(object, "SummarizedExperiment")
+        written_object <- TRUE
+    }
+    if (is(object, "SummarizedExperiment")) {
+        write_data_frame(file, "obs", colData(object))
+        rdata <- rowData(object)
+        if (ncol(rdata) > 0 || !is.null(rownames(rdata)))
+            write_data_frame(file, "var", rdata)
+
+        assays <- assays(object)
+        nassays <- length(assays)
+        write_matrix(file, "X", assays[[1]])
+        if (nassays > 1) {
+            layersgrp <- H5Gcreate(file, "layers")
+            mapply(function(name, mat) {
+                write_matrix(layersgrp, name, mat)
+            }, names(assays[2:nassays]), assays[2:nassays])
+            H5Gclose(layersgrp)
+        }
+
+        writeList(file, "uns", metadata(object))
+
+        if (hasMethod("altExps", class(object))) {
+            naltexps <- length(altExps(object))
+            if (naltexps > 1) {
+                warning("Alternative experiments are currently unsupported. Construct a MultiAssayExperiment object or write them as individual H5AD files.")
+            }
+        }
+        written_object <- TRUE
+    }
+    if (is(object, "Matrix_OR_DelayedMatrix")) {
+        write_matrix(file, "X", object)
+        if (write_dimnames) {
+            rownames <- rownames(object)
+            colnames <- colnames(object)
+            if (is.null(rownames))
+                rownames <- as.character(seq_len(nrow(object)))
+            if (is.null(colnames))
+                colnames <- as.character(seq_len(ncol(object)))
+            var <- data.frame(row.names=rownames)
+            obs <- data.frame(row.names=colnames)
+            write_data_frame(file, "obs", obs)
+            write_data_frame(file, "var", var)
+        }
+        written_object <- TRUE
+    }
+
+    if (!written_object) {
+        warning("Objects of class ", class(object), " are currently unsupported, skipping...")
+    } else {
+        write_object_class(file, cls[1])
+        finalize_anndata_internal(file)
+        if (need_finalize)
+            finalize_anndata(file)
+    }
     invisible(NULL)
-})
+}
 
 #' Save a \code{\linkS4class{MultiAssayExperiment}} to an .h5mu file.
 #'
@@ -162,14 +144,18 @@ setMethod("writeH5AD", c(object="ANY", file="character"), function(object, file,
 #' data(miniACC, package="MultiAssayExperiment")
 #' writeH5MU(miniACC, "miniacc.h5mu")
 #'
-#' @rdname writeH5MU
-#'
 #' @importFrom rhdf5 H5Gcreate H5Gclose h5writeDataset h5writeAttribute
 #' @importFrom MultiAssayExperiment colData experiments sampleMap metadata
 #'
 #' @export
-setMethod("writeH5MU", c(object="MultiAssayExperiment", file="character"), function(object, file, overwrite) {
-    h5 <- open_h5(file)
+writeH5MU <- function(object, file, overwrite) {
+    if (!is(object, "MultiAssayExperiment"))
+        stop("Only MultiAssayExperiment objects are currently supported.")
+    if (is.character(file)) {
+        h5 <- open_h5(file)
+        need_finalize <- TRUE
+    } else
+        stop("file must be a character")
 
     obs <- as.data.frame(colData(object), stringsAsFactors = FALSE)
     write_data_frame(h5, "obs", obs)
@@ -206,7 +192,7 @@ setMethod("writeH5MU", c(object="MultiAssayExperiment", file="character"), funct
     write_object_class(h5, class(object)[1])
     finalize_mudata(h5)
     invisible(NULL)
-})
+}
 
 #' @importFrom rhdf5 h5writeDataset h5writeAttribute H5Gcreate H5Gclose H5Fget_name H5Iget_name
 #' @importFrom methods is as
@@ -392,6 +378,8 @@ writeDataset <- function(parent, key, data, scalar=FALSE) {
 #' @importFrom rhdf5 H5Gcreate H5Gclose
 #' @importFrom methods slotNames slot
 write_elem <- function(parent, key, data) {
+    if (is.factor(data))
+        browser()
     if (is(data, "list_OR_List"))
         writeList(parent, key, data)
     else if (is(data, "Matrix_OR_DelayedMatrix") || is(data, "vector_OR_Vector"))
