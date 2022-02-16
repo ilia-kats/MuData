@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">MuData</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.99.7</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.99.8</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -79,7 +79,7 @@
       German Cancer Research Center, Heidelberg, Germany<br><a class="author_email" href="mailto:#"></a><a href="mailto:i.kats@dkfz-heidelberg.de" class="email">i.kats@dkfz-heidelberg.de</a>
       </address>
                   
-            <h4 data-toc-skip class="date">2022-02-15</h4>
+            <h4 data-toc-skip class="date">2022-02-16</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/ilia-kats/MuData/blob/HEAD/vignettes/Cord-Blood-CITE-seq.Rmd" class="external-link"><code>vignettes/Cord-Blood-CITE-seq.Rmd</code></a></small>
       <div class="d-none name"><code>Cord-Blood-CITE-seq.Rmd</code></div>
@@ -122,7 +122,7 @@
     DataType<span class="op">=</span><span class="st">"cord_blood"</span>, modes<span class="op">=</span><span class="st">"*"</span>, dry.run<span class="op">=</span><span class="cn">FALSE</span>, version<span class="op">=</span><span class="st">"1.0.0"</span>
 <span class="op">)</span>
 <span class="co">#&gt; Dataset: cord_blood</span>
-<span class="co">#&gt; snapshotDate(): 2022-01-20</span>
+<span class="co">#&gt; snapshotDate(): 2022-02-15</span>
 <span class="co">#&gt; Working on: scADT_Counts</span>
 <span class="co">#&gt; Working on: scRNAseq_Counts</span>
 <span class="co">#&gt; see ?SingleCellMultiModal and browseVignettes('SingleCellMultiModal') for documentation</span>
@@ -177,7 +177,10 @@
 <span class="co">#&gt; singular values/vectors requested than available</span>
 <span class="co">#&gt; Warning in (function (A, nv = 5, nu = nv, maxit = 1000, work = nv + 7, reorth =</span>
 <span class="co">#&gt; TRUE, : You're computing too large a percentage of total singular values, use a</span>
-<span class="co">#&gt; standard svd instead.</span></code></pre></div>
+<span class="co">#&gt; standard svd instead.</span>
+<span class="co">#&gt; Warning in (function (A, nv = 5, nu = nv, maxit = 1000, work = nv + 7, reorth</span>
+<span class="co">#&gt; = TRUE, : did not converge--results might be invalid!; try increasing work or</span>
+<span class="co">#&gt; maxit</span></code></pre></div>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/scater/man/plotReducedDim.html" class="external-link">plotReducedDim</a></span><span class="op">(</span><span class="va">mae</span><span class="op">[[</span><span class="st">"scADT"</span><span class="op">]</span><span class="op">]</span>, dimred <span class="op">=</span> <span class="st">"PCA"</span>,
                by_exprs_values <span class="op">=</span> <span class="st">"clr"</span>, colour_by <span class="op">=</span> <span class="st">"CD3"</span><span class="op">)</span></code></pre></div>
@@ -262,7 +265,7 @@
 <span class="co">#&gt;  [7] SummarizedExperiment_1.25.3 Biobase_2.55.0             </span>
 <span class="co">#&gt;  [9] GenomicRanges_1.47.6        GenomeInfoDb_1.31.4        </span>
 <span class="co">#&gt; [11] IRanges_2.29.1              MatrixGenerics_1.7.0       </span>
-<span class="co">#&gt; [13] matrixStats_0.61.0          MuData_0.99.7              </span>
+<span class="co">#&gt; [13] matrixStats_0.61.0          MuData_0.99.8              </span>
 <span class="co">#&gt; [15] rhdf5_2.39.5                S4Vectors_0.33.10          </span>
 <span class="co">#&gt; [17] BiocGenerics_0.41.2         Matrix_1.4-0               </span>
 <span class="co">#&gt; [19] BiocStyle_2.23.1           </span>
