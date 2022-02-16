@@ -37,7 +37,7 @@ writeH5AD <- function(object, file, overwrite) {
         stop("file must be a character, file or group")
 
     cls <- class(object)
-    if (is(object)[1] == "RangedSummarizedExperiment") {
+    if (is(object, "RangedSummarizedExperiment") && !is(object, "SingleCellExperiment")) {
         warning("Ranged data is currently unsupported. Coercing to SummarizedExperiment...")
         object <- as(object, "SummarizedExperiment")
     }
