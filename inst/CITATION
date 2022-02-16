@@ -1,0 +1,10 @@
+bibentry("Article",
+         title="{MUON}: multimodal omics analysis framework",
+         author=c(person("Danila", "Bredikhin", comment=c(ORCID="0000-0001-8089-6983")),
+                  person("Ilia", "Kats", comment=c(ORCID="0000-0001-5220-5671")),
+                  person("Oliver", "Stegle", comment=c(ORCID="0000-0002-8818-7193"))),
+         doi="10.1186/s13059-021-02577-8",
+         journal="Genome Biology",
+         year="2022",
+         volume=23,
+         pages=42)
