@@ -376,8 +376,6 @@ writeDataset <- function(parent, key, data, scalar=FALSE) {
 #' @importFrom rhdf5 H5Gcreate H5Gclose
 #' @importFrom methods slotNames slot
 write_elem <- function(parent, key, data) {
-    if (is.factor(data))
-        browser()
     if (is(data, "list_OR_List"))
         writeList(parent, key, data)
     else if (is(data, "Matrix_OR_DelayedMatrix") || is(data, "vector_OR_Vector"))
