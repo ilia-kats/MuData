@@ -73,7 +73,7 @@
 <div class="page-header"><h1 id="mudata">MuData<a class="anchor" aria-label="anchor" href="#mudata"></a>
 </h1></div>
 
-<p><a href="https://pmbio.github.io/MuDataMAE/" class="external-link">Documentation</a> | <a href="https://www.biorxiv.org/content/10.1101/2021.06.01.445670v1" class="external-link">Preprint</a> | <a href="https://discord.com/invite/MMsgDhnSwQ" class="external-link">Discord</a></p>
+<p><a href="https://ilia-kats.github.io/MuData/" class="external-link">Documentation</a> | <a href="https://www.biorxiv.org/content/10.1101/2021.06.01.445670v1" class="external-link">Preprint</a> | <a href="https://discord.com/invite/MMsgDhnSwQ" class="external-link">Discord</a></p>
 <p><code>MuData</code> is a package that provides I/O funcitonality for <code>.h5mu</code> files and <a href="http://waldronlab.io/MultiAssayExperiment/" class="external-link">MultiAssayExperiment</a> objects.</p>
 <p>You can learn more about multimodal data containers in the reference <a href="https://mudata.readthedocs.io/en/latest/io/mudata.html" class="external-link"><code>mudata</code> documentation</a>.</p>
 <div class="section level2">
@@ -83,14 +83,14 @@
 <p><code>rhdf5</code> and <code>MuData</code> can be installed by running</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"grimbough/rhdf5"</span><span class="op">)</span>
-<span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"pmbio/MuDataMAE"</span><span class="op">)</span></code></pre></div>
+<span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"ilia-kats/MuData"</span><span class="op">)</span></code></pre></div>
 <p>We use <code>rhdf5</code> over <code>hdf5r</code> to stay compatible with the rest of the Bioconductor ecosystem. In particular, using <code>hdf5r</code> would make integrating with other packages building on <code>rhdf5</code>, such as <code>HDF5Array</code>, much more difficult, if not impossible. We have implemented necessary HDF5 features that the <code>.h5ad</code> and consequently <code>.h5mu</code> formats make use of upstream, including <a href="https://github.com/grimbough/rhdf5/pull/95" class="external-link">file creation properties</a> and <a href="https://github.com/grimbough/rhdf5/pull/96" class="external-link">object references</a>.</p>
 </div>
 <div class="section level2">
 <h2 id="quick-start">Quick start<a class="anchor" aria-label="anchor" href="#quick-start"></a>
 </h2>
 <p><code>MuData</code> provides a set of I/O operations for multimodal data.</p>
-<p><code>MuData</code> implements <code>WriteH5MU()</code> that saves MultiAssayExperiment objects to <code>.h5mu</code> files that can be further integrated into workflows in multiple programming languages, including the <a href="https://github.com/pmbio/muon" class="external-link"><code>muon</code> Python library</a> and the <a href="https://github.com/pmbio/Muon.jl" class="external-link"><code>Muon.jl</code> Julia library</a>. <code>ReadH5MU()</code> reads <code>.h5mu</code> files into MultiAssayExperiment objects.</p>
+<p><code>MuData</code> implements <code>WriteH5MU()</code> that saves MultiAssayExperiment objects to <code>.h5mu</code> files that can be further integrated into workflows in multiple programming languages, including the <a href="https://github.com/scverse/muon" class="external-link"><code>muon</code> Python library</a> and the <a href="https://github.com/scverse/Muon.jl" class="external-link"><code>Muon.jl</code> Julia library</a>. <code>ReadH5MU()</code> reads <code>.h5mu</code> files into MultiAssayExperiment objects.</p>
 <div class="section level3">
 <h3 id="writing-files">Writing files<a class="anchor" aria-label="anchor" href="#writing-files"></a>
 </h3>
@@ -155,8 +155,8 @@
 <div class="dev-status">
 <h2 data-toc-skip>Dev status</h2>
 <ul class="list-unstyled">
-<li><a href="https://github.com/PMBio/MuDataMAE/actions" class="external-link"><img src="https://github.com/PMBio/MuDataMAE/workflows/R-CMD-check/badge.svg" alt="R-CMD-check"></a></li>
-<li><a href="https://github.com/PMBio/MuDataMAE/actions" class="external-link"><img src="https://github.com/PMBio/MuDataMAE/workflows/pkgdown/badge.svg" alt="pkgdown"></a></li>
+<li><a href="https://github.com/ilia-kats/MuData/actions" class="external-link"><img src="https://github.com/ilia-kats/MuData/workflows/R-CMD-check/badge.svg" alt="R-CMD-check"></a></li>
+<li><a href="https://github.com/ilia-kats/MuData/actions" class="external-link"><img src="https://github.com/ilia-kats/MuData/workflows/pkgdown/badge.svg" alt="pkgdown"></a></li>
 </ul>
 </div>
 
