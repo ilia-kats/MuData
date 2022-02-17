@@ -1,8 +1,8 @@
 # MuData
 
-[![R-CMD-check](https://github.com/PMBio/MuDataMAE/workflows/R-CMD-check/badge.svg)](https://github.com/PMBio/MuDataMAE/actions) [![pkgdown](https://github.com/PMBio/MuDataMAE/workflows/pkgdown/badge.svg)](https://github.com/PMBio/MuDataMAE/actions)
+[![R-CMD-check](https://github.com/ilia-kats/MuData/workflows/R-CMD-check/badge.svg)](https://github.com/ilia-kats/MuData/actions) [![pkgdown](https://github.com/ilia-kats/MuData/workflows/pkgdown/badge.svg)](https://github.com/ilia-kats/MuData/actions)
 
-[Documentation](https://pmbio.github.io/MuDataMAE/) | [Preprint](https://www.biorxiv.org/content/10.1101/2021.06.01.445670v1) | [Discord](https://discord.com/invite/MMsgDhnSwQ)
+[Documentation](https://ilia-kats.github.io/MuData/) | [Preprint](https://www.biorxiv.org/content/10.1101/2021.06.01.445670v1) | [Discord](https://discord.com/invite/MMsgDhnSwQ)
 
 `MuData` is a package that provides I/O funcitonality for `.h5mu` files and [MultiAssayExperiment](http://waldronlab.io/MultiAssayExperiment/) objects.
 
@@ -16,7 +16,7 @@ You can learn more about multimodal data containers in the reference [`mudata` d
 
 ```R
 remotes::install_github("grimbough/rhdf5")
-remotes::install_github("pmbio/MuDataMAE")
+remotes::install_github("ilia-kats/MuData")
 ```
 
 We use `rhdf5` over `hdf5r` to stay compatible with the rest of the Bioconductor ecosystem.
@@ -27,7 +27,7 @@ In particular, using `hdf5r` would make integrating with other packages building
 
 `MuData` provides a set of I/O operations for multimodal data.
 
-`MuData` implements `WriteH5MU()` that saves MultiAssayExperiment objects to `.h5mu` files that can be further integrated into workflows in multiple programming languages, including the [`muon` Python library](https://github.com/pmbio/muon) and the [`Muon.jl` Julia library](https://github.com/pmbio/Muon.jl). `ReadH5MU()` reads `.h5mu` files into MultiAssayExperiment objects.
+`MuData` implements `WriteH5MU()` that saves MultiAssayExperiment objects to `.h5mu` files that can be further integrated into workflows in multiple programming languages, including the [`muon` Python library](https://github.com/scverse/muon) and the [`Muon.jl` Julia library](https://github.com/scverse/Muon.jl). `ReadH5MU()` reads `.h5mu` files into MultiAssayExperiment objects.
 
 
 ### Writing files
