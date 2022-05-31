@@ -4,7 +4,7 @@
 
 [Documentation](https://ilia-kats.github.io/MuData/) | [Preprint](https://www.biorxiv.org/content/10.1101/2021.06.01.445670v1) | [Discord](https://discord.com/invite/MMsgDhnSwQ)
 
-`MuData` is a package that provides I/O funcitonality for `.h5mu` files and [MultiAssayExperiment](http://waldronlab.io/MultiAssayExperiment/) objects.
+`MuData` is a package that provides I/O functionality for `.h5mu` files and [MultiAssayExperiment](http://waldronlab.io/MultiAssayExperiment/) objects.
 
 You can learn more about multimodal data containers in the reference [`mudata` documentation](https://mudata.readthedocs.io/en/latest/io/mudata.html).
 
