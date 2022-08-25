@@ -176,7 +176,7 @@ read_attribute <- function(attr) {
     else {
         values <- H5Dread(attr)
         # h5py saves boolean arrays as HDF5 enums
-        if (is.factor(values) && levels(values) == c("FALSE", "TRUE")) {
+        if (is.factor(values) && all(levels(values) == c("FALSE", "TRUE"))) {
             values <- as.logical(values)
         }
         values

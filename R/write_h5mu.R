@@ -201,7 +201,7 @@ write_matrix <- function(parent, key, mat) {
         writeDataset(parent, key, mat)
     } else if (is(mat, "dgCMatrix") || is(mat, "dgRMatrix") || is(mat, "DelayedArray") && DelayedArray::is_sparse(mat)) {
         if (is(mat, "DelayedArray"))
-            mat <- as(mat, "dgRMatrix")
+            mat <- as(as(as(mat, "dMatrix"), "generalMatrix"), "RsparseMatrix")
 
         grp <- H5Gcreate(parent, key)
         writeDataset(grp, "indptr", mat@p)
