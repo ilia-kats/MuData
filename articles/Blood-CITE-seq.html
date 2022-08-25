@@ -8,8 +8,8 @@
 <meta name="description" content="MuData">
 <title>CITE-seq data with CiteFuse and MuData • MuData</title>
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="../deps/bootstrap-5.1.0/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.1.0/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
+<link href="../deps/bootstrap-5.1.3/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.1.3/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- bootstrap-toc --><script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="CITE-seq data with CiteFuse and MuData">
 <meta property="og:description" content="MuData">
@@ -68,7 +68,7 @@
 
 
 <script src="Blood-CITE-seq_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
-  <main id="main"><div class="page-header">
+  <main id="main" class="col-md-9"><div class="page-header">
       <img src="" class="logo" alt=""><h1>CITE-seq data with CiteFuse and MuData</h1>
                         <h4 data-toc-skip class="author">Danila Bredikhin</h4>
             <address class="author_afil">
@@ -79,7 +79,7 @@
       German Cancer Research Center, Heidelberg, Germany<br><a class="author_email" href="mailto:#"></a><a href="mailto:i.kats@dkfz-heidelberg.de" class="email">i.kats@dkfz-heidelberg.de</a>
       </address>
                   
-            <h4 data-toc-skip class="date">2022-05-31</h4>
+            <h4 data-toc-skip class="date">2022-08-25</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/ilia-kats/MuData/blob/HEAD/vignettes/Blood-CITE-seq.Rmd" class="external-link"><code>vignettes/Blood-CITE-seq.Rmd</code></a></small>
       <div class="d-none name"><code>Blood-CITE-seq.Rmd</code></div>
@@ -97,37 +97,37 @@
 </h2>
 <p>The most recent dev build can be installed from GitHub:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://remotes.r-lib.org" class="external-link">remotes</a></span><span class="op">)</span>
-<span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"ilia-kats/MuData"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://remotes.r-lib.org" class="external-link">remotes</a></span><span class="op">)</span></span>
+<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"ilia-kats/MuData"</span><span class="op">)</span></span></code></pre></div>
 <p>Stable version of <code>MuData</code> will be available in future bioconductor versions.</p>
 </div>
 <div class="section level2">
 <h2 id="loading-libraries">Loading libraries<a class="anchor" aria-label="anchor" href="#loading-libraries"></a>
 </h2>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ilia-kats/MuData" class="external-link">MuData</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">SingleCellExperiment</span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://waldronlab.io/MultiAssayExperiment/" class="external-link">MultiAssayExperiment</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">CiteFuse</span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://bioconductor.org/packages/scater/" class="external-link">scater</a></span><span class="op">)</span>
-
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/grimbough/rhdf5" class="external-link">rhdf5</a></span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ilia-kats/MuData" class="external-link">MuData</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">SingleCellExperiment</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://waldronlab.io/MultiAssayExperiment/" class="external-link">MultiAssayExperiment</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">CiteFuse</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://bioconductor.org/packages/scater/" class="external-link">scater</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/grimbough/rhdf5" class="external-link">rhdf5</a></span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="loading-data">Loading data<a class="anchor" aria-label="anchor" href="#loading-data"></a>
 </h2>
 <p>We will use CITE-seq data available within <a href="http://www.bioconductor.org/packages/release/bioc/html/CiteFuse.html" class="external-link"><code>CiteFuse</code> Bioconductor package</a>.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"CITEseq_example"</span>, package <span class="op">=</span> <span class="st">"CiteFuse"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">CITEseq_example</span>, <span class="va">dim</span><span class="op">)</span>
-<span class="co">#&gt; $RNA</span>
-<span class="co">#&gt; [1] 19521   500</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $ADT</span>
-<span class="co">#&gt; [1]  49 500</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $HTO</span>
-<span class="co">#&gt; [1]   4 500</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"CITEseq_example"</span>, package <span class="op">=</span> <span class="st">"CiteFuse"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">CITEseq_example</span>, <span class="va">dim</span><span class="op">)</span></span>
+<span><span class="co">#&gt; $RNA</span></span>
+<span><span class="co">#&gt; [1] 19521   500</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $ADT</span></span>
+<span><span class="co">#&gt; [1]  49 500</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $HTO</span></span>
+<span><span class="co">#&gt; [1]   4 500</span></span></code></pre></div>
 <p>This dataset contains three matrices — one with <code>RNA</code> counts, one with antibody-derived tags (<code>ADT</code>) counts and one with hashtag oligonucleotide (<code>HTO</code>) counts.</p>
 </div>
 <div class="section level2">
@@ -136,61 +136,61 @@
 <p>While CITE-seq analysis workflows such as <a href="http://www.bioconductor.org/packages/release/bioc/vignettes/CiteFuse/inst/doc/CiteFuse.html" class="external-link">CiteFuse</a> should be consulted for more details, below we exemplify simple data transformations in order to demonstrate how their output can be saved to an H5MU file later on.</p>
 <p>Following the CiteFuse tutorial, we start with creating a <code>SingleCellExperiment</code> object with the three matrices:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">sce_citeseq</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/CiteFuse/man/preprocessing.html" class="external-link">preprocessing</a></span><span class="op">(</span><span class="va">CITEseq_example</span><span class="op">)</span>
-<span class="va">sce_citeseq</span>
-<span class="co">#&gt; class: SingleCellExperiment </span>
-<span class="co">#&gt; dim: 19521 500 </span>
-<span class="co">#&gt; metadata(0):</span>
-<span class="co">#&gt; assays(1): counts</span>
-<span class="co">#&gt; rownames(19521): hg19_AL627309.1 hg19_AL669831.5 ... hg19_MT-ND6</span>
-<span class="co">#&gt;   hg19_MT-CYB</span>
-<span class="co">#&gt; rowData names(0):</span>
-<span class="co">#&gt; colnames(500): AAGCCGCGTTGTCTTT GATCGCGGTTATCGGT ... TTGGCAACACTAGTAC</span>
-<span class="co">#&gt;   GCTGCGAGTTGTGGCC</span>
-<span class="co">#&gt; colData names(0):</span>
-<span class="co">#&gt; reducedDimNames(0):</span>
-<span class="co">#&gt; mainExpName: NULL</span>
-<span class="co">#&gt; altExpNames(2): ADT HTO</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">sce_citeseq</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/CiteFuse/man/preprocessing.html" class="external-link">preprocessing</a></span><span class="op">(</span><span class="va">CITEseq_example</span><span class="op">)</span></span>
+<span><span class="va">sce_citeseq</span></span>
+<span><span class="co">#&gt; class: SingleCellExperiment </span></span>
+<span><span class="co">#&gt; dim: 19521 500 </span></span>
+<span><span class="co">#&gt; metadata(0):</span></span>
+<span><span class="co">#&gt; assays(1): counts</span></span>
+<span><span class="co">#&gt; rownames(19521): hg19_AL627309.1 hg19_AL669831.5 ... hg19_MT-ND6</span></span>
+<span><span class="co">#&gt;   hg19_MT-CYB</span></span>
+<span><span class="co">#&gt; rowData names(0):</span></span>
+<span><span class="co">#&gt; colnames(500): AAGCCGCGTTGTCTTT GATCGCGGTTATCGGT ... TTGGCAACACTAGTAC</span></span>
+<span><span class="co">#&gt;   GCTGCGAGTTGTGGCC</span></span>
+<span><span class="co">#&gt; colData names(0):</span></span>
+<span><span class="co">#&gt; reducedDimNames(0):</span></span>
+<span><span class="co">#&gt; mainExpName: NULL</span></span>
+<span><span class="co">#&gt; altExpNames(2): ADT HTO</span></span></code></pre></div>
 <p>We will add a new assay with normalised RNA counts:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">sce_citeseq</span> <span class="op">&lt;-</span> <span class="fu">scater</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/scuttle/man/logNormCounts.html" class="external-link">logNormCounts</a></span><span class="op">(</span><span class="va">sce_citeseq</span><span class="op">)</span>
-<span class="va">sce_citeseq</span>  <span class="co"># new assay: logcounts</span>
-<span class="co">#&gt; class: SingleCellExperiment </span>
-<span class="co">#&gt; dim: 19521 500 </span>
-<span class="co">#&gt; metadata(0):</span>
-<span class="co">#&gt; assays(2): counts logcounts</span>
-<span class="co">#&gt; rownames(19521): hg19_AL627309.1 hg19_AL669831.5 ... hg19_MT-ND6</span>
-<span class="co">#&gt;   hg19_MT-CYB</span>
-<span class="co">#&gt; rowData names(0):</span>
-<span class="co">#&gt; colnames(500): AAGCCGCGTTGTCTTT GATCGCGGTTATCGGT ... TTGGCAACACTAGTAC</span>
-<span class="co">#&gt;   GCTGCGAGTTGTGGCC</span>
-<span class="co">#&gt; colData names(1): sizeFactor</span>
-<span class="co">#&gt; reducedDimNames(0):</span>
-<span class="co">#&gt; mainExpName: NULL</span>
-<span class="co">#&gt; altExpNames(2): ADT HTO</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">sce_citeseq</span> <span class="op">&lt;-</span> <span class="fu">scater</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/scuttle/man/logNormCounts.html" class="external-link">logNormCounts</a></span><span class="op">(</span><span class="va">sce_citeseq</span><span class="op">)</span></span>
+<span><span class="va">sce_citeseq</span>  <span class="co"># new assay: logcounts</span></span>
+<span><span class="co">#&gt; class: SingleCellExperiment </span></span>
+<span><span class="co">#&gt; dim: 19521 500 </span></span>
+<span><span class="co">#&gt; metadata(0):</span></span>
+<span><span class="co">#&gt; assays(2): counts logcounts</span></span>
+<span><span class="co">#&gt; rownames(19521): hg19_AL627309.1 hg19_AL669831.5 ... hg19_MT-ND6</span></span>
+<span><span class="co">#&gt;   hg19_MT-CYB</span></span>
+<span><span class="co">#&gt; rowData names(0):</span></span>
+<span><span class="co">#&gt; colnames(500): AAGCCGCGTTGTCTTT GATCGCGGTTATCGGT ... TTGGCAACACTAGTAC</span></span>
+<span><span class="co">#&gt;   GCTGCGAGTTGTGGCC</span></span>
+<span><span class="co">#&gt; colData names(1): sizeFactor</span></span>
+<span><span class="co">#&gt; reducedDimNames(0):</span></span>
+<span><span class="co">#&gt; mainExpName: NULL</span></span>
+<span><span class="co">#&gt; altExpNames(2): ADT HTO</span></span></code></pre></div>
 <p>To the ADT modality, we will add an assay with normalised counts:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">sce_citeseq</span> <span class="op">&lt;-</span> <span class="fu">CiteFuse</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/CiteFuse/man/normaliseExprs.html" class="external-link">normaliseExprs</a></span><span class="op">(</span>
-  <span class="va">sce_citeseq</span>, altExp_name <span class="op">=</span> <span class="st">"ADT"</span>, transform <span class="op">=</span> <span class="st">"log"</span>
-<span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/SingleCellExperiment/man/altExps.html" class="external-link">altExp</a></span><span class="op">(</span><span class="va">sce_citeseq</span>, <span class="st">"ADT"</span><span class="op">)</span>  <span class="co"># new assay: logcounts</span>
-<span class="co">#&gt; class: SummarizedExperiment </span>
-<span class="co">#&gt; dim: 49 500 </span>
-<span class="co">#&gt; metadata(0):</span>
-<span class="co">#&gt; assays(2): counts logcounts</span>
-<span class="co">#&gt; rownames(49): B220 (CD45R) B7-H1 (PD-L1) ... TCRb TCRg</span>
-<span class="co">#&gt; rowData names(0):</span>
-<span class="co">#&gt; colnames(500): AAGCCGCGTTGTCTTT GATCGCGGTTATCGGT ... TTGGCAACACTAGTAC</span>
-<span class="co">#&gt;   GCTGCGAGTTGTGGCC</span>
-<span class="co">#&gt; colData names(0):</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">sce_citeseq</span> <span class="op">&lt;-</span> <span class="fu">CiteFuse</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/CiteFuse/man/normaliseExprs.html" class="external-link">normaliseExprs</a></span><span class="op">(</span></span>
+<span>  <span class="va">sce_citeseq</span>, altExp_name <span class="op">=</span> <span class="st">"ADT"</span>, transform <span class="op">=</span> <span class="st">"log"</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/SingleCellExperiment/man/altExps.html" class="external-link">altExp</a></span><span class="op">(</span><span class="va">sce_citeseq</span>, <span class="st">"ADT"</span><span class="op">)</span>  <span class="co"># new assay: logcounts</span></span>
+<span><span class="co">#&gt; class: SummarizedExperiment </span></span>
+<span><span class="co">#&gt; dim: 49 500 </span></span>
+<span><span class="co">#&gt; metadata(0):</span></span>
+<span><span class="co">#&gt; assays(2): counts logcounts</span></span>
+<span><span class="co">#&gt; rownames(49): B220 (CD45R) B7-H1 (PD-L1) ... TCRb TCRg</span></span>
+<span><span class="co">#&gt; rowData names(0):</span></span>
+<span><span class="co">#&gt; colnames(500): AAGCCGCGTTGTCTTT GATCGCGGTTATCGGT ... TTGGCAACACTAGTAC</span></span>
+<span><span class="co">#&gt;   GCTGCGAGTTGTGGCC</span></span>
+<span><span class="co">#&gt; colData names(0):</span></span></code></pre></div>
 <p>We will also generate reduced dimensions:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">sce_citeseq</span> <span class="op">&lt;-</span> <span class="fu">scater</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/scater/man/runPCA.html" class="external-link">runPCA</a></span><span class="op">(</span>
-  <span class="va">sce_citeseq</span>, exprs_values <span class="op">=</span> <span class="st">"logcounts"</span>, ncomponents <span class="op">=</span> <span class="fl">20</span>
-<span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">sce_citeseq</span> <span class="op">&lt;-</span> <span class="fu">scater</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocSingular/man/runPCA.html" class="external-link">runPCA</a></span><span class="op">(</span></span>
+<span>  <span class="va">sce_citeseq</span>, exprs_values <span class="op">=</span> <span class="st">"logcounts"</span>, ncomponents <span class="op">=</span> <span class="fl">20</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">scater</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/scater/man/plotReducedDim.html" class="external-link">plotReducedDim</a></span><span class="op">(</span><span class="va">sce_citeseq</span>, dimred <span class="op">=</span> <span class="st">"PCA"</span>, 
-                       by_exprs_values <span class="op">=</span> <span class="st">"logcounts"</span>, colour_by <span class="op">=</span> <span class="st">"CD27"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">scater</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/scater/man/plotReducedDim.html" class="external-link">plotReducedDim</a></span><span class="op">(</span><span class="va">sce_citeseq</span>, dimred <span class="op">=</span> <span class="st">"PCA"</span>, </span>
+<span>                       by_exprs_values <span class="op">=</span> <span class="st">"logcounts"</span>, colour_by <span class="op">=</span> <span class="st">"CD27"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="Blood-CITE-seq_files/figure-html/unnamed-chunk-8-1.png" width="700"></p>
 </div>
 <div class="section level2">
@@ -199,50 +199,50 @@
 <p>An appropriate structure for multimodal datasets is <a href="https://bioconductor.org/packages/MultiAssayExperiment/" class="external-link"><code>MultiAssayExperiment</code></a>.</p>
 <p>We will make a respective MultiAssayExperiment object from <code>sce_citeseq</code>:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">experiments</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>
-  ADT <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/SingleCellExperiment/man/altExps.html" class="external-link">altExp</a></span><span class="op">(</span><span class="va">sce_citeseq</span>, <span class="st">"ADT"</span><span class="op">)</span>,
-  HTO <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/SingleCellExperiment/man/altExps.html" class="external-link">altExp</a></span><span class="op">(</span><span class="va">sce_citeseq</span>, <span class="st">"HTO"</span><span class="op">)</span>
-<span class="op">)</span>
-
-<span class="co"># Drop other modalities from sce_citeseq</span>
-<span class="fu"><a href="https://rdrr.io/pkg/SingleCellExperiment/man/altExps.html" class="external-link">altExp</a></span><span class="op">(</span><span class="va">sce_citeseq</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="cn">NULL</span>
-<span class="va">experiments</span><span class="op">[[</span><span class="st">"RNA"</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">sce_citeseq</span>
-
-<span class="va">mae</span> <span class="op">&lt;-</span> <span class="fu"><a href="http://waldronlab.io/MultiAssayExperiment/reference/MultiAssayExperiment.html" class="external-link">MultiAssayExperiment</a></span><span class="op">(</span><span class="va">experiments</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">experiments</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>  ADT <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/SingleCellExperiment/man/altExps.html" class="external-link">altExp</a></span><span class="op">(</span><span class="va">sce_citeseq</span>, <span class="st">"ADT"</span><span class="op">)</span>,</span>
+<span>  HTO <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/SingleCellExperiment/man/altExps.html" class="external-link">altExp</a></span><span class="op">(</span><span class="va">sce_citeseq</span>, <span class="st">"HTO"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Drop other modalities from sce_citeseq</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/SingleCellExperiment/man/altExps.html" class="external-link">altExp</a></span><span class="op">(</span><span class="va">sce_citeseq</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="cn">NULL</span></span>
+<span><span class="va">experiments</span><span class="op">[[</span><span class="st">"RNA"</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">sce_citeseq</span></span>
+<span></span>
+<span><span class="va">mae</span> <span class="op">&lt;-</span> <span class="fu"><a href="http://waldronlab.io/MultiAssayExperiment/reference/MultiAssayExperiment.html" class="external-link">MultiAssayExperiment</a></span><span class="op">(</span><span class="va">experiments</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="writing-to-h5mu">Writing to H5MU<a class="anchor" aria-label="anchor" href="#writing-to-h5mu"></a>
 </h2>
 <p>We can write the contents of the MultiAssayExperiment object into an H5MU file:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/writeH5MU.html">writeH5MU</a></span><span class="op">(</span><span class="va">mae</span>, <span class="st">"citefuse_example.h5mu"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/writeH5MU.html">writeH5MU</a></span><span class="op">(</span><span class="va">mae</span>, <span class="st">"citefuse_example.h5mu"</span><span class="op">)</span></span></code></pre></div>
 <p>We can check that all the modalities were written to the file:</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">h5</span> <span class="op">&lt;-</span> <span class="fu">rhdf5</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/rhdf5/man/H5Fopen.html" class="external-link">H5Fopen</a></span><span class="op">(</span><span class="st">"citefuse_example.h5mu"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/rhdf5/man/h5ls.html" class="external-link">h5ls</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/rhdf5/man/H5Gopen.html" class="external-link">H5Gopen</a></span><span class="op">(</span><span class="va">h5</span>, <span class="st">"mod"</span><span class="op">)</span>, recursive <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-<span class="co">#&gt;   group name     otype dclass dim</span>
-<span class="co">#&gt; 0     /  ADT H5I_GROUP           </span>
-<span class="co">#&gt; 1     /  HTO H5I_GROUP           </span>
-<span class="co">#&gt; 2     /  RNA H5I_GROUP</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">h5</span> <span class="op">&lt;-</span> <span class="fu">rhdf5</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/rhdf5/man/H5Fopen.html" class="external-link">H5Fopen</a></span><span class="op">(</span><span class="st">"citefuse_example.h5mu"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/rhdf5/man/h5ls.html" class="external-link">h5ls</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/rhdf5/man/H5Gopen.html" class="external-link">H5Gopen</a></span><span class="op">(</span><span class="va">h5</span>, <span class="st">"mod"</span><span class="op">)</span>, recursive <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="co">#&gt;   group name     otype dclass dim</span></span>
+<span><span class="co">#&gt; 0     /  ADT H5I_GROUP           </span></span>
+<span><span class="co">#&gt; 1     /  HTO H5I_GROUP           </span></span>
+<span><span class="co">#&gt; 2     /  RNA H5I_GROUP</span></span></code></pre></div>
 <p>… both assays for ADT — raw counts are stored in <code>X</code> and normalised counts are in the corresponding layer:</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/rhdf5/man/h5ls.html" class="external-link">h5ls</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/rhdf5/man/H5Gopen.html" class="external-link">H5Gopen</a></span><span class="op">(</span><span class="va">h5</span>, <span class="st">"mod/ADT"</span><span class="op">)</span>, <span class="cn">FALSE</span><span class="op">)</span>
-<span class="co">#&gt;   group   name     otype dclass dim</span>
-<span class="co">#&gt; 0     /      X H5I_GROUP           </span>
-<span class="co">#&gt; 1     / layers H5I_GROUP           </span>
-<span class="co">#&gt; 2     /    obs H5I_GROUP           </span>
-<span class="co">#&gt; 3     /    var H5I_GROUP</span>
-<span class="fu"><a href="https://rdrr.io/pkg/rhdf5/man/h5ls.html" class="external-link">h5ls</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/rhdf5/man/H5Gopen.html" class="external-link">H5Gopen</a></span><span class="op">(</span><span class="va">h5</span>, <span class="st">"mod/ADT/layers"</span><span class="op">)</span>, <span class="cn">FALSE</span><span class="op">)</span>
-<span class="co">#&gt;   group      name       otype dclass      dim</span>
-<span class="co">#&gt; 0     / logcounts H5I_DATASET  FLOAT 49 x 500</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/rhdf5/man/h5ls.html" class="external-link">h5ls</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/rhdf5/man/H5Gopen.html" class="external-link">H5Gopen</a></span><span class="op">(</span><span class="va">h5</span>, <span class="st">"mod/ADT"</span><span class="op">)</span>, <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="co">#&gt;   group   name     otype dclass dim</span></span>
+<span><span class="co">#&gt; 0     /      X H5I_GROUP           </span></span>
+<span><span class="co">#&gt; 1     / layers H5I_GROUP           </span></span>
+<span><span class="co">#&gt; 2     /    obs H5I_GROUP           </span></span>
+<span><span class="co">#&gt; 3     /    var H5I_GROUP</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/rhdf5/man/h5ls.html" class="external-link">h5ls</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/rhdf5/man/H5Gopen.html" class="external-link">H5Gopen</a></span><span class="op">(</span><span class="va">h5</span>, <span class="st">"mod/ADT/layers"</span><span class="op">)</span>, <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="co">#&gt;   group      name       otype dclass      dim</span></span>
+<span><span class="co">#&gt; 0     / logcounts H5I_DATASET  FLOAT 49 x 500</span></span></code></pre></div>
 <p>… as well as reduced dimensions (PCA):</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/rhdf5/man/h5ls.html" class="external-link">h5ls</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/rhdf5/man/H5Gopen.html" class="external-link">H5Gopen</a></span><span class="op">(</span><span class="va">h5</span>, <span class="st">"mod/RNA/obsm"</span><span class="op">)</span>, <span class="cn">FALSE</span><span class="op">)</span>
-<span class="co">#&gt;   group name       otype dclass      dim</span>
-<span class="co">#&gt; 0     /  PCA H5I_DATASET  FLOAT 20 x 500</span>
-<span class="co"># There is an alternative way to access groups:</span>
-<span class="co"># h5&amp;'mod'&amp;'RNA'&amp;'obsm'</span>
-<span class="fu">rhdf5</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/rhdf5/man/H5functions.html" class="external-link">H5close</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/rhdf5/man/h5ls.html" class="external-link">h5ls</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/rhdf5/man/H5Gopen.html" class="external-link">H5Gopen</a></span><span class="op">(</span><span class="va">h5</span>, <span class="st">"mod/RNA/obsm"</span><span class="op">)</span>, <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="co">#&gt;   group name       otype dclass      dim</span></span>
+<span><span class="co">#&gt; 0     /  PCA H5I_DATASET  FLOAT 20 x 500</span></span>
+<span><span class="co"># There is an alternative way to access groups:</span></span>
+<span><span class="co"># h5&amp;'mod'&amp;'RNA'&amp;'obsm'</span></span>
+<span><span class="fu">rhdf5</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/rhdf5/man/H5functions.html" class="external-link">H5close</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
@@ -259,97 +259,97 @@
 <h2 id="session-info">Session Info<a class="anchor" aria-label="anchor" href="#session-info"></a>
 </h2>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span>
-<span class="co">#&gt; R Under development (unstable) (2022-05-30 r82436)</span>
-<span class="co">#&gt; Platform: x86_64-pc-linux-gnu (64-bit)</span>
-<span class="co">#&gt; Running under: Ubuntu 20.04.4 LTS</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Matrix products: default</span>
-<span class="co">#&gt; BLAS:   /usr/lib/x86_64-linux-gnu/blas/libblas.so.3.9.0</span>
-<span class="co">#&gt; LAPACK: /usr/lib/x86_64-linux-gnu/lapack/liblapack.so.3.9.0</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; locale:</span>
-<span class="co">#&gt;  [1] LC_CTYPE=C.UTF-8       LC_NUMERIC=C           LC_TIME=C.UTF-8       </span>
-<span class="co">#&gt;  [4] LC_COLLATE=C.UTF-8     LC_MONETARY=C.UTF-8    LC_MESSAGES=C.UTF-8   </span>
-<span class="co">#&gt;  [7] LC_PAPER=C.UTF-8       LC_NAME=C              LC_ADDRESS=C          </span>
-<span class="co">#&gt; [10] LC_TELEPHONE=C         LC_MEASUREMENT=C.UTF-8 LC_IDENTIFICATION=C   </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; attached base packages:</span>
-<span class="co">#&gt; [1] stats4    stats     graphics  grDevices utils     datasets  methods  </span>
-<span class="co">#&gt; [8] base     </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; other attached packages:</span>
-<span class="co">#&gt;  [1] scater_1.25.1               ggplot2_3.3.6              </span>
-<span class="co">#&gt;  [3] scuttle_1.7.2               CiteFuse_1.9.0             </span>
-<span class="co">#&gt;  [5] MultiAssayExperiment_1.23.1 SingleCellExperiment_1.19.0</span>
-<span class="co">#&gt;  [7] SummarizedExperiment_1.27.1 Biobase_2.57.1             </span>
-<span class="co">#&gt;  [9] GenomicRanges_1.49.0        GenomeInfoDb_1.33.3        </span>
-<span class="co">#&gt; [11] IRanges_2.31.0              MatrixGenerics_1.9.0       </span>
-<span class="co">#&gt; [13] matrixStats_0.62.0          MuData_0.99.9              </span>
-<span class="co">#&gt; [15] rhdf5_2.41.0                S4Vectors_0.35.0           </span>
-<span class="co">#&gt; [17] BiocGenerics_0.43.0         Matrix_1.4-1               </span>
-<span class="co">#&gt; [19] BiocStyle_2.25.0           </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; loaded via a namespace (and not attached):</span>
-<span class="co">#&gt;   [1] DBI_1.1.2                 bitops_1.0-7             </span>
-<span class="co">#&gt;   [3] gridExtra_2.3             rlang_1.0.2              </span>
-<span class="co">#&gt;   [5] magrittr_2.0.3            ggridges_0.5.3           </span>
-<span class="co">#&gt;   [7] compiler_4.3.0            DelayedMatrixStats_1.19.0</span>
-<span class="co">#&gt;   [9] systemfonts_1.0.4         vctrs_0.4.1              </span>
-<span class="co">#&gt;  [11] reshape2_1.4.4            stringr_1.4.0            </span>
-<span class="co">#&gt;  [13] pkgconfig_2.0.3           crayon_1.5.1             </span>
-<span class="co">#&gt;  [15] fastmap_1.1.0             XVector_0.37.0           </span>
-<span class="co">#&gt;  [17] ellipsis_0.3.2            labeling_0.4.2           </span>
-<span class="co">#&gt;  [19] ggraph_2.0.5              utf8_1.2.2               </span>
-<span class="co">#&gt;  [21] rmarkdown_2.14            ggbeeswarm_0.6.0         </span>
-<span class="co">#&gt;  [23] ragg_1.2.2                purrr_0.3.4              </span>
-<span class="co">#&gt;  [25] bluster_1.7.0             xfun_0.31                </span>
-<span class="co">#&gt;  [27] beachmat_2.13.1           randomForest_4.7-1.1     </span>
-<span class="co">#&gt;  [29] zlibbioc_1.43.0           cachem_1.0.6             </span>
-<span class="co">#&gt;  [31] jsonlite_1.8.0            highr_0.9                </span>
-<span class="co">#&gt;  [33] rhdf5filters_1.9.0        DelayedArray_0.23.0      </span>
-<span class="co">#&gt;  [35] BiocParallel_1.31.6       Rhdf5lib_1.19.2          </span>
-<span class="co">#&gt;  [37] tweenr_1.0.2              propr_4.2.6              </span>
-<span class="co">#&gt;  [39] cluster_2.1.3             irlba_2.3.5              </span>
-<span class="co">#&gt;  [41] parallel_4.3.0            R6_2.5.1                 </span>
-<span class="co">#&gt;  [43] bslib_0.3.1               stringi_1.7.6            </span>
-<span class="co">#&gt;  [45] RColorBrewer_1.1-3        limma_3.53.2             </span>
-<span class="co">#&gt;  [47] jquerylib_0.1.4           Rcpp_1.0.8.3             </span>
-<span class="co">#&gt;  [49] bookdown_0.26             assertthat_0.2.1         </span>
-<span class="co">#&gt;  [51] knitr_1.39                mixtools_1.2.0           </span>
-<span class="co">#&gt;  [53] splines_4.3.0             igraph_1.3.1             </span>
-<span class="co">#&gt;  [55] tidyselect_1.1.2          yaml_2.3.5               </span>
-<span class="co">#&gt;  [57] viridis_0.6.2             lattice_0.20-45          </span>
-<span class="co">#&gt;  [59] tibble_3.1.7              plyr_1.8.7               </span>
-<span class="co">#&gt;  [61] withr_2.5.0               evaluate_0.15            </span>
-<span class="co">#&gt;  [63] Rtsne_0.16                desc_1.4.1               </span>
-<span class="co">#&gt;  [65] survival_3.3-1            polyclip_1.10-0          </span>
-<span class="co">#&gt;  [67] kernlab_0.9-30            pillar_1.7.0             </span>
-<span class="co">#&gt;  [69] BiocManager_1.30.18       generics_0.1.2           </span>
-<span class="co">#&gt;  [71] dbscan_1.1-10             rprojroot_2.0.3          </span>
-<span class="co">#&gt;  [73] RCurl_1.98-1.6            sparseMatrixStats_1.9.0  </span>
-<span class="co">#&gt;  [75] munsell_0.5.0             scales_1.2.0             </span>
-<span class="co">#&gt;  [77] glue_1.6.2                metapod_1.5.0            </span>
-<span class="co">#&gt;  [79] pheatmap_1.0.12           tools_4.3.0              </span>
-<span class="co">#&gt;  [81] BiocNeighbors_1.15.1      ScaledMatrix_1.5.0       </span>
-<span class="co">#&gt;  [83] locfit_1.5-9.5            fs_1.5.2                 </span>
-<span class="co">#&gt;  [85] scran_1.25.0              graphlayouts_0.8.0       </span>
-<span class="co">#&gt;  [87] tidygraph_1.2.1           cowplot_1.1.1            </span>
-<span class="co">#&gt;  [89] grid_4.3.0                tidyr_1.2.0              </span>
-<span class="co">#&gt;  [91] edgeR_3.39.1              colorspace_2.0-3         </span>
-<span class="co">#&gt;  [93] GenomeInfoDbData_1.2.8    beeswarm_0.4.0           </span>
-<span class="co">#&gt;  [95] BiocSingular_1.13.0       ggforce_0.3.3            </span>
-<span class="co">#&gt;  [97] vipor_0.4.5               rsvd_1.0.5               </span>
-<span class="co">#&gt;  [99] cli_3.3.0                 textshaping_0.3.6        </span>
-<span class="co">#&gt; [101] fansi_1.0.3               segmented_1.5-0          </span>
-<span class="co">#&gt; [103] viridisLite_0.4.0         dplyr_1.0.9              </span>
-<span class="co">#&gt; [105] uwot_0.1.11               gtable_0.3.0             </span>
-<span class="co">#&gt; [107] sass_0.4.1                digest_0.6.29            </span>
-<span class="co">#&gt; [109] dqrng_0.3.0               ggrepel_0.9.1            </span>
-<span class="co">#&gt; [111] farver_2.1.0              memoise_2.0.1            </span>
-<span class="co">#&gt; [113] htmltools_0.5.2           pkgdown_2.0.3            </span>
-<span class="co">#&gt; [115] lifecycle_1.0.1           statmod_1.4.36           </span>
-<span class="co">#&gt; [117] MASS_7.3-57.1</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; R Under development (unstable) (2022-08-24 r82759)</span></span>
+<span><span class="co">#&gt; Platform: x86_64-pc-linux-gnu (64-bit)</span></span>
+<span><span class="co">#&gt; Running under: Ubuntu 20.04.4 LTS</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Matrix products: default</span></span>
+<span><span class="co">#&gt; BLAS:   /usr/lib/x86_64-linux-gnu/blas/libblas.so.3.9.0</span></span>
+<span><span class="co">#&gt; LAPACK: /usr/lib/x86_64-linux-gnu/lapack/liblapack.so.3.9.0</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; locale:</span></span>
+<span><span class="co">#&gt;  [1] LC_CTYPE=C.UTF-8       LC_NUMERIC=C           LC_TIME=C.UTF-8       </span></span>
+<span><span class="co">#&gt;  [4] LC_COLLATE=C.UTF-8     LC_MONETARY=C.UTF-8    LC_MESSAGES=C.UTF-8   </span></span>
+<span><span class="co">#&gt;  [7] LC_PAPER=C.UTF-8       LC_NAME=C              LC_ADDRESS=C          </span></span>
+<span><span class="co">#&gt; [10] LC_TELEPHONE=C         LC_MEASUREMENT=C.UTF-8 LC_IDENTIFICATION=C   </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; attached base packages:</span></span>
+<span><span class="co">#&gt; [1] stats4    stats     graphics  grDevices utils     datasets  methods  </span></span>
+<span><span class="co">#&gt; [8] base     </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; other attached packages:</span></span>
+<span><span class="co">#&gt;  [1] scater_1.25.4               ggplot2_3.3.6              </span></span>
+<span><span class="co">#&gt;  [3] scuttle_1.7.4               CiteFuse_1.9.0             </span></span>
+<span><span class="co">#&gt;  [5] MultiAssayExperiment_1.23.4 SingleCellExperiment_1.19.0</span></span>
+<span><span class="co">#&gt;  [7] SummarizedExperiment_1.27.2 Biobase_2.57.1             </span></span>
+<span><span class="co">#&gt;  [9] GenomicRanges_1.49.1        GenomeInfoDb_1.33.5        </span></span>
+<span><span class="co">#&gt; [11] IRanges_2.31.2              MatrixGenerics_1.9.1       </span></span>
+<span><span class="co">#&gt; [13] matrixStats_0.62.0          MuData_0.99.9              </span></span>
+<span><span class="co">#&gt; [15] rhdf5_2.41.1                S4Vectors_0.35.1           </span></span>
+<span><span class="co">#&gt; [17] BiocGenerics_0.43.1         Matrix_1.4-1               </span></span>
+<span><span class="co">#&gt; [19] BiocStyle_2.25.0           </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; loaded via a namespace (and not attached):</span></span>
+<span><span class="co">#&gt;   [1] DBI_1.1.3                 bitops_1.0-7             </span></span>
+<span><span class="co">#&gt;   [3] gridExtra_2.3             rlang_1.0.4              </span></span>
+<span><span class="co">#&gt;   [5] magrittr_2.0.3            ggridges_0.5.3           </span></span>
+<span><span class="co">#&gt;   [7] compiler_4.3.0            DelayedMatrixStats_1.19.0</span></span>
+<span><span class="co">#&gt;   [9] systemfonts_1.0.4         vctrs_0.4.1              </span></span>
+<span><span class="co">#&gt;  [11] reshape2_1.4.4            stringr_1.4.1            </span></span>
+<span><span class="co">#&gt;  [13] pkgconfig_2.0.3           fastmap_1.1.0            </span></span>
+<span><span class="co">#&gt;  [15] XVector_0.37.0            labeling_0.4.2           </span></span>
+<span><span class="co">#&gt;  [17] ggraph_2.0.6              utf8_1.2.2               </span></span>
+<span><span class="co">#&gt;  [19] rmarkdown_2.16            ggbeeswarm_0.6.0         </span></span>
+<span><span class="co">#&gt;  [21] ragg_1.2.2                purrr_0.3.4              </span></span>
+<span><span class="co">#&gt;  [23] bluster_1.7.0             xfun_0.32                </span></span>
+<span><span class="co">#&gt;  [25] beachmat_2.13.4           randomForest_4.7-1.1     </span></span>
+<span><span class="co">#&gt;  [27] zlibbioc_1.43.0           cachem_1.0.6             </span></span>
+<span><span class="co">#&gt;  [29] jsonlite_1.8.0            highr_0.9                </span></span>
+<span><span class="co">#&gt;  [31] rhdf5filters_1.9.0        DelayedArray_0.23.1      </span></span>
+<span><span class="co">#&gt;  [33] Rhdf5lib_1.19.2           BiocParallel_1.31.12     </span></span>
+<span><span class="co">#&gt;  [35] tweenr_2.0.1              propr_4.2.6              </span></span>
+<span><span class="co">#&gt;  [37] cluster_2.1.4             irlba_2.3.5              </span></span>
+<span><span class="co">#&gt;  [39] parallel_4.3.0            R6_2.5.1                 </span></span>
+<span><span class="co">#&gt;  [41] bslib_0.4.0               stringi_1.7.8            </span></span>
+<span><span class="co">#&gt;  [43] RColorBrewer_1.1-3        limma_3.53.6             </span></span>
+<span><span class="co">#&gt;  [45] jquerylib_0.1.4           Rcpp_1.0.9               </span></span>
+<span><span class="co">#&gt;  [47] bookdown_0.28             assertthat_0.2.1         </span></span>
+<span><span class="co">#&gt;  [49] knitr_1.40                mixtools_1.2.0           </span></span>
+<span><span class="co">#&gt;  [51] splines_4.3.0             igraph_1.3.4             </span></span>
+<span><span class="co">#&gt;  [53] tidyselect_1.1.2          yaml_2.3.5               </span></span>
+<span><span class="co">#&gt;  [55] viridis_0.6.2             codetools_0.2-18         </span></span>
+<span><span class="co">#&gt;  [57] lattice_0.20-45           tibble_3.1.8             </span></span>
+<span><span class="co">#&gt;  [59] plyr_1.8.7                withr_2.5.0              </span></span>
+<span><span class="co">#&gt;  [61] evaluate_0.16             Rtsne_0.16               </span></span>
+<span><span class="co">#&gt;  [63] desc_1.4.1                survival_3.4-0           </span></span>
+<span><span class="co">#&gt;  [65] polyclip_1.10-0           kernlab_0.9-31           </span></span>
+<span><span class="co">#&gt;  [67] pillar_1.8.1              BiocManager_1.30.18      </span></span>
+<span><span class="co">#&gt;  [69] generics_0.1.3            dbscan_1.1-10            </span></span>
+<span><span class="co">#&gt;  [71] rprojroot_2.0.3           RCurl_1.98-1.8           </span></span>
+<span><span class="co">#&gt;  [73] sparseMatrixStats_1.9.0   munsell_0.5.0            </span></span>
+<span><span class="co">#&gt;  [75] scales_1.2.1              glue_1.6.2               </span></span>
+<span><span class="co">#&gt;  [77] metapod_1.5.0             pheatmap_1.0.12          </span></span>
+<span><span class="co">#&gt;  [79] tools_4.3.0               BiocNeighbors_1.15.1     </span></span>
+<span><span class="co">#&gt;  [81] ScaledMatrix_1.5.0        locfit_1.5-9.6           </span></span>
+<span><span class="co">#&gt;  [83] fs_1.5.2                  scran_1.25.0             </span></span>
+<span><span class="co">#&gt;  [85] graphlayouts_0.8.1        tidygraph_1.2.2          </span></span>
+<span><span class="co">#&gt;  [87] cowplot_1.1.1             grid_4.3.0               </span></span>
+<span><span class="co">#&gt;  [89] tidyr_1.2.0               edgeR_3.39.6             </span></span>
+<span><span class="co">#&gt;  [91] colorspace_2.0-3          nlme_3.1-159             </span></span>
+<span><span class="co">#&gt;  [93] GenomeInfoDbData_1.2.8    beeswarm_0.4.0           </span></span>
+<span><span class="co">#&gt;  [95] BiocSingular_1.13.1       ggforce_0.3.4            </span></span>
+<span><span class="co">#&gt;  [97] vipor_0.4.5               rsvd_1.0.5               </span></span>
+<span><span class="co">#&gt;  [99] cli_3.3.0                 textshaping_0.3.6        </span></span>
+<span><span class="co">#&gt; [101] fansi_1.0.3               segmented_1.6-0          </span></span>
+<span><span class="co">#&gt; [103] viridisLite_0.4.1         dplyr_1.0.9              </span></span>
+<span><span class="co">#&gt; [105] uwot_0.1.14               gtable_0.3.0             </span></span>
+<span><span class="co">#&gt; [107] sass_0.4.2                digest_0.6.29            </span></span>
+<span><span class="co">#&gt; [109] dqrng_0.3.0               ggrepel_0.9.1            </span></span>
+<span><span class="co">#&gt; [111] farver_2.1.1              memoise_2.0.1            </span></span>
+<span><span class="co">#&gt; [113] htmltools_0.5.3           pkgdown_2.0.6            </span></span>
+<span><span class="co">#&gt; [115] lifecycle_1.0.1           statmod_1.4.37           </span></span>
+<span><span class="co">#&gt; [117] MASS_7.3-58.1</span></span></code></pre></div>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>
@@ -364,7 +364,7 @@
 
 <div class="pkgdown-footer-right">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
     </footer>
