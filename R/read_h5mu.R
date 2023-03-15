@@ -158,7 +158,7 @@ read_group <- function(group, read_uns=FALSE) {
             return(read_dataframe(group))
         } else if (endsWith(encoding, "matrix")) {
             return(read_sparse_matrix(group))
-        } else if (!encoding %in% c("dict")) {
+        } else if (encoding != "dict") {
             # "dict" encoding is just a regular group of attributes and should 
             # be read as though there is no defined encoding
             warning("Unknown encoding ", encoding)
