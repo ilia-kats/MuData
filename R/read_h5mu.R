@@ -206,7 +206,7 @@ read_modality <- function(view, backed=FALSE) {
         })
     }
 
-    args <- list(assays=c(list(X), layers), rowData=var, colData=obs)
+    args <- list(assays=c(list(X=X), layers), rowData=var, colData=obs)
 
     if ("obsm" %in% viewnames) {
         obsmnames <- h5ls(h5autoclose(view & "obsm"), recursive=FALSE)$name
