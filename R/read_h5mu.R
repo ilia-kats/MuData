@@ -25,11 +25,7 @@ read_dataframe <- function(group) {
             } else {
                 labels <- H5Rdereference(labels, h5loc=col)
                 labels_items <- H5Dread(labels)
-                n_labels <- length(unique(values))
-                if (length(labels_items) > n_labels) {
-                    labels_items <- labels_items[seq_len(n_labels)]
-                }
-                values <- factor(as.integer(values), labels=labels_items)
+                values <- convert_categoricals(values, labels_items)
                 H5Dclose(labels)
             }
             H5Aclose(attr)
@@ -42,6 +38,30 @@ read_dataframe <- function(group) {
     col_list[["row.names"]] <- H5Dread(index)
     H5Dclose(index)
     do.call(data.frame, args=col_list)
+}
+
+#' Helper function to convert values + labels into factors
+#'
+#' @description  A helper function to convert categories into factors.
+#'  Assumptions: 
+#'      - values correspond to the zero indexed categories
+#'          (i.e. value 0 is the first category) 
+#'      - NA are encoded with a value -1
+#'  Categories not uses will be dropped.
+#'
+#' @param values Vector of integer level numbers (zero indexed). -1 indicate NA
+#' @param categories Labels for level numbers (zero indexed).
+#'
+#' @returns factor with categorical values
+#'
+#' @keywords internal
+#' @noRd 
+convert_categoricals <- function(values, categories) {
+    # The levels are 0 indexed integers
+    levels <- seq_len(length(categories))-1
+    value_factor <- factor(as.integer(values), levels, labels=categories)
+    # Drop unused levels
+    droplevels(value_factor)
 }
 
 #' @importFrom rhdf5 H5Dread H5Aexists H5Aopen H5Aread H5Aclose
