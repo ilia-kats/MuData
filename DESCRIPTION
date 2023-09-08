@@ -24,7 +24,7 @@ Imports: methods,
          SummarizedExperiment,
          DelayedArray,
          S4Vectors
-Depends: Matrix, S4Vectors, rhdf5
+Depends: Matrix, S4Vectors, rhdf5 (>= 2.45)
 Suggests:
     HDF5Array,
     rmarkdown,

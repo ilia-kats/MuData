@@ -58,7 +58,7 @@ finalize_mudata <- function(h5) {
 
 #' @importFrom rhdf5 h5writeAttribute
 finalize_anndata_internal <- function(h5) {
-    h5writeAttribute("AnnData", h5, "encoding-type", variableLengthString=TRUE, asScalar=TRUE)
+    h5writeAttribute("anndata", h5, "encoding-type", variableLengthString=TRUE, asScalar=TRUE)
     h5writeAttribute(.anndataversion, h5, "encoding-version", variableLengthString=TRUE, asScalar=TRUE)
     h5writeAttribute(.name, h5, "encoder", variableLengthString=TRUE, asScalar=TRUE)
     h5writeAttribute(.version, h5, "encoder-version", variableLengthString=TRUE, asScalar=TRUE)
