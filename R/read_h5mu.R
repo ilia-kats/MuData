@@ -76,9 +76,9 @@ read_dataframe <- function(group, encoding) {
 #' Helper function to convert values + labels into factors
 #'
 #' @description  A helper function to convert categories into factors.
-#'  Assumptions: 
+#'  Assumptions:
 #'      - values correspond to the zero indexed categories
-#'          (i.e. value 0 is the first category) 
+#'          (i.e. value 0 is the first category)
 #'      - NA are encoded with a value -1
 #'  Categories not uses will be dropped.
 #'
@@ -88,7 +88,7 @@ read_dataframe <- function(group, encoding) {
 #' @returns factor with categorical values
 #'
 #' @keywords internal
-#' @noRd 
+#' @noRd
 convert_categoricals <- function(values, categories) {
     # The levels are 0 indexed integers
     levels <- seq_len(length(categories))-1
@@ -236,13 +236,7 @@ read_categorical <- function(group, encoding) {
 
     values <- as.integer(H5Dread(h5autoclose(group & "codes")))
     labels <- H5Dread(h5autoclose(group & "categories"))
-    n_labels <- max(values) + 1
-    if (length(labels) > n_labels) {
-        labels_items <- labels_items[seq_len(n_labels)]
-    }
-
-    values[values == -1] <- NA
-    factor(values, labels=labels, ordered=ordered)
+    convert_categoricals(values, labels)
 }
 
 #' @importFrom rhdf5 H5Dread
