@@ -74,3 +74,25 @@ test_that("a SE object with a sparse matrix written to H5AD can be read", {
     expect_true(inherits(assay(se_b), "DelayedArray"))
   }
 })
+
+test_that("Categoricals columns with NA are loaded correctly", {
+  values <- c(0, -1)
+  categories <- c('a')
+  res <- convert_categoricals(values, categories)
+  expect_equal(as.character(res[1]), 'a')
+  expect_true(is.na(res[2]))
+})
+
+test_that("Extra levels in categoricals are ignored", {
+  values <- c(0)
+  categories <- c('a', 'b')
+  res <- convert_categoricals(values, categories)
+  expect_equal(levels(res), c('a'))
+})
+
+test_that("Extra levels in categoricals are ignored when NA are present", {
+  values <- c(0, -1)
+  categories <- c('a', 'b')
+  res <- convert_categoricals(values, categories)
+  expect_equal(levels(res), c('a'))
+})
