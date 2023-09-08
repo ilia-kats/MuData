@@ -226,7 +226,7 @@ write_matrix <- function(parent, key, mat) {
     } else if (is.factor(mat)) {
         grp <- H5Gcreate(parent, key)
         codes <- as.integer(mat)
-        codes[is.na(mat)] <- -1L
+        codes[is.na(mat)] <- 0L
         write_matrix(grp, "codes", codes - 1L)
         write_matrix(grp, "categories", levels(mat))
         writeAttribute(grp, "ordered", is.ordered(mat))
