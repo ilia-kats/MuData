@@ -42,6 +42,7 @@ jobs:
             sudo apt-get install libmagick++-dev
           elif [ $RUNNER_OS == "macOS" ] ; then
             brew install imagemagick@6
+            brew install fribidi
           fi
         shell: bash
       
