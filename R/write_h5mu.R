@@ -253,7 +253,6 @@ write_matrix <- function(parent, key, mat) {
     } else if (is(mat, "DelayedArray") && requireNamespace("HDF5Array", quietly=TRUE)) {
         writeArrayToMuData(mat, parent, key)
     } else {
-        browser()
         stop("Writing matrices of type ", class(mat), " is not implemented.")
     }
 }
