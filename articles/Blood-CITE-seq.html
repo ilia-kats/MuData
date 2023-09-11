@@ -8,10 +8,10 @@
 <meta name="description" content="MuData">
 <title>CITE-seq data with CiteFuse and MuData • MuData</title>
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="../deps/bootstrap-5.1.3/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.1.3/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
+<link href="../deps/bootstrap-5.2.2/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.2.2/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
-<!-- bootstrap-toc --><script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="CITE-seq data with CiteFuse and MuData">
+<!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="CITE-seq data with CiteFuse and MuData">
 <meta property="og:description" content="MuData">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
@@ -67,19 +67,24 @@
 
 
 
-<script src="Blood-CITE-seq_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+
+<div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="" class="logo" alt=""><h1>CITE-seq data with CiteFuse and MuData</h1>
-                        <h4 data-toc-skip class="author">Danila Bredikhin</h4>
+                        <h4 data-toc-skip class="author">Danila
+Bredikhin</h4>
             <address class="author_afil">
-      European Molecular Biology Laboratory, Heidelberg, Germany<br><a class="author_email" href="mailto:#"></a><a href="mailto:danila.bredikhin@embl.de" class="email">danila.bredikhin@embl.de</a>
+      European Molecular Biology Laboratory, Heidelberg,
+Germany<br><a class="author_email" href="mailto:#"></a><a href="mailto:danila.bredikhin@embl.de" class="email">danila.bredikhin@embl.de</a>
       </address>
-                              <h4 data-toc-skip class="author">Ilia Kats</h4>
+                              <h4 data-toc-skip class="author">Ilia
+Kats</h4>
             <address class="author_afil">
-      German Cancer Research Center, Heidelberg, Germany<br><a class="author_email" href="mailto:#"></a><a href="mailto:i.kats@dkfz-heidelberg.de" class="email">i.kats@dkfz-heidelberg.de</a>
+      German Cancer Research Center, Heidelberg,
+Germany<br><a class="author_email" href="mailto:#"></a><a href="mailto:i.kats@dkfz-heidelberg.de" class="email">i.kats@dkfz-heidelberg.de</a>
       </address>
                   
-            <h4 data-toc-skip class="date">2022-08-26</h4>
+            <h4 data-toc-skip class="date">2023-09-11</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/ilia-kats/MuData/blob/HEAD/vignettes/Blood-CITE-seq.Rmd" class="external-link"><code>vignettes/Blood-CITE-seq.Rmd</code></a></small>
       <div class="d-none name"><code>Blood-CITE-seq.Rmd</code></div>
@@ -90,7 +95,9 @@
 <div class="section level2">
 <h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
-<p>CITE-seq data provide RNA and surface protein counts for the same cells. This tutorial shows how MuData can be integrated into with Bioconductor workflows to analyse CITE-seq data.</p>
+<p>CITE-seq data provide RNA and surface protein counts for the same
+cells. This tutorial shows how MuData can be integrated into with
+Bioconductor workflows to analyse CITE-seq data.</p>
 </div>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
@@ -99,13 +106,16 @@
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://remotes.r-lib.org" class="external-link">remotes</a></span><span class="op">)</span></span>
 <span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"ilia-kats/MuData"</span><span class="op">)</span></span></code></pre></div>
-<p>Stable version of <code>MuData</code> will be available in future bioconductor versions.</p>
+<p>Stable version of <code>MuData</code> will be available in future
+bioconductor versions.</p>
 </div>
 <div class="section level2">
 <h2 id="loading-libraries">Loading libraries<a class="anchor" aria-label="anchor" href="#loading-libraries"></a>
 </h2>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ilia-kats/MuData" class="external-link">MuData</a></span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning: replacing previous import 'S4Arrays::makeNindexFromArrayViewport' by</span></span>
+<span><span class="co">#&gt; 'DelayedArray::makeNindexFromArrayViewport' when loading 'SummarizedExperiment'</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">SingleCellExperiment</span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://waldronlab.io/MultiAssayExperiment/" class="external-link">MultiAssayExperiment</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">CiteFuse</span><span class="op">)</span></span>
@@ -116,7 +126,8 @@
 <div class="section level2">
 <h2 id="loading-data">Loading data<a class="anchor" aria-label="anchor" href="#loading-data"></a>
 </h2>
-<p>We will use CITE-seq data available within <a href="http://www.bioconductor.org/packages/release/bioc/html/CiteFuse.html" class="external-link"><code>CiteFuse</code> Bioconductor package</a>.</p>
+<p>We will use CITE-seq data available within <a href="http://www.bioconductor.org/packages/release/bioc/html/CiteFuse.html" class="external-link"><code>CiteFuse</code>
+Bioconductor package</a>.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"CITEseq_example"</span>, package <span class="op">=</span> <span class="st">"CiteFuse"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">CITEseq_example</span>, <span class="va">dim</span><span class="op">)</span></span>
@@ -128,13 +139,19 @@
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $HTO</span></span>
 <span><span class="co">#&gt; [1]   4 500</span></span></code></pre></div>
-<p>This dataset contains three matrices — one with <code>RNA</code> counts, one with antibody-derived tags (<code>ADT</code>) counts and one with hashtag oligonucleotide (<code>HTO</code>) counts.</p>
+<p>This dataset contains three matrices — one with <code>RNA</code>
+counts, one with antibody-derived tags (<code>ADT</code>) counts and one
+with hashtag oligonucleotide (<code>HTO</code>) counts.</p>
 </div>
 <div class="section level2">
 <h2 id="processing-count-matrices">Processing count matrices<a class="anchor" aria-label="anchor" href="#processing-count-matrices"></a>
 </h2>
-<p>While CITE-seq analysis workflows such as <a href="http://www.bioconductor.org/packages/release/bioc/vignettes/CiteFuse/inst/doc/CiteFuse.html" class="external-link">CiteFuse</a> should be consulted for more details, below we exemplify simple data transformations in order to demonstrate how their output can be saved to an H5MU file later on.</p>
-<p>Following the CiteFuse tutorial, we start with creating a <code>SingleCellExperiment</code> object with the three matrices:</p>
+<p>While CITE-seq analysis workflows such as <a href="http://www.bioconductor.org/packages/release/bioc/vignettes/CiteFuse/inst/doc/CiteFuse.html" class="external-link">CiteFuse</a>
+should be consulted for more details, below we exemplify simple data
+transformations in order to demonstrate how their output can be saved to
+an H5MU file later on.</p>
+<p>Following the CiteFuse tutorial, we start with creating a
+<code>SingleCellExperiment</code> object with the three matrices:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">sce_citeseq</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/CiteFuse/man/preprocessing.html" class="external-link">preprocessing</a></span><span class="op">(</span><span class="va">CITEseq_example</span><span class="op">)</span></span>
 <span><span class="va">sce_citeseq</span></span>
@@ -197,7 +214,8 @@
 <h2 id="making-a-multiassayexperiment-object">Making a MultiAssayExperiment object<a class="anchor" aria-label="anchor" href="#making-a-multiassayexperiment-object"></a>
 </h2>
 <p>An appropriate structure for multimodal datasets is <a href="https://bioconductor.org/packages/MultiAssayExperiment/" class="external-link"><code>MultiAssayExperiment</code></a>.</p>
-<p>We will make a respective MultiAssayExperiment object from <code>sce_citeseq</code>:</p>
+<p>We will make a respective MultiAssayExperiment object from
+<code>sce_citeseq</code>:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">experiments</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
 <span>  ADT <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/SingleCellExperiment/man/altExps.html" class="external-link">altExp</a></span><span class="op">(</span><span class="va">sce_citeseq</span>, <span class="st">"ADT"</span><span class="op">)</span>,</span>
@@ -213,7 +231,8 @@
 <div class="section level2">
 <h2 id="writing-to-h5mu">Writing to H5MU<a class="anchor" aria-label="anchor" href="#writing-to-h5mu"></a>
 </h2>
-<p>We can write the contents of the MultiAssayExperiment object into an H5MU file:</p>
+<p>We can write the contents of the MultiAssayExperiment object into an
+H5MU file:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/writeH5MU.html">writeH5MU</a></span><span class="op">(</span><span class="va">mae</span>, <span class="st">"citefuse_example.h5mu"</span><span class="op">)</span></span></code></pre></div>
 <p>We can check that all the modalities were written to the file:</p>
@@ -224,7 +243,8 @@
 <span><span class="co">#&gt; 0     /  ADT H5I_GROUP           </span></span>
 <span><span class="co">#&gt; 1     /  HTO H5I_GROUP           </span></span>
 <span><span class="co">#&gt; 2     /  RNA H5I_GROUP</span></span></code></pre></div>
-<p>… both assays for ADT — raw counts are stored in <code>X</code> and normalised counts are in the corresponding layer:</p>
+<p>… both assays for ADT — raw counts are stored in <code>X</code> and
+normalised counts are in the corresponding layer:</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/rhdf5/man/h5ls.html" class="external-link">h5ls</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/rhdf5/man/H5Gopen.html" class="external-link">H5Gopen</a></span><span class="op">(</span><span class="va">h5</span>, <span class="st">"mod/ADT"</span><span class="op">)</span>, <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   group   name     otype dclass dim</span></span>
@@ -248,11 +268,20 @@
 <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h2>
 <ul>
-<li><p><a href="https://www.biorxiv.org/content/10.1101/2021.06.01.445670" class="external-link">Muon: multimodal omics analysis framework</a> preprint</p></li>
-<li><p><a href="https://mudata.readthedocs.io/" class="external-link">mudata</a> (Python) documentation</p></li>
-<li><p>muon <a href="https://muon.readthedocs.io/" class="external-link">documentation</a> and <a href="https://gtca.github.io/muon/" class="external-link">web page</a></p></li>
-<li><p>Kim HJ, Lin Y, Geddes TA, Yang P, Yang JYH (2020). “CiteFuse enables multi-modal analysis of CITE-seq data.” Bioinformatics, 36(14), 4137–4143. <a href="https://doi.org/10.1093/bioinformatics/btaa282" class="external-link uri">https://doi.org/10.1093/bioinformatics/btaa282</a>.</p></li>
-<li><p>Ramos M, Schiffer L, Re A, Azhar R, Basunia A, Cabrera CR, Chan T, Chapman P, Davis S, Gomez-Cabrero D, Culhane AC, Haibe-Kains B, Hansen K, Kodali H, Louis MS, Mer AS, Reister M, Morgan M, Carey V, Waldron L (2017). “Software For The Integration Of Multi-Omics Experiments In Bioconductor.” Cancer Research, 77(21); e39-42.</p></li>
+<li><p><a href="https://www.biorxiv.org/content/10.1101/2021.06.01.445670" class="external-link">Muon:
+multimodal omics analysis framework</a> preprint</p></li>
+<li><p><a href="https://mudata.readthedocs.io/" class="external-link">mudata</a> (Python)
+documentation</p></li>
+<li><p>muon <a href="https://muon.readthedocs.io/" class="external-link">documentation</a> and
+<a href="https://gtca.github.io/muon/" class="external-link">web page</a></p></li>
+<li><p>Kim HJ, Lin Y, Geddes TA, Yang P, Yang JYH (2020). “CiteFuse
+enables multi-modal analysis of CITE-seq data.” Bioinformatics, 36(14),
+4137–4143. <a href="https://doi.org/10.1093/bioinformatics/btaa282" class="external-link uri">https://doi.org/10.1093/bioinformatics/btaa282</a>.</p></li>
+<li><p>Ramos M, Schiffer L, Re A, Azhar R, Basunia A, Cabrera CR, Chan
+T, Chapman P, Davis S, Gomez-Cabrero D, Culhane AC, Haibe-Kains B,
+Hansen K, Kodali H, Louis MS, Mer AS, Reister M, Morgan M, Carey V,
+Waldron L (2017). “Software For The Integration Of Multi-Omics
+Experiments In Bioconductor.” Cancer Research, 77(21); e39-42.</p></li>
 </ul>
 </div>
 <div class="section level2">
@@ -260,13 +289,13 @@
 </h2>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; R Under development (unstable) (2022-08-25 r82762)</span></span>
-<span><span class="co">#&gt; Platform: x86_64-pc-linux-gnu (64-bit)</span></span>
-<span><span class="co">#&gt; Running under: Ubuntu 20.04.4 LTS</span></span>
+<span><span class="co">#&gt; R Under development (unstable) (2023-09-10 r85120)</span></span>
+<span><span class="co">#&gt; Platform: x86_64-pc-linux-gnu</span></span>
+<span><span class="co">#&gt; Running under: Ubuntu 22.04.3 LTS</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Matrix products: default</span></span>
-<span><span class="co">#&gt; BLAS:   /usr/lib/x86_64-linux-gnu/blas/libblas.so.3.9.0</span></span>
-<span><span class="co">#&gt; LAPACK: /usr/lib/x86_64-linux-gnu/lapack/liblapack.so.3.9.0</span></span>
+<span><span class="co">#&gt; BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3 </span></span>
+<span><span class="co">#&gt; LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblasp-r0.3.20.so;  LAPACK version 3.10.0</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; locale:</span></span>
 <span><span class="co">#&gt;  [1] LC_CTYPE=C.UTF-8       LC_NUMERIC=C           LC_TIME=C.UTF-8       </span></span>
@@ -274,82 +303,90 @@
 <span><span class="co">#&gt;  [7] LC_PAPER=C.UTF-8       LC_NAME=C              LC_ADDRESS=C          </span></span>
 <span><span class="co">#&gt; [10] LC_TELEPHONE=C         LC_MEASUREMENT=C.UTF-8 LC_IDENTIFICATION=C   </span></span>
 <span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; time zone: UTC</span></span>
+<span><span class="co">#&gt; tzcode source: system (glibc)</span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; attached base packages:</span></span>
 <span><span class="co">#&gt; [1] stats4    stats     graphics  grDevices utils     datasets  methods  </span></span>
 <span><span class="co">#&gt; [8] base     </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; other attached packages:</span></span>
-<span><span class="co">#&gt;  [1] scater_1.25.4               ggplot2_3.3.6              </span></span>
-<span><span class="co">#&gt;  [3] scuttle_1.7.4               CiteFuse_1.9.0             </span></span>
-<span><span class="co">#&gt;  [5] MultiAssayExperiment_1.23.4 SingleCellExperiment_1.19.0</span></span>
-<span><span class="co">#&gt;  [7] SummarizedExperiment_1.27.2 Biobase_2.57.1             </span></span>
-<span><span class="co">#&gt;  [9] GenomicRanges_1.49.1        GenomeInfoDb_1.33.5        </span></span>
-<span><span class="co">#&gt; [11] IRanges_2.31.2              MatrixGenerics_1.9.1       </span></span>
-<span><span class="co">#&gt; [13] matrixStats_0.62.0          MuData_0.99.9              </span></span>
-<span><span class="co">#&gt; [15] rhdf5_2.41.1                S4Vectors_0.35.1           </span></span>
-<span><span class="co">#&gt; [17] BiocGenerics_0.43.1         Matrix_1.4-1               </span></span>
-<span><span class="co">#&gt; [19] BiocStyle_2.25.0           </span></span>
+<span><span class="co">#&gt;  [1] scater_1.29.4               ggplot2_3.4.3              </span></span>
+<span><span class="co">#&gt;  [3] scuttle_1.11.2              CiteFuse_1.13.0            </span></span>
+<span><span class="co">#&gt;  [5] MultiAssayExperiment_1.27.5 SingleCellExperiment_1.23.0</span></span>
+<span><span class="co">#&gt;  [7] SummarizedExperiment_1.31.1 Biobase_2.61.0             </span></span>
+<span><span class="co">#&gt;  [9] GenomicRanges_1.53.1        GenomeInfoDb_1.37.4        </span></span>
+<span><span class="co">#&gt; [11] IRanges_2.35.2              MatrixGenerics_1.13.1      </span></span>
+<span><span class="co">#&gt; [13] matrixStats_1.0.0           MuData_0.99.9              </span></span>
+<span><span class="co">#&gt; [15] rhdf5_2.45.1                S4Vectors_0.39.1           </span></span>
+<span><span class="co">#&gt; [17] BiocGenerics_0.47.0         Matrix_1.6-1               </span></span>
+<span><span class="co">#&gt; [19] BiocStyle_2.29.1           </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; loaded via a namespace (and not attached):</span></span>
-<span><span class="co">#&gt;   [1] DBI_1.1.3                 bitops_1.0-7             </span></span>
-<span><span class="co">#&gt;   [3] gridExtra_2.3             rlang_1.0.4              </span></span>
-<span><span class="co">#&gt;   [5] magrittr_2.0.3            ggridges_0.5.3           </span></span>
-<span><span class="co">#&gt;   [7] compiler_4.3.0            DelayedMatrixStats_1.19.0</span></span>
-<span><span class="co">#&gt;   [9] systemfonts_1.0.4         vctrs_0.4.1              </span></span>
-<span><span class="co">#&gt;  [11] reshape2_1.4.4            stringr_1.4.1            </span></span>
-<span><span class="co">#&gt;  [13] pkgconfig_2.0.3           fastmap_1.1.0            </span></span>
-<span><span class="co">#&gt;  [15] XVector_0.37.0            labeling_0.4.2           </span></span>
-<span><span class="co">#&gt;  [17] ggraph_2.0.6              utf8_1.2.2               </span></span>
-<span><span class="co">#&gt;  [19] rmarkdown_2.16            ggbeeswarm_0.6.0         </span></span>
-<span><span class="co">#&gt;  [21] ragg_1.2.2                purrr_0.3.4              </span></span>
-<span><span class="co">#&gt;  [23] bluster_1.7.0             xfun_0.32                </span></span>
-<span><span class="co">#&gt;  [25] beachmat_2.13.4           randomForest_4.7-1.1     </span></span>
-<span><span class="co">#&gt;  [27] zlibbioc_1.43.0           cachem_1.0.6             </span></span>
-<span><span class="co">#&gt;  [29] jsonlite_1.8.0            highr_0.9                </span></span>
-<span><span class="co">#&gt;  [31] rhdf5filters_1.9.0        DelayedArray_0.23.1      </span></span>
-<span><span class="co">#&gt;  [33] Rhdf5lib_1.19.2           BiocParallel_1.31.12     </span></span>
-<span><span class="co">#&gt;  [35] tweenr_2.0.1              propr_4.2.6              </span></span>
-<span><span class="co">#&gt;  [37] cluster_2.1.4             irlba_2.3.5              </span></span>
-<span><span class="co">#&gt;  [39] parallel_4.3.0            R6_2.5.1                 </span></span>
-<span><span class="co">#&gt;  [41] bslib_0.4.0               stringi_1.7.8            </span></span>
-<span><span class="co">#&gt;  [43] RColorBrewer_1.1-3        limma_3.53.6             </span></span>
-<span><span class="co">#&gt;  [45] jquerylib_0.1.4           Rcpp_1.0.9               </span></span>
-<span><span class="co">#&gt;  [47] bookdown_0.28             assertthat_0.2.1         </span></span>
-<span><span class="co">#&gt;  [49] knitr_1.40                mixtools_1.2.0           </span></span>
-<span><span class="co">#&gt;  [51] splines_4.3.0             igraph_1.3.4             </span></span>
-<span><span class="co">#&gt;  [53] tidyselect_1.1.2          yaml_2.3.5               </span></span>
-<span><span class="co">#&gt;  [55] viridis_0.6.2             codetools_0.2-18         </span></span>
-<span><span class="co">#&gt;  [57] lattice_0.20-45           tibble_3.1.8             </span></span>
-<span><span class="co">#&gt;  [59] plyr_1.8.7                withr_2.5.0              </span></span>
-<span><span class="co">#&gt;  [61] evaluate_0.16             Rtsne_0.16               </span></span>
-<span><span class="co">#&gt;  [63] desc_1.4.1                survival_3.4-0           </span></span>
-<span><span class="co">#&gt;  [65] polyclip_1.10-0           kernlab_0.9-31           </span></span>
-<span><span class="co">#&gt;  [67] pillar_1.8.1              BiocManager_1.30.18      </span></span>
-<span><span class="co">#&gt;  [69] generics_0.1.3            dbscan_1.1-10            </span></span>
-<span><span class="co">#&gt;  [71] rprojroot_2.0.3           RCurl_1.98-1.8           </span></span>
-<span><span class="co">#&gt;  [73] sparseMatrixStats_1.9.0   munsell_0.5.0            </span></span>
-<span><span class="co">#&gt;  [75] scales_1.2.1              glue_1.6.2               </span></span>
-<span><span class="co">#&gt;  [77] metapod_1.5.0             pheatmap_1.0.12          </span></span>
-<span><span class="co">#&gt;  [79] tools_4.3.0               BiocNeighbors_1.15.1     </span></span>
-<span><span class="co">#&gt;  [81] ScaledMatrix_1.5.0        locfit_1.5-9.6           </span></span>
-<span><span class="co">#&gt;  [83] fs_1.5.2                  scran_1.25.0             </span></span>
-<span><span class="co">#&gt;  [85] graphlayouts_0.8.1        tidygraph_1.2.2          </span></span>
-<span><span class="co">#&gt;  [87] cowplot_1.1.1             grid_4.3.0               </span></span>
-<span><span class="co">#&gt;  [89] tidyr_1.2.0               edgeR_3.39.6             </span></span>
-<span><span class="co">#&gt;  [91] colorspace_2.0-3          nlme_3.1-159             </span></span>
-<span><span class="co">#&gt;  [93] GenomeInfoDbData_1.2.8    beeswarm_0.4.0           </span></span>
-<span><span class="co">#&gt;  [95] BiocSingular_1.13.1       ggforce_0.3.4            </span></span>
-<span><span class="co">#&gt;  [97] vipor_0.4.5               rsvd_1.0.5               </span></span>
-<span><span class="co">#&gt;  [99] cli_3.3.0                 textshaping_0.3.6        </span></span>
-<span><span class="co">#&gt; [101] fansi_1.0.3               segmented_1.6-0          </span></span>
-<span><span class="co">#&gt; [103] viridisLite_0.4.1         dplyr_1.0.9              </span></span>
-<span><span class="co">#&gt; [105] uwot_0.1.14               gtable_0.3.0             </span></span>
-<span><span class="co">#&gt; [107] sass_0.4.2                digest_0.6.29            </span></span>
-<span><span class="co">#&gt; [109] dqrng_0.3.0               ggrepel_0.9.1            </span></span>
-<span><span class="co">#&gt; [111] farver_2.1.1              memoise_2.0.1            </span></span>
-<span><span class="co">#&gt; [113] htmltools_0.5.3           pkgdown_2.0.6            </span></span>
-<span><span class="co">#&gt; [115] lifecycle_1.0.1           statmod_1.4.37           </span></span>
-<span><span class="co">#&gt; [117] MASS_7.3-58.1</span></span></code></pre></div>
+<span><span class="co">#&gt;   [1] RColorBrewer_1.1-3        tensorA_0.36.2           </span></span>
+<span><span class="co">#&gt;   [3] jsonlite_1.8.7            magrittr_2.0.3           </span></span>
+<span><span class="co">#&gt;   [5] ggbeeswarm_0.7.2          farver_2.1.1             </span></span>
+<span><span class="co">#&gt;   [7] rmarkdown_2.24            fs_1.6.3                 </span></span>
+<span><span class="co">#&gt;   [9] zlibbioc_1.47.0           ragg_1.2.5               </span></span>
+<span><span class="co">#&gt;  [11] vctrs_0.6.3               memoise_2.0.1            </span></span>
+<span><span class="co">#&gt;  [13] DelayedMatrixStats_1.23.4 RCurl_1.98-1.12          </span></span>
+<span><span class="co">#&gt;  [15] htmltools_0.5.6           S4Arrays_1.1.6           </span></span>
+<span><span class="co">#&gt;  [17] BiocNeighbors_1.19.0      Rhdf5lib_1.23.0          </span></span>
+<span><span class="co">#&gt;  [19] SparseArray_1.1.12        sass_0.4.7               </span></span>
+<span><span class="co">#&gt;  [21] bslib_0.5.1               htmlwidgets_1.6.2        </span></span>
+<span><span class="co">#&gt;  [23] desc_1.4.2                plyr_1.8.8               </span></span>
+<span><span class="co">#&gt;  [25] plotly_4.10.2             cachem_1.0.8             </span></span>
+<span><span class="co">#&gt;  [27] igraph_1.5.1              lifecycle_1.0.3          </span></span>
+<span><span class="co">#&gt;  [29] pkgconfig_2.0.3           rsvd_1.0.5               </span></span>
+<span><span class="co">#&gt;  [31] R6_2.5.1                  fastmap_1.1.1            </span></span>
+<span><span class="co">#&gt;  [33] GenomeInfoDbData_1.2.10   digest_0.6.33            </span></span>
+<span><span class="co">#&gt;  [35] colorspace_2.1-0          rprojroot_2.0.3          </span></span>
+<span><span class="co">#&gt;  [37] dqrng_0.3.1               irlba_2.3.5.1            </span></span>
+<span><span class="co">#&gt;  [39] textshaping_0.3.6         beachmat_2.17.16         </span></span>
+<span><span class="co">#&gt;  [41] labeling_0.4.3            randomForest_4.7-1.1     </span></span>
+<span><span class="co">#&gt;  [43] fansi_1.0.4               httr_1.4.7               </span></span>
+<span><span class="co">#&gt;  [45] polyclip_1.10-4           abind_1.4-5              </span></span>
+<span><span class="co">#&gt;  [47] compiler_4.4.0            withr_2.5.0              </span></span>
+<span><span class="co">#&gt;  [49] BiocParallel_1.35.4       viridis_0.6.4            </span></span>
+<span><span class="co">#&gt;  [51] highr_0.10                ggforce_0.4.1            </span></span>
+<span><span class="co">#&gt;  [53] MASS_7.3-60.1             bayesm_3.1-5             </span></span>
+<span><span class="co">#&gt;  [55] DelayedArray_0.27.10      bluster_1.11.4           </span></span>
+<span><span class="co">#&gt;  [57] tools_4.4.0               vipor_0.4.5              </span></span>
+<span><span class="co">#&gt;  [59] beeswarm_0.4.0            glue_1.6.2               </span></span>
+<span><span class="co">#&gt;  [61] dbscan_1.1-11             nlme_3.1-163             </span></span>
+<span><span class="co">#&gt;  [63] rhdf5filters_1.13.5       grid_4.4.0               </span></span>
+<span><span class="co">#&gt;  [65] Rtsne_0.16                cluster_2.1.4            </span></span>
+<span><span class="co">#&gt;  [67] reshape2_1.4.4            generics_0.1.3           </span></span>
+<span><span class="co">#&gt;  [69] gtable_0.3.4              tidyr_1.3.0              </span></span>
+<span><span class="co">#&gt;  [71] data.table_1.14.8         metapod_1.9.0            </span></span>
+<span><span class="co">#&gt;  [73] BiocSingular_1.17.1       tidygraph_1.2.3          </span></span>
+<span><span class="co">#&gt;  [75] ScaledMatrix_1.9.1        utf8_1.2.3               </span></span>
+<span><span class="co">#&gt;  [77] XVector_0.41.1            ggrepel_0.9.3            </span></span>
+<span><span class="co">#&gt;  [79] pillar_1.9.0              stringr_1.5.0            </span></span>
+<span><span class="co">#&gt;  [81] limma_3.57.7              robustbase_0.99-0        </span></span>
+<span><span class="co">#&gt;  [83] splines_4.4.0             dplyr_1.1.3              </span></span>
+<span><span class="co">#&gt;  [85] tweenr_2.0.2              lattice_0.21-8           </span></span>
+<span><span class="co">#&gt;  [87] survival_3.5-7            compositions_2.0-6       </span></span>
+<span><span class="co">#&gt;  [89] tidyselect_1.2.0          locfit_1.5-9.8           </span></span>
+<span><span class="co">#&gt;  [91] knitr_1.43                gridExtra_2.3            </span></span>
+<span><span class="co">#&gt;  [93] bookdown_0.35             edgeR_3.43.8             </span></span>
+<span><span class="co">#&gt;  [95] xfun_0.40                 graphlayouts_1.0.0       </span></span>
+<span><span class="co">#&gt;  [97] mixtools_2.0.0            statmod_1.5.0            </span></span>
+<span><span class="co">#&gt;  [99] DEoptimR_1.1-2            pheatmap_1.0.12          </span></span>
+<span><span class="co">#&gt; [101] stringi_1.7.12            lazyeval_0.2.2           </span></span>
+<span><span class="co">#&gt; [103] yaml_2.3.7                evaluate_0.21            </span></span>
+<span><span class="co">#&gt; [105] codetools_0.2-19          kernlab_0.9-32           </span></span>
+<span><span class="co">#&gt; [107] ggraph_2.1.0              tibble_3.2.1             </span></span>
+<span><span class="co">#&gt; [109] BiocManager_1.30.22       cli_3.6.1                </span></span>
+<span><span class="co">#&gt; [111] uwot_0.1.16               systemfonts_1.0.4        </span></span>
+<span><span class="co">#&gt; [113] segmented_1.6-4           munsell_0.5.0            </span></span>
+<span><span class="co">#&gt; [115] jquerylib_0.1.4           Rcpp_1.0.11              </span></span>
+<span><span class="co">#&gt; [117] parallel_4.4.0            pkgdown_2.0.7            </span></span>
+<span><span class="co">#&gt; [119] scran_1.29.3              sparseMatrixStats_1.13.4 </span></span>
+<span><span class="co">#&gt; [121] bitops_1.0-7              viridisLite_0.4.2        </span></span>
+<span><span class="co">#&gt; [123] scales_1.2.1              ggridges_0.5.4           </span></span>
+<span><span class="co">#&gt; [125] purrr_1.0.2               crayon_1.5.2             </span></span>
+<span><span class="co">#&gt; [127] rlang_1.1.1               cowplot_1.1.1</span></span></code></pre></div>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>
@@ -364,7 +401,7 @@
 
 <div class="pkgdown-footer-right">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
     </footer>

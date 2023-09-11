@@ -8,10 +8,10 @@
 <meta name="description" content="MuData">
 <title>Getting started with MuData for MultiAssayExperiment • MuData</title>
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="../deps/bootstrap-5.1.3/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.1.3/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
+<link href="../deps/bootstrap-5.2.2/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.2.2/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
-<!-- bootstrap-toc --><script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Getting started with MuData for MultiAssayExperiment">
+<!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Getting started with MuData for MultiAssayExperiment">
 <meta property="og:description" content="MuData">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
@@ -67,19 +67,24 @@
 
 
 
-<script src="Getting-Started_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+
+<div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="" class="logo" alt=""><h1>Getting started with MuData for MultiAssayExperiment</h1>
-                        <h4 data-toc-skip class="author">Danila Bredikhin</h4>
+                        <h4 data-toc-skip class="author">Danila
+Bredikhin</h4>
             <address class="author_afil">
-      European Molecular Biology Laboratory, Heidelberg, Germany<br><a class="author_email" href="mailto:#"></a><a href="mailto:danila.bredikhin@embl.de" class="email">danila.bredikhin@embl.de</a>
+      European Molecular Biology Laboratory, Heidelberg,
+Germany<br><a class="author_email" href="mailto:#"></a><a href="mailto:danila.bredikhin@embl.de" class="email">danila.bredikhin@embl.de</a>
       </address>
-                              <h4 data-toc-skip class="author">Ilia Kats</h4>
+                              <h4 data-toc-skip class="author">Ilia
+Kats</h4>
             <address class="author_afil">
-      German Cancer Research Center, Heidelberg, Germany<br><a class="author_email" href="mailto:#"></a><a href="mailto:i.kats@dkfz-heidelberg.de" class="email">i.kats@dkfz-heidelberg.de</a>
+      German Cancer Research Center, Heidelberg,
+Germany<br><a class="author_email" href="mailto:#"></a><a href="mailto:i.kats@dkfz-heidelberg.de" class="email">i.kats@dkfz-heidelberg.de</a>
       </address>
                   
-            <h4 data-toc-skip class="date">2022-08-26</h4>
+            <h4 data-toc-skip class="date">2023-09-11</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/ilia-kats/MuData/blob/HEAD/vignettes/Getting-Started.Rmd" class="external-link"><code>vignettes/Getting-Started.Rmd</code></a></small>
       <div class="d-none name"><code>Getting-Started.Rmd</code></div>
@@ -90,8 +95,15 @@
 <div class="section level2">
 <h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
-<p>Multimodal data format — <a href="https://mudata.readthedocs.io/" class="external-link">MuData</a> — <a href="https://www.biorxiv.org/content/10.1101/2021.06.01.445670v1" class="external-link">has been introduced</a> to address the need for cross-platform standard for sharing large-scale multimodal omics data. Importantly, it develops ideas of and is compatible with <a href="https://anndata.readthedocs.io/" class="external-link">AnnData</a> standard for storing raw and derived data for unimodal datasets.</p>
-<p>In Bioconductor, multimodal datasets have been stored in <a href="https://bioconductor.org/packages/MultiAssayExperiment" class="external-link">MultiAssayExperiment</a> (MAE) objects. This <code>MuData</code> package provides functionality to read data from MuData files into MAE objects as well as to save MAE objects into H5MU files.</p>
+<p>Multimodal data format — <a href="https://mudata.readthedocs.io/" class="external-link">MuData</a> — <a href="https://www.biorxiv.org/content/10.1101/2021.06.01.445670v1" class="external-link">has
+been introduced</a> to address the need for cross-platform standard for
+sharing large-scale multimodal omics data. Importantly, it develops
+ideas of and is compatible with <a href="https://anndata.readthedocs.io/" class="external-link">AnnData</a> standard for storing
+raw and derived data for unimodal datasets.</p>
+<p>In Bioconductor, multimodal datasets have been stored in <a href="https://bioconductor.org/packages/MultiAssayExperiment" class="external-link">MultiAssayExperiment</a>
+(MAE) objects. This <code>MuData</code> package provides functionality
+to read data from MuData files into MAE objects as well as to save MAE
+objects into H5MU files.</p>
 </div>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
@@ -100,13 +112,16 @@
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://remotes.r-lib.org" class="external-link">remotes</a></span><span class="op">)</span></span>
 <span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"ilia-kats/MuData"</span><span class="op">)</span></span></code></pre></div>
-<p>Stable version of <code>MuData</code> will be available in future bioconductor versions.</p>
+<p>Stable version of <code>MuData</code> will be available in future
+bioconductor versions.</p>
 </div>
 <div class="section level2">
 <h2 id="loading-libraries">Loading libraries<a class="anchor" aria-label="anchor" href="#loading-libraries"></a>
 </h2>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ilia-kats/MuData" class="external-link">MuData</a></span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning: replacing previous import 'S4Arrays::makeNindexFromArrayViewport' by</span></span>
+<span><span class="co">#&gt; 'DelayedArray::makeNindexFromArrayViewport' when loading 'SummarizedExperiment'</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://waldronlab.io/MultiAssayExperiment/" class="external-link">MultiAssayExperiment</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/grimbough/rhdf5" class="external-link">rhdf5</a></span><span class="op">)</span></span></code></pre></div>
@@ -114,7 +129,9 @@
 <div class="section level2">
 <h2 id="writing-h5mu-files">Writing H5MU files<a class="anchor" aria-label="anchor" href="#writing-h5mu-files"></a>
 </h2>
-<p>We’ll use a simple MAE object from the <code>MultiAssayExperiment</code> package that we’ll then save in a H5MU file.</p>
+<p>We’ll use a simple MAE object from the
+<code>MultiAssayExperiment</code> package that we’ll then save in a H5MU
+file.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">miniACC</span><span class="op">)</span></span>
 <span><span class="va">miniACC</span></span>
@@ -134,7 +151,8 @@
 <span><span class="co">#&gt;  *Format() - convert into a long or wide DataFrame</span></span>
 <span><span class="co">#&gt;  assays() - convert ExperimentList to a SimpleList of matrices</span></span>
 <span><span class="co">#&gt;  exportClass() - save data to flat files</span></span></code></pre></div>
-<p>We will now write its contents into an H5MU file with <code>WriteH5MU</code>:</p>
+<p>We will now write its contents into an H5MU file with
+<code>WriteH5MU</code>:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/writeH5MU.html">writeH5MU</a></span><span class="op">(</span><span class="va">miniACC</span>, <span class="st">"miniacc.h5mu"</span><span class="op">)</span></span></code></pre></div>
 </div>
@@ -169,10 +187,15 @@
 <div class="section level3">
 <h3 id="creating-mae-objects-from-h5mu-files">Creating MAE objects from H5MU files<a class="anchor" aria-label="anchor" href="#creating-mae-objects-from-h5mu-files"></a>
 </h3>
-<p>This package provides <code>ReadH5MU</code> to create an object with data from an H5MU file. Since H5MU structure has been designed to accommodate more structured information than MAE, only some data will be read. For instance, MAE has no support for loading multimodal embeddings or pairwise graphs.</p>
+<p>This package provides <code>ReadH5MU</code> to create an object with
+data from an H5MU file. Since H5MU structure has been designed to
+accommodate more structured information than MAE, only some data will be
+read. For instance, MAE has no support for loading multimodal embeddings
+or pairwise graphs.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">acc</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/readH5MU.html">readH5MU</a></span><span class="op">(</span><span class="st">"miniacc.h5mu"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Reading as SingleCellExperiment where the original object class is matrix</span></span>
+<span><span class="co">#&gt; Warning: sampleMap[['assay']] coerced with as.factor()</span></span>
 <span><span class="va">acc</span></span>
 <span><span class="co">#&gt; A MultiAssayExperiment object of 5 listed</span></span>
 <span><span class="co">#&gt;  experiments with user-defined names and respective classes.</span></span>
@@ -190,7 +213,8 @@
 <span><span class="co">#&gt;  *Format() - convert into a long or wide DataFrame</span></span>
 <span><span class="co">#&gt;  assays() - convert ExperimentList to a SimpleList of matrices</span></span>
 <span><span class="co">#&gt;  exportClass() - save data to flat files</span></span></code></pre></div>
-<p>Importantly, we recover the information from the original MAE object:</p>
+<p>Importantly, we recover the information from the original MAE
+object:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">colData</a></span><span class="op">(</span><span class="va">miniACC</span><span class="op">)</span><span class="op">[</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span><span class="op">)</span></span>
 <span><span class="co">#&gt; DataFrame with 6 rows and 4 columns</span></span>
@@ -237,12 +261,16 @@
 <div class="section level4">
 <h4 id="backed-objects">Backed objects<a class="anchor" aria-label="anchor" href="#backed-objects"></a>
 </h4>
-<p>It is possible to read H5MU files while keeping matrices (both <code>.X</code> and <code>.layers</code>) on disk.</p>
+<p>It is possible to read H5MU files while keeping matrices (both
+<code>.X</code> and <code>.layers</code>) on disk.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">acc_b</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/readH5MU.html">readH5MU</a></span><span class="op">(</span><span class="st">"miniacc.h5mu"</span>, backed <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning: replacing previous import 'S4Arrays::makeNindexFromArrayViewport' by</span></span>
+<span><span class="co">#&gt; 'DelayedArray::makeNindexFromArrayViewport' when loading 'HDF5Array'</span></span>
 <span><span class="co">#&gt; Reading as SingleCellExperiment where the original object class is matrix</span></span>
+<span><span class="co">#&gt; Warning: sampleMap[['assay']] coerced with as.factor()</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">assay</a></span><span class="op">(</span><span class="va">acc_b</span>, <span class="st">"RNASeq2GeneNorm"</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span></span>
-<span><span class="co">#&gt; &lt;5 x 3&gt; matrix of class DelayedMatrix and type "double":</span></span>
+<span><span class="co">#&gt; &lt;5 x 3&gt; DelayedMatrix object of type "double":</span></span>
 <span><span class="co">#&gt;        TCGA-OR-A5J1-01A-11R-A29S-07 TCGA-OR-A5J2-01A-11R-A29S-07</span></span>
 <span><span class="co">#&gt; DIRAS3                    1487.0317                       9.6631</span></span>
 <span><span class="co">#&gt; MAPK14                     778.5783                    2823.6469</span></span>
@@ -261,7 +289,8 @@
 <span><span class="co">#&gt; [1] "DelayedMatrix"</span></span>
 <span><span class="co">#&gt; attr(,"package")</span></span>
 <span><span class="co">#&gt; [1] "DelayedArray"</span></span></code></pre></div>
-<p>This is in contrast to the <code>acc</code> object that has matrices in memory:</p>
+<p>This is in contrast to the <code>acc</code> object that has matrices
+in memory:</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">assay</a></span><span class="op">(</span><span class="va">acc</span>, <span class="st">"RNASeq2GeneNorm"</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span></span>
 <span><span class="co">#&gt;        TCGA-OR-A5J1-01A-11R-A29S-07 TCGA-OR-A5J2-01A-11R-A29S-07</span></span>
@@ -285,9 +314,12 @@
 <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h2>
 <ul>
-<li><p><a href="https://www.biorxiv.org/content/10.1101/2021.06.01.445670" class="external-link">Muon: multimodal omics analysis framework</a> preprint</p></li>
-<li><p><a href="https://mudata.readthedocs.io/" class="external-link">mudata</a> (Python) documentation</p></li>
-<li><p>muon <a href="https://muon.readthedocs.io/" class="external-link">documentation</a> and <a href="https://gtca.github.io/muon/" class="external-link">web page</a></p></li>
+<li><p><a href="https://www.biorxiv.org/content/10.1101/2021.06.01.445670" class="external-link">Muon:
+multimodal omics analysis framework</a> preprint</p></li>
+<li><p><a href="https://mudata.readthedocs.io/" class="external-link">mudata</a> (Python)
+documentation</p></li>
+<li><p>muon <a href="https://muon.readthedocs.io/" class="external-link">documentation</a> and
+<a href="https://gtca.github.io/muon/" class="external-link">web page</a></p></li>
 </ul>
 </div>
 <div class="section level2">
@@ -295,13 +327,13 @@
 </h2>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; R Under development (unstable) (2022-08-25 r82762)</span></span>
-<span><span class="co">#&gt; Platform: x86_64-pc-linux-gnu (64-bit)</span></span>
-<span><span class="co">#&gt; Running under: Ubuntu 20.04.4 LTS</span></span>
+<span><span class="co">#&gt; R Under development (unstable) (2023-09-10 r85120)</span></span>
+<span><span class="co">#&gt; Platform: x86_64-pc-linux-gnu</span></span>
+<span><span class="co">#&gt; Running under: Ubuntu 22.04.3 LTS</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Matrix products: default</span></span>
-<span><span class="co">#&gt; BLAS:   /usr/lib/x86_64-linux-gnu/blas/libblas.so.3.9.0</span></span>
-<span><span class="co">#&gt; LAPACK: /usr/lib/x86_64-linux-gnu/lapack/liblapack.so.3.9.0</span></span>
+<span><span class="co">#&gt; BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3 </span></span>
+<span><span class="co">#&gt; LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblasp-r0.3.20.so;  LAPACK version 3.10.0</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; locale:</span></span>
 <span><span class="co">#&gt;  [1] LC_CTYPE=C.UTF-8       LC_NUMERIC=C           LC_TIME=C.UTF-8       </span></span>
@@ -309,42 +341,49 @@
 <span><span class="co">#&gt;  [7] LC_PAPER=C.UTF-8       LC_NAME=C              LC_ADDRESS=C          </span></span>
 <span><span class="co">#&gt; [10] LC_TELEPHONE=C         LC_MEASUREMENT=C.UTF-8 LC_IDENTIFICATION=C   </span></span>
 <span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; time zone: UTC</span></span>
+<span><span class="co">#&gt; tzcode source: system (glibc)</span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; attached base packages:</span></span>
 <span><span class="co">#&gt; [1] stats4    stats     graphics  grDevices utils     datasets  methods  </span></span>
 <span><span class="co">#&gt; [8] base     </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; other attached packages:</span></span>
-<span><span class="co">#&gt;  [1] MultiAssayExperiment_1.23.4 SummarizedExperiment_1.27.2</span></span>
-<span><span class="co">#&gt;  [3] Biobase_2.57.1              GenomicRanges_1.49.1       </span></span>
-<span><span class="co">#&gt;  [5] GenomeInfoDb_1.33.5         IRanges_2.31.2             </span></span>
-<span><span class="co">#&gt;  [7] MatrixGenerics_1.9.1        matrixStats_0.62.0         </span></span>
-<span><span class="co">#&gt;  [9] MuData_0.99.9               rhdf5_2.41.1               </span></span>
-<span><span class="co">#&gt; [11] S4Vectors_0.35.1            BiocGenerics_0.43.1        </span></span>
-<span><span class="co">#&gt; [13] Matrix_1.4-1                BiocStyle_2.25.0           </span></span>
+<span><span class="co">#&gt;  [1] MultiAssayExperiment_1.27.5 SummarizedExperiment_1.31.1</span></span>
+<span><span class="co">#&gt;  [3] Biobase_2.61.0              GenomicRanges_1.53.1       </span></span>
+<span><span class="co">#&gt;  [5] GenomeInfoDb_1.37.4         IRanges_2.35.2             </span></span>
+<span><span class="co">#&gt;  [7] MatrixGenerics_1.13.1       matrixStats_1.0.0          </span></span>
+<span><span class="co">#&gt;  [9] MuData_0.99.9               rhdf5_2.45.1               </span></span>
+<span><span class="co">#&gt; [11] S4Vectors_0.39.1            BiocGenerics_0.47.0        </span></span>
+<span><span class="co">#&gt; [13] Matrix_1.6-1                BiocStyle_2.29.1           </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; loaded via a namespace (and not attached):</span></span>
-<span><span class="co">#&gt;  [1] sass_0.4.2                  bitops_1.0-7               </span></span>
-<span><span class="co">#&gt;  [3] stringi_1.7.8               lattice_0.20-45            </span></span>
-<span><span class="co">#&gt;  [5] digest_0.6.29               magrittr_2.0.3             </span></span>
-<span><span class="co">#&gt;  [7] evaluate_0.16               grid_4.3.0                 </span></span>
-<span><span class="co">#&gt;  [9] bookdown_0.28               fastmap_1.1.0              </span></span>
-<span><span class="co">#&gt; [11] rprojroot_2.0.3             jsonlite_1.8.0             </span></span>
-<span><span class="co">#&gt; [13] BiocManager_1.30.18         SingleCellExperiment_1.19.0</span></span>
-<span><span class="co">#&gt; [15] purrr_0.3.4                 HDF5Array_1.25.2           </span></span>
-<span><span class="co">#&gt; [17] textshaping_0.3.6           jquerylib_0.1.4            </span></span>
-<span><span class="co">#&gt; [19] cli_3.3.0                   rlang_1.0.4                </span></span>
-<span><span class="co">#&gt; [21] XVector_0.37.0              cachem_1.0.6               </span></span>
-<span><span class="co">#&gt; [23] DelayedArray_0.23.1         yaml_2.3.5                 </span></span>
-<span><span class="co">#&gt; [25] tools_4.3.0                 memoise_2.0.1              </span></span>
-<span><span class="co">#&gt; [27] Rhdf5lib_1.19.2             GenomeInfoDbData_1.2.8     </span></span>
-<span><span class="co">#&gt; [29] R6_2.5.1                    zlibbioc_1.43.0            </span></span>
-<span><span class="co">#&gt; [31] stringr_1.4.1               fs_1.5.2                   </span></span>
-<span><span class="co">#&gt; [33] ragg_1.2.2                  desc_1.4.1                 </span></span>
-<span><span class="co">#&gt; [35] pkgdown_2.0.6               bslib_0.4.0                </span></span>
-<span><span class="co">#&gt; [37] systemfonts_1.0.4           xfun_0.32                  </span></span>
-<span><span class="co">#&gt; [39] knitr_1.40                  rhdf5filters_1.9.0         </span></span>
-<span><span class="co">#&gt; [41] htmltools_0.5.3             rmarkdown_2.16             </span></span>
-<span><span class="co">#&gt; [43] compiler_4.3.0              RCurl_1.98-1.8</span></span></code></pre></div>
+<span><span class="co">#&gt;  [1] sass_0.4.7                  bitops_1.0-7               </span></span>
+<span><span class="co">#&gt;  [3] SparseArray_1.1.12          stringi_1.7.12             </span></span>
+<span><span class="co">#&gt;  [5] lattice_0.21-8              digest_0.6.33              </span></span>
+<span><span class="co">#&gt;  [7] magrittr_2.0.3              evaluate_0.21              </span></span>
+<span><span class="co">#&gt;  [9] grid_4.4.0                  bookdown_0.35              </span></span>
+<span><span class="co">#&gt; [11] fastmap_1.1.1               rprojroot_2.0.3            </span></span>
+<span><span class="co">#&gt; [13] jsonlite_1.8.7              BiocManager_1.30.22        </span></span>
+<span><span class="co">#&gt; [15] SingleCellExperiment_1.23.0 purrr_1.0.2                </span></span>
+<span><span class="co">#&gt; [17] HDF5Array_1.29.3            textshaping_0.3.6          </span></span>
+<span><span class="co">#&gt; [19] jquerylib_0.1.4             abind_1.4-5                </span></span>
+<span><span class="co">#&gt; [21] cli_3.6.1                   rlang_1.1.1                </span></span>
+<span><span class="co">#&gt; [23] crayon_1.5.2                XVector_0.41.1             </span></span>
+<span><span class="co">#&gt; [25] cachem_1.0.8                DelayedArray_0.27.10       </span></span>
+<span><span class="co">#&gt; [27] yaml_2.3.7                  S4Arrays_1.1.6             </span></span>
+<span><span class="co">#&gt; [29] tools_4.4.0                 memoise_2.0.1              </span></span>
+<span><span class="co">#&gt; [31] Rhdf5lib_1.23.0             GenomeInfoDbData_1.2.10    </span></span>
+<span><span class="co">#&gt; [33] vctrs_0.6.3                 R6_2.5.1                   </span></span>
+<span><span class="co">#&gt; [35] lifecycle_1.0.3             zlibbioc_1.47.0            </span></span>
+<span><span class="co">#&gt; [37] stringr_1.5.0               fs_1.6.3                   </span></span>
+<span><span class="co">#&gt; [39] ragg_1.2.5                  desc_1.4.2                 </span></span>
+<span><span class="co">#&gt; [41] pkgdown_2.0.7               bslib_0.5.1                </span></span>
+<span><span class="co">#&gt; [43] glue_1.6.2                  systemfonts_1.0.4          </span></span>
+<span><span class="co">#&gt; [45] xfun_0.40                   knitr_1.43                 </span></span>
+<span><span class="co">#&gt; [47] rhdf5filters_1.13.5         htmltools_0.5.6            </span></span>
+<span><span class="co">#&gt; [49] rmarkdown_2.24              compiler_4.4.0             </span></span>
+<span><span class="co">#&gt; [51] RCurl_1.98-1.12</span></span></code></pre></div>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>
@@ -359,7 +398,7 @@
 
 <div class="pkgdown-footer-right">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
     </footer>
