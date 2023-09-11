@@ -272,7 +272,7 @@ write_data_frame <- function(parent, key, df) {
     writeAttribute(group, "encoding-type", "dataframe")
     writeAttribute(group, "encoding-version", "0.2.0")
     if (length(columns) > 0) {
-        writeAttribute(group, "column-order", columns)
+        writeAttribute(group, "column-order", columns, scalar=FALSE)
     } else {
         # When there are no columns, null buffer can't be written to a file.
         h5createAttribute(group, "column-order", dims=0)
@@ -381,13 +381,13 @@ writeDataset <- function(parent, key, data, scalar=FALSE) {
 }
 
 #' @importFrom rhdf5 h5writeAttribute
-writeAttribute <- function(obj, name, value) {
+writeAttribute <- function(obj, name, value, scalar=TRUE) {
     if (is.logical(value))
         value <- as.integer(value) # rhdf5 hasn't implemented logical attributes yet
     args <- list(attr=value, h5obj=obj, name=name)
     if (is.character(value))
         args$variableLengthString <- TRUE
-    if (length(value) == 1)
+    if (length(value) == 1 && scalar)
         args$asScalar <- TRUE
     do.call(h5writeAttribute, args)
 }
