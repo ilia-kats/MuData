@@ -262,7 +262,10 @@ write_data_frame <- function(parent, key, df) {
     group <- H5Gcreate(parent, key)
 
     columns <- colnames(df)
-    df[["_index"]] <- rownames(df)
+    index <- rownames(df)
+    if (is.null(index))
+        index <- as.character(1:nrow(df))
+    df[["_index"]] <- index
     for (col in colnames(df)) {
         write_matrix(group, col, df[[col]])
     }
