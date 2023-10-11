@@ -1,7 +1,34 @@
 #' @importFrom rhdf5 H5Aexists H5Aopen H5Aread H5Aclose H5Dread H5Dclose H5Rdereference
+#' @importFrom S4Vectors DataFrame
 #' @importMethodsFrom rhdf5 &
 #' @importFrom methods is
-read_dataframe <- function(group) {
+read_dataframe_020 <- function(group, encoding, strict=TRUE) {
+    if (strict)
+        check_encodingversion(group, encoding, "0.2.0")
+    indexattr <- H5Aopen(group, "_index")
+    indexcol <- H5Aread(indexattr)
+    H5Aclose(indexattr)
+
+    orderedattr <- H5Aopen(group, "column-order")
+    columnorder <- H5Aread(orderedattr)
+    H5Aclose(orderedattr)
+
+    col_list <- lapply(columnorder, function(name) {
+        read_attribute(h5autoclose(group & name))
+    })
+    names(col_list) <- columnorder
+    index <- h5autoclose(group & indexcol)
+    col_list[["row.names"]] <- H5Dread(index)
+    do.call(DataFrame, args=col_list)
+}
+
+#' @importFrom rhdf5 H5Aexists H5Aopen H5Aread H5Aclose H5Dread H5Dclose H5Rdereference
+#' @importFrom S4Vectors DataFrame
+#' @importMethodsFrom rhdf5 &
+#' @importFrom methods is
+read_dataframe_010 <- function(group, encoding, strict=TRUE) {
+    if (strict)
+        check_encodingversion(group, encoding, "0.1.0")
     indexcol <- "_index"
     if (H5Aexists(group, "_index")) {
         indexattr <- H5Aopen(group, "_index")
@@ -34,18 +61,24 @@ read_dataframe <- function(group) {
         values
     })
     names(col_list) <- columnorder
-    index <- group & indexcol
-    col_list[["row.names"]] <- H5Dread(index)
-    H5Dclose(index)
-    do.call(data.frame, args=col_list)
+    col_list[["row.names"]] <- H5Dread(h5autoclose(group & indexcol))
+    do.call(DataFrame, args=col_list)
+}
+
+read_dataframe <- function(group, encoding) {
+    version <- check_encodingversion(group, encoding, c("0.1.0", "0.2.0"))
+    if (version == "0.1.0")
+        read_dataframe_010(group, encoding, strict=FALSE)
+    else
+        read_dataframe_020(group, encoding, strict=FALSE)
 }
 
 #' Helper function to convert values + labels into factors
 #'
 #' @description  A helper function to convert categories into factors.
-#'  Assumptions: 
+#'  Assumptions:
 #'      - values correspond to the zero indexed categories
-#'          (i.e. value 0 is the first category) 
+#'          (i.e. value 0 is the first category)
 #'      - NA are encoded with a value -1
 #'  Categories not uses will be dropped.
 #'
@@ -55,7 +88,7 @@ read_dataframe <- function(group) {
 #' @returns factor with categorical values
 #'
 #' @keywords internal
-#' @noRd 
+#' @noRd
 convert_categoricals <- function(values, categories) {
     # The levels are 0 indexed integers
     levels <- seq_len(length(categories))-1
@@ -100,18 +133,16 @@ read_with_index <- function(dataset) {
     }
 }
 
-#' @importFrom rhdf5 H5Dread H5Dclose H5Aopen H5Aread H5Aclose
+#' @importFrom rhdf5 H5Dread H5Aopen H5Aread H5Aclose
 #' @importMethodsFrom rhdf5 &
 read_sparse_matrix <- function(group, encoding, backed=FALSE) {
-    indices <- group & "indices"
-    indptr <- group & "indptr"
-    data <- group & "data"
+    check_encodingversion(group, encoding, "0.1.0")
+    indices <- h5autoclose(group & "indices")
+    indptr <- h5autoclose(group & "indptr")
+    data <- h5autoclose(group & "data")
     i <- as.vector(H5Dread(indices))
     p <- as.vector(H5Dread(indptr))
     x <- as.vector(H5Dread(data))
-    H5Dclose(indices)
-    H5Dclose(indptr)
-    H5Dclose(data)
     shapeattr <- H5Aopen(group, "shape")
     shape <- H5Aread(shapeattr)
     H5Aclose(shapeattr)
@@ -166,41 +197,109 @@ read_matrix <- function(dataset, backed=FALSE) {
     }
 }
 
-#' @importFrom rhdf5 H5Aopen H5Aread H5Aclose H5Aexists h5ls
+#' @importFrom rhdf5 h5ls
+#' @importMethodsFrom rhdf5 &
 #' @importFrom stats setNames
-read_group <- function(group, read_uns=FALSE) {
-    if (H5Aexists(group, "encoding-type")) {
-        encattr <- H5Aopen(group, "encoding-type")
-        encoding <- H5Aread(encattr)
-        H5Aclose(encattr)
-
-        if (encoding == "dataframe") {
-            return(read_dataframe(group))
-        } else if (endsWith(encoding, "matrix")) {
-            return(read_sparse_matrix(group))
-        } else {
-            warning("Unknown encoding ", encoding)
-            if (!read_uns)
-                return(invisible(NULL))
-        }
-    }
+read_dict <- function(group, encoding, strict=TRUE) {
+    if (strict)
+        check_encodingversion(group, encoding, "0.1.0")
 
     objects <- h5ls(group, recursive=FALSE, datasetinfo=FALSE)$name
     lapply(setNames(nm=objects), function(x)read_attribute(h5autoclose(group & x)))
 }
 
-#' @importFrom rhdf5 H5Iget_type H5Dread
-read_attribute <- function(attr) {
-    if (H5Iget_type(attr) == "H5I_GROUP")
-        read_group(attr)
-    else {
-        values <- H5Dread(attr)
-        # h5py saves boolean arrays as HDF5 enums
-        if (is.factor(values) && all(levels(values) == c("FALSE", "TRUE"))) {
-            values <- as.logical(values)
-        }
-        values
+#' @importFrom rhdf5 H5Dread
+read_array <- function(attr, encoding, strict=TRUE) {
+    if (strict)
+        check_encodingversion(attr, encoding, "0.2.0")
+
+    ret <- H5Dread(attr)
+    # h5py saves boolean arrays as HDF5 enums
+    if (is.factor(ret) && all(levels(ret) == c("FALSE", "TRUE"))) {
+        ret <- as.logical(ret)
     }
+
+    if (!is.null(encoding) && (endsWith(encoding, "-scalar") || encoding == "string")) {
+        attr(ret, "encoding-scalar") <- TRUE
+    }
+    if (length(dim(ret)) > 1)
+        ret <- t(ret)
+    ret
+}
+
+#' @importFrom rhdf5 H5Aopen H5Aread H5Aclose H5Dread
+#' @importMethodsFrom rhdf5 &
+read_categorical <- function(group, encoding) {
+    check_encodingversion(group, encoding, "0.2.0")
+
+    orderedattr <- H5Aopen(group, "ordered")
+    ordered <- as.logical(H5Aread(orderedattr))
+    H5Aclose(orderedattr)
+
+    values <- as.integer(H5Dread(h5autoclose(group & "codes")))
+    labels <- H5Dread(h5autoclose(group & "categories"))
+    convert_categoricals(values, labels)
+}
+
+#' @importFrom rhdf5 H5Dread
+#' @importMethodsFrom rhdf5 &
+read_nullable <- function(group, encoding) {
+    check_encodingversion(group, encoding, "0.1.0")
+    values <- H5Dread(h5autoclose(group & "values"))
+    mask <- as.logical(H5Dread(h5autoclose(group & "mask")))
+    values[mask] <- NA
+    if (endsWith(encoding, "-boolean")) {
+        values <- as.logical(values)
+    }
+    values
+}
+
+.read_funcs <- list("array"=read_array,
+                    "csr_matrix"=read_sparse_matrix,
+                    "csc_matrix"=read_sparse_matrix,
+                    "dataframe"=read_dataframe,
+                    "dict"=read_dict,
+                    "numeric-scalar"=read_array,
+                    "string"=read_array,
+                    "categorical"=read_categorical,
+                    "string-array"=read_array,
+                    "nullable-integer"=read_nullable,
+                    "nullable-boolean"=read_nullable)
+
+#' @importFrom rhdf5 H5Aexists H5Aopen H5Aread H5Aclose H5Iget_type H5Iget_name
+read_attribute <- function(attr) {
+    ret <- NULL
+    if (H5Aexists(attr, "encoding-type")) {
+        encattr <- H5Aopen(attr, "encoding-type")
+        encoding <- H5Aread(encattr)
+        H5Aclose(encattr)
+
+        func <- switch(encoding,
+                      "array"=read_array,
+                      "csr_matrix"=read_sparse_matrix,
+                      "csc_matrix"=read_sparse_matrix,
+                      "dataframe"=read_dataframe,
+                      "dict"=read_dict,
+                      "numeric-scalar"=read_array,
+                      "string"=read_array,
+                      "categorical"=read_categorical,
+                      "string-array"=read_array,
+                      "nullable-integer"=read_nullable,
+                      "nullable-boolean"=read_nullable)
+        if (is.null(func)) {
+            warning("Unknown encoding ", encoding, " for element ", H5Iget_name(attr))
+        } else {
+            ret <- func(attr, encoding)
+        }
+    }
+
+    if (is.null(ret)) {
+        if (H5Iget_type(attr) == "H5I_GROUP")
+            ret <- read_dict(attr, NULL, strict=FALSE)
+        else
+            ret <- read_array(attr, NULL, strict=FALSE)
+    }
+    ret
 }
 
 #' @importFrom stats setNames
@@ -232,8 +331,6 @@ read_modality <- function(view, backed=FALSE) {
         obsmnames <- h5ls(h5autoclose(view & "obsm"), recursive=FALSE)$name
         obsm <- lapply(obsmnames, function(space) {
             elem <- read_attribute(h5autoclose(view & paste("obsm", space, sep="/")))
-            if (!is.data.frame(elem) && length(dim(elem)) > 1)
-                elem <- t(elem)
             rownames(elem) <- rownames(obs)
             elem
         })
@@ -273,7 +370,7 @@ read_modality <- function(view, backed=FALSE) {
     }
 
     if ("uns" %in% viewnames)
-        metadata(se) <- read_group(h5autoclose(view & "uns"))
+        metadata(se) <- read_dict(h5autoclose(view & "uns"), NULL, strict=FALSE)
     se
 }
 
@@ -350,9 +447,8 @@ readH5MU <- function(file, backed=FALSE) {
     # if colData(MAE) has different row names than the experiments
     if (H5Lexists(h5, "obsmap")) {
         samplemaps <- lapply(assays, function(mod) {
-            cmapdset <- h5 & paste("obsmap", mod, sep="/")
+            cmapdset <- h5autoclose(h5 & paste("obsmap", mod, sep="/"))
             cmap <- H5Dread(cmapdset)
-            H5Dclose(cmapdset)
 
             idx <- which(cmap > 0)
             data.frame(assay=mod, primary=rownames(metadata)[idx], colname=colnames(modalities[[mod]])[cmap[idx]])
@@ -363,7 +459,7 @@ readH5MU <- function(file, backed=FALSE) {
     }
 
     if (H5Lexists(h5, "uns"))
-        args$metadata <- read_group(h5autoclose(h5 & "uns"))
+        args$metadata <- read_dict(h5autoclose(h5 & "uns"), NULL, strict=FALSE)
 
     # Close the connection
     H5Fclose(h5)

@@ -3,6 +3,24 @@
 .name <- paste0(getPackageName(), ".r")
 .version <- as.character(packageVersion(getPackageName()))
 
+#' @importFrom rhdf5 H5Aopen H5Aread H5Aclose
+check_encodingversion <- function(elem, encoding, supportedversions, error=FALSE) {
+    stopfun <- ifelse(error, stop, warning)
+    version <- NULL
+    if (H5Aexists(elem, "encoding-version")) {
+        encattr <- H5Aopen(elem, "encoding-version")
+        version <- H5Aread(encattr)
+        H5Aclose(encattr)
+
+        if (!(version %in% supportedversions)) {
+            stopfun("Unsupported encoding version ", version, " for encoding ", encoding)
+        }
+    } else {
+        stopfun("Unknown encoding version for encoding ", encoding)
+    }
+    version
+}
+
 #' @importFrom methods setGeneric setMethod
 #' @import Matrix
 NULL
@@ -40,7 +58,7 @@ finalize_mudata <- function(h5) {
 
 #' @importFrom rhdf5 h5writeAttribute
 finalize_anndata_internal <- function(h5) {
-    h5writeAttribute("AnnData", h5, "encoding-type", variableLengthString=TRUE, asScalar=TRUE)
+    h5writeAttribute("anndata", h5, "encoding-type", variableLengthString=TRUE, asScalar=TRUE)
     h5writeAttribute(.anndataversion, h5, "encoding-version", variableLengthString=TRUE, asScalar=TRUE)
     h5writeAttribute(.name, h5, "encoder", variableLengthString=TRUE, asScalar=TRUE)
     h5writeAttribute(.version, h5, "encoder-version", variableLengthString=TRUE, asScalar=TRUE)

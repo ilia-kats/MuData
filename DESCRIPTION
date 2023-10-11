@@ -22,8 +22,9 @@ Imports: methods,
          MultiAssayExperiment,
          SingleCellExperiment,
          SummarizedExperiment,
-         DelayedArray
-Depends: Matrix, S4Vectors, rhdf5
+         DelayedArray,
+         S4Vectors
+Depends: Matrix, S4Vectors, rhdf5 (>= 2.45)
 Suggests:
     HDF5Array,
     rmarkdown,
@@ -39,6 +40,6 @@ VignetteBuilder: knitr
 License: GPL-3
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.3
 Config/testthat/edition: 3
 biocViews: DataImport

@@ -47,14 +47,14 @@ writeH5AD <- function(object, file, overwrite) {
         if (length(obsm) > 0) {
             obsmgrp <- H5Gcreate(file, "obsm")
             mapply(function(name, data) {
-                if (is.data.frame(data)) {
+                if (is(data, "data.frame_OR_DataFrame")) {
                     rownames(data) <- rownames(colData(object))
                     write_data_frame(obsmgrp, name, data)
                 } else {
                     if (length(dim(data)) == 1)
                         data <- as.vector(data)
                     else
-                        data <- t(data)
+                        data <- data
                     write_matrix(obsmgrp, name, data)
                 }
             }, names(obsm), obsm)
@@ -82,11 +82,11 @@ writeH5AD <- function(object, file, overwrite) {
 
         assays <- assays(object)
         nassays <- length(assays)
-        write_matrix(file, "X", assays[[1]])
+        write_matrix(file, "X", t(assays[[1]]))
         if (nassays > 1) {
             layersgrp <- H5Gcreate(file, "layers")
             mapply(function(name, mat) {
-                write_matrix(layersgrp, name, mat)
+                write_matrix(layersgrp, name, t(mat))
             }, names(assays[2:nassays]), assays[2:nassays])
             H5Gclose(layersgrp)
         }
@@ -142,7 +142,7 @@ writeH5AD <- function(object, file, overwrite) {
 #' data(miniACC, package="MultiAssayExperiment")
 #' writeH5MU(miniACC, "miniacc.h5mu")
 #'
-#' @importFrom rhdf5 H5Gcreate H5Gclose h5writeDataset h5writeAttribute
+#' @importFrom rhdf5 H5Gcreate H5Gclose
 #' @importFrom MultiAssayExperiment colData experiments sampleMap metadata
 #'
 #' @export
@@ -172,12 +172,12 @@ writeH5MU <- function(object, file, overwrite) {
         cmaporder <- match(globalrownames, cmap$primary)
         localorder <- match(cmap$colname, colnames(mod))
         obsmap <- vapply(cmaporder, function(o)ifelse(is.na(o), 0L, localorder[o]), 0L)
-        h5writeDataset(obsmap, obsmapgrp, mname)
-        h5writeDataset(as.integer(!is.na(cmaporder)), obsmgrp, mname)
+        writeDataset(obsmapgrp, mname, obsmap)
+        writeDataset(obsmgrp, mname, as.integer(!is.na(cmaporder)))
 
         data.frame(row.names = rownames(mod))
     }, names(object), object)
-    h5writeAttribute(names(object), mods, "order")
+    writeAttribute(mods, "order", names(object))
     H5Gclose(mods)
     H5Gclose(obsmgrp)
     H5Gclose(obsmapgrp)
@@ -192,13 +192,51 @@ writeH5MU <- function(object, file, overwrite) {
     invisible(NULL)
 }
 
-#' @importFrom rhdf5 h5writeDataset h5writeAttribute H5Gcreate H5Gclose H5Fget_name H5Iget_name
+#' @importFrom rhdf5 H5Gcreate H5Gclose
 #' @importFrom methods is as
 write_matrix <- function(parent, key, mat) {
     if (is(mat, "dgeMatrix"))
         mat <- as.matrix(mat)
-    if (is.matrix(mat) || is.vector(mat)) {
-        writeDataset(parent, key, mat)
+    if (is.matrix(mat) || is.vector(mat) || is.array(mat) || is.numeric(mat) || is.integer(mat) || is.logical(mat) || is.character(mat)) { # is.vector returns false for vectors with attributes
+        isscalar <- length(mat) == 1 & !is.null(attr(mat, "encoding-scalar"))
+        hasna <- anyNA(mat)
+        if (is.matrix(mat))
+            mat <- t(mat)
+        else if (is.array(mat))
+            mat <- aperm(mat, length(dim(mat)):1)
+        if (hasna && is.double(mat)) {
+            # FIXME: extend anndata spec to handle double NAs?
+            mat[is.na(mat)] <- NaN
+            hasna <- FALSE
+        }
+
+        if (isscalar || !hasna) {
+            writeDataset(parent, key, mat, scalar=isscalar)
+            dset <- h5autoclose(parent & key)
+
+            if (!isscalar)
+                writeAttribute(dset, "encoding-type", ifelse(is.character(mat), "string-array", "array"))
+            else
+                writeAttribute(dset, "encoding-type", ifelse(is.character(mat), "string", "numeric-scalar"))
+            writeAttribute(dset, "encoding-version", "0.2.0")
+        } else {
+            grp <- H5Gcreate(parent, key)
+            write_matrix(grp, "values", mat)
+            write_matrix(grp, "mask", is.na(mat))
+            writeAttribute(grp, "encoding-type", ifelse(is.logical(mat), "nullable-boolean", "nullable-integer"))
+            writeAttribute(grp, "encoding-version", "0.1.0")
+            H5Gclose(grp)
+        }
+    } else if (is.factor(mat)) {
+        grp <- H5Gcreate(parent, key)
+        codes <- as.integer(mat)
+        codes[is.na(mat)] <- 0L
+        write_matrix(grp, "codes", codes - 1L)
+        write_matrix(grp, "categories", levels(mat))
+        writeAttribute(grp, "ordered", is.ordered(mat))
+        writeAttribute(grp, "encoding-type", "categorical")
+        writeAttribute(grp, "encoding-version", "0.2.0")
+        H5Gclose(grp)
     } else if (is(mat, "dgCMatrix") || is(mat, "dgRMatrix") || is(mat, "DelayedArray") && DelayedArray::is_sparse(mat)) {
         if (is(mat, "DelayedArray"))
             mat <- as(mat, "RsparseMatrix")
@@ -206,14 +244,14 @@ write_matrix <- function(parent, key, mat) {
         grp <- H5Gcreate(parent, key)
         writeDataset(grp, "indptr", mat@p)
         writeDataset(grp, "data", mat@x)
-        h5writeAttribute(rev(dim(mat)), grp, "shape")
-        h5writeAttribute("0.1.0", grp, "encoding-version", variableLengthString=TRUE, asScalar=TRUE)
+        writeAttribute(grp, "shape", dim(mat))
+        writeAttribute(grp, "encoding-version", "0.1.0")
         if (is(mat, "dgCMatrix")) {
             writeDataset(grp, "indices", mat@i)
-            h5writeAttribute("csr_matrix", grp, "encoding-type", variableLengthString=TRUE, asScalar=TRUE)
+            writeAttribute(grp, "encoding-type", "csc_matrix")
         } else {
             writeDataset(grp, "indices", mat@j)
-            h5writeAttribute("csc_matrix", grp, "encoding-type", variableLengthString=TRUE, asScalar=TRUE)
+            writeAttribute(grp, "encoding-type", "csr_matrix")
         }
         H5Gclose(grp)
     } else if (is(mat, "DelayedArray") && requireNamespace("HDF5Array", quietly=TRUE)) {
@@ -223,49 +261,25 @@ write_matrix <- function(parent, key, mat) {
     }
 }
 
-#' @importFrom rhdf5 H5Gcreate H5Gclose h5writeDataset h5writeAttribute h5createAttribute H5Dclose H5Rcreate H5Screate H5Tcopy H5Acreate H5Awrite H5Aclose H5Sclose
+#' @importFrom rhdf5 H5Gcreate H5Gclose h5createAttribute
 write_data_frame <- function(parent, key, df) {
     group <- H5Gcreate(parent, key)
 
     columns <- colnames(df)
-    df[["_index"]] <- rownames(df)
-    categories <- list()
+    index <- rownames(df)
+    if (is.null(index))
+        index <- as.character(1:nrow(df))
+    df[["_index"]] <- index
     for (col in colnames(df)) {
-        v <- df[[col]]
-        if (is.factor(v)) {
-            categories[[col]] <- levels(v)
-            writeDataset(group, col, as.integer(v) - 1L)
-        } else {
-            writeDataset(group, col, v)
-        }
-    }
-    if (length(categories) > 0) {
-        catgrp <- H5Gcreate(group, "__categories")
-
-        mapply(function(colname, categories) {
-            writeDataset(catgrp, colname, categories)
-            cat_dset <- catgrp & colname
-            dset <- group & colname
-            catref <- H5Rcreate(cat_dset, H5Iget_name(cat_dset))
-            sid <- H5Screate("H5S_SCALAR")
-            tid <- H5Tcopy("H5T_STD_REF_OBJ")
-            refattr <- H5Acreate(dset, "categories", dtype_id=tid, h5space=sid)
-            H5Awrite(refattr, catref)
-            h5writeAttribute(as.integer(is.ordered(df[[colname]])), cat_dset, "ordered", asScalar=TRUE)
-            H5Dclose(cat_dset)
-            H5Dclose(dset)
-            H5Aclose(refattr)
-            H5Sclose(sid)
-        }, names(categories), categories)
-        H5Gclose(catgrp)
+        write_matrix(group, col, df[[col]])
     }
 
     # Write attributes
-    h5writeAttribute("_index", group, "_index", variableLengthString=TRUE, asScalar=TRUE)
-    h5writeAttribute("dataframe", group, "encoding-type", variableLengthString=TRUE, asScalar=TRUE)
-    h5writeAttribute("0.1.0", group, "encoding-version", variableLengthString=TRUE, asScalar=TRUE)
+    writeAttribute(group, "_index", "_index")
+    writeAttribute(group, "encoding-type", "dataframe")
+    writeAttribute(group, "encoding-version", "0.2.0")
     if (length(columns) > 0) {
-        h5writeAttribute(columns, group, "column-order", variableLengthString=TRUE)
+        writeAttribute(group, "column-order", columns, scalar=FALSE)
     } else {
         # When there are no columns, null buffer can't be written to a file.
         h5createAttribute(group, "column-order", dims=0)
@@ -373,13 +387,25 @@ writeDataset <- function(parent, key, data, scalar=FALSE) {
     h5writeDataset(data, parent, key, variableLengthString=TRUE, encoding="UTF-8")
 }
 
+#' @importFrom rhdf5 h5writeAttribute
+writeAttribute <- function(obj, name, value, scalar=TRUE) {
+    if (is.logical(value))
+        value <- as.integer(value) # rhdf5 hasn't implemented logical attributes yet
+    args <- list(attr=value, h5obj=obj, name=name)
+    if (is.character(value))
+        args$variableLengthString <- TRUE
+    if (length(value) == 1 && scalar)
+        args$asScalar <- TRUE
+    do.call(h5writeAttribute, args)
+}
+
 #' @importFrom rhdf5 H5Gcreate H5Gclose
 #' @importFrom methods slotNames slot
 write_elem <- function(parent, key, data) {
     if (is(data, "list_OR_List"))
         writeList(parent, key, data)
     else if (is(data, "Matrix_OR_DelayedMatrix") || is(data, "vector_OR_Vector"))
-        writeDataset(parent, key, data, scalar=TRUE)
+        write_matrix(parent, key, data)
     else if (is(data, "data.frame_OR_DataFrame"))
         write_data_frame(parent, key, data)
     else if (isS4(data)) {
@@ -387,6 +413,8 @@ write_elem <- function(parent, key, data) {
         for (slotnm in slotNames(data)) {
             write_elem(grp, slotnm, slot(data, slotnm))
         }
+        writeattribute(grp, "encoding-type", "dict")
+        writeAttribute(grp, "encoding-version", "0.1.0")
         H5Gclose(grp)
     } else
         warning(paste("Cannot write object of class", class(data), "skipping..."))
@@ -402,6 +430,8 @@ writeList <- function(parent, key, data) {
         mapply(function(name, data) {
             write_elem(grp, name, data)
         }, nms, data)
+        writeAttribute(grp, "encoding-type", "dict")
+        writeAttribute(grp, "encoding-version", "0.1.0")
         H5Gclose(grp)
     }
 }
