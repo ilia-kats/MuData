@@ -221,6 +221,12 @@ write_matrix <- function(parent, key, mat) {
             writeAttribute(dset, "encoding-version", "0.2.0")
         } else {
             grp <- H5Gcreate(parent, key)
+            naidx <- is.na(mat)
+            if (is.character(mat))
+                mat[naidx] <- ""
+            else
+                mat[naidx] <- as(0, type(mat))
+
             write_matrix(grp, "values", mat)
             write_matrix(grp, "mask", is.na(mat))
             writeAttribute(grp, "encoding-type", ifelse(is.logical(mat), "nullable-boolean", "nullable-integer"))
@@ -413,7 +419,7 @@ write_elem <- function(parent, key, data) {
         for (slotnm in slotNames(data)) {
             write_elem(grp, slotnm, slot(data, slotnm))
         }
-        writeattribute(grp, "encoding-type", "dict")
+        writeAttribute(grp, "encoding-type", "dict")
         writeAttribute(grp, "encoding-version", "0.1.0")
         H5Gclose(grp)
     } else
