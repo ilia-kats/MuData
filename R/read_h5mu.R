@@ -222,6 +222,8 @@ read_array <- function(attr, encoding, strict=TRUE) {
     if (!is.null(encoding) && (endsWith(encoding, "-scalar") || encoding == "string")) {
         attr(ret, "encoding-scalar") <- TRUE
     }
+    if (length(dim(ret)) > 1)
+        ret <- t(ret)
     ret
 }
 
@@ -329,8 +331,6 @@ read_modality <- function(view, backed=FALSE) {
         obsmnames <- h5ls(h5autoclose(view & "obsm"), recursive=FALSE)$name
         obsm <- lapply(obsmnames, function(space) {
             elem <- read_attribute(h5autoclose(view & paste("obsm", space, sep="/")))
-            if (!is.data.frame(elem) && length(dim(elem)) > 1)
-                elem <- t(elem)
             rownames(elem) <- rownames(obs)
             elem
         })

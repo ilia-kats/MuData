@@ -47,14 +47,14 @@ writeH5AD <- function(object, file, overwrite) {
         if (length(obsm) > 0) {
             obsmgrp <- H5Gcreate(file, "obsm")
             mapply(function(name, data) {
-                if (is.data.frame(data)) {
+                if (is(data, "data.frame_OR_DataFrame")) {
                     rownames(data) <- rownames(colData(object))
                     write_data_frame(obsmgrp, name, data)
                 } else {
                     if (length(dim(data)) == 1)
                         data <- as.vector(data)
                     else
-                        data <- t(data)
+                        data <- data
                     write_matrix(obsmgrp, name, data)
                 }
             }, names(obsm), obsm)
@@ -82,11 +82,11 @@ writeH5AD <- function(object, file, overwrite) {
 
         assays <- assays(object)
         nassays <- length(assays)
-        write_matrix(file, "X", assays[[1]])
+        write_matrix(file, "X", t(assays[[1]]))
         if (nassays > 1) {
             layersgrp <- H5Gcreate(file, "layers")
             mapply(function(name, mat) {
-                write_matrix(layersgrp, name, mat)
+                write_matrix(layersgrp, name, t(mat))
             }, names(assays[2:nassays]), assays[2:nassays])
             H5Gclose(layersgrp)
         }
@@ -200,6 +200,10 @@ write_matrix <- function(parent, key, mat) {
     if (is.matrix(mat) || is.vector(mat) || is.array(mat) || is.numeric(mat) || is.integer(mat) || is.logical(mat) || is.character(mat)) { # is.vector returns false for vectors with attributes
         isscalar <- length(mat) == 1 & !is.null(attr(mat, "encoding-scalar"))
         hasna <- anyNA(mat)
+        if (is.matrix(mat))
+            mat <- t(mat)
+        else if (is.array(mat))
+            mat <- aperm(mat, length(dim(mat)):1)
         if (hasna && is.double(mat)) {
             # FIXME: extend anndata spec to handle double NAs?
             mat[is.na(mat)] <- NaN
@@ -240,14 +244,14 @@ write_matrix <- function(parent, key, mat) {
         grp <- H5Gcreate(parent, key)
         writeDataset(grp, "indptr", mat@p)
         writeDataset(grp, "data", mat@x)
-        writeAttribute(grp, "shape", rev(dim(mat)))
+        writeAttribute(grp, "shape", dim(mat))
         writeAttribute(grp, "encoding-version", "0.1.0")
         if (is(mat, "dgCMatrix")) {
             writeDataset(grp, "indices", mat@i)
-            writeAttribute(grp, "encoding-type", "csr_matrix")
+            writeAttribute(grp, "encoding-type", "csc_matrix")
         } else {
             writeDataset(grp, "indices", mat@j)
-            writeAttribute(grp, "encoding-type", "csc_matrix")
+            writeAttribute(grp, "encoding-type", "csr_matrix")
         }
         H5Gclose(grp)
     } else if (is(mat, "DelayedArray") && requireNamespace("HDF5Array", quietly=TRUE)) {
