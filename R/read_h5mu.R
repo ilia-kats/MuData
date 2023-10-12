@@ -183,7 +183,12 @@ read_matrix <- function(dataset, backed=FALSE) {
             cls <- "Dense_H5ADMatrixSeed"
             seed <- HDF5Array::HDF5ArraySeed
         } else {
-            return(H5Dread(dataset))
+            dset <- H5Dread(dataset)
+            if (length(dim(dset)) == 1)
+                dset <- as.vector(dset)
+            else if (length(dim(dset)) == 2)
+                dset <- as.matrix(dset)
+            return(dset)
         }
     }
     if (backed) {
@@ -214,6 +219,10 @@ read_array <- function(attr, encoding, strict=TRUE) {
         check_encodingversion(attr, encoding, "0.2.0")
 
     ret <- H5Dread(attr)
+    if (length(dim(ret)) == 1)
+        ret <- as.vector(ret)
+    else if (length(dim(ret)) == 2)
+        ret <- as.matrix(ret)
     # h5py saves boolean arrays as HDF5 enums
     if (is.factor(ret) && all(levels(ret) == c("FALSE", "TRUE"))) {
         ret <- as.logical(ret)
