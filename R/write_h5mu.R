@@ -255,14 +255,14 @@ write_matrix <- function(parent, key, mat, needTranspose=TRUE) {
         grp <- H5Gcreate(parent, key)
         writeDataset(grp, "indptr", mat@p)
         writeDataset(grp, "data", mat@x)
-        writeAttribute(grp, "shape", dim(mat))
+        writeAttribute(grp, "shape", if (needTranspose) dim(mat) else rev(dim(mat)), scalar=FALSE)
         writeAttribute(grp, "encoding-version", "0.1.0")
         if (is(mat, "dgCMatrix")) {
             writeDataset(grp, "indices", mat@i)
-            writeAttribute(grp, "encoding-type", "csc_matrix")
+            writeAttribute(grp, "encoding-type", ifelse(needTranspose, "csc_matrix", "csr_matrix"))
         } else {
             writeDataset(grp, "indices", mat@j)
-            writeAttribute(grp, "encoding-type", "csr_matrix")
+            writeAttribute(grp, "encoding-type", ifelse(needTranspose, "csr_matrix", "csc_matrix"))
         }
         H5Gclose(grp)
     } else if (is(mat, "DelayedArray") && requireNamespace("HDF5Array", quietly=TRUE)) {
