@@ -82,11 +82,11 @@ writeH5AD <- function(object, file, overwrite) {
 
         assays <- assays(object)
         nassays <- length(assays)
-        write_matrix(file, "X", t(assays[[1]]))
+        write_matrix(file, "X", assays[[1]], needTranspose=FALSE)
         if (nassays > 1) {
             layersgrp <- H5Gcreate(file, "layers")
             mapply(function(name, mat) {
-                write_matrix(layersgrp, name, t(mat))
+                write_matrix(layersgrp, name, mat, needTranspose=FALSE)
             }, names(assays[2:nassays]), assays[2:nassays])
             H5Gclose(layersgrp)
         }
@@ -102,7 +102,7 @@ writeH5AD <- function(object, file, overwrite) {
         written_object <- TRUE
     }
     if (is(object, "Matrix_OR_DelayedMatrix")) {
-        write_matrix(file, "X", object)
+        write_matrix(file, "X", object, needTranspose=FALSE)
         rownames <- rownames(object)
         colnames <- colnames(object)
         if (is.null(rownames))
@@ -194,19 +194,26 @@ writeH5MU <- function(object, file, overwrite) {
 
 #' @importFrom rhdf5 H5Gcreate H5Gclose
 #' @importFrom methods is as
-write_matrix <- function(parent, key, mat) {
+write_matrix <- function(parent, key, mat, needTranspose=TRUE) {
     if (is(mat, "dgeMatrix"))
         mat <- as.matrix(mat)
     if (is.matrix(mat) || is.vector(mat) || is.array(mat) || is.numeric(mat) || is.integer(mat) || is.logical(mat) || is.character(mat)) { # is.vector returns false for vectors with attributes
         isscalar <- length(mat) == 1 & !is.null(attr(mat, "encoding-scalar"))
-        hasna <- anyNA(mat)
-        if (is.matrix(mat))
-            mat <- t(mat)
-        else if (is.array(mat))
-            mat <- aperm(mat, length(dim(mat)):1)
+        naidx <- is.na(mat)
+        hasna <- any(naidx)
+        if (needTranspose) {
+            if (is.matrix(mat))
+                mat <- t(mat)
+            else if (is.array(mat))
+                mat <- aperm(mat, length(dim(mat)):1)
+        }
         if (hasna && is.double(mat)) {
             # FIXME: extend anndata spec to handle double NAs?
-            mat[is.na(mat)] <- NaN
+            mat[naidx] <- NaN
+            hasna <- FALSE
+        } else if (hasna && is.character(mat)) {
+            # FIXME: extend anndata spec to handle string NAs?
+            mat[naidx] <- ""
             hasna <- FALSE
         }
 
@@ -221,14 +228,12 @@ write_matrix <- function(parent, key, mat) {
             writeAttribute(dset, "encoding-version", "0.2.0")
         } else {
             grp <- H5Gcreate(parent, key)
-            naidx <- is.na(mat)
             if (is.character(mat))
                 mat[naidx] <- ""
             else
                 mat[naidx] <- as(0, type(mat))
-
             write_matrix(grp, "values", mat)
-            write_matrix(grp, "mask", is.na(mat))
+            write_matrix(grp, "mask", naidx)
             writeAttribute(grp, "encoding-type", ifelse(is.logical(mat), "nullable-boolean", "nullable-integer"))
             writeAttribute(grp, "encoding-version", "0.1.0")
             H5Gclose(grp)
