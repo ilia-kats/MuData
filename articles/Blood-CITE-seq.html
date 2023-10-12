@@ -84,7 +84,7 @@ Kats</h4>
 Germany<br><a class="author_email" href="mailto:#"></a><a href="mailto:i.kats@dkfz-heidelberg.de" class="email">i.kats@dkfz-heidelberg.de</a>
       </address>
                   
-            <h4 data-toc-skip class="date">2023-09-11</h4>
+            <h4 data-toc-skip class="date">2023-10-12</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/ilia-kats/MuData/blob/HEAD/vignettes/Blood-CITE-seq.Rmd" class="external-link"><code>vignettes/Blood-CITE-seq.Rmd</code></a></small>
       <div class="d-none name"><code>Blood-CITE-seq.Rmd</code></div>
@@ -114,8 +114,6 @@ bioconductor versions.</p>
 </h2>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ilia-kats/MuData" class="external-link">MuData</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning: replacing previous import 'S4Arrays::makeNindexFromArrayViewport' by</span></span>
-<span><span class="co">#&gt; 'DelayedArray::makeNindexFromArrayViewport' when loading 'SummarizedExperiment'</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">SingleCellExperiment</span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://waldronlab.io/MultiAssayExperiment/" class="external-link">MultiAssayExperiment</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">CiteFuse</span><span class="op">)</span></span>
@@ -289,7 +287,7 @@ Experiments In Bioconductor.” Cancer Research, 77(21); e39-42.</p></li>
 </h2>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; R Under development (unstable) (2023-09-10 r85120)</span></span>
+<span><span class="co">#&gt; R Under development (unstable) (2023-10-10 r85312)</span></span>
 <span><span class="co">#&gt; Platform: x86_64-pc-linux-gnu</span></span>
 <span><span class="co">#&gt; Running under: Ubuntu 22.04.3 LTS</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -312,29 +310,29 @@ Experiments In Bioconductor.” Cancer Research, 77(21); e39-42.</p></li>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; other attached packages:</span></span>
 <span><span class="co">#&gt;  [1] scater_1.29.4               ggplot2_3.4.3              </span></span>
-<span><span class="co">#&gt;  [3] scuttle_1.11.2              CiteFuse_1.13.0            </span></span>
+<span><span class="co">#&gt;  [3] scuttle_1.11.3              CiteFuse_1.13.0            </span></span>
 <span><span class="co">#&gt;  [5] MultiAssayExperiment_1.27.5 SingleCellExperiment_1.23.0</span></span>
 <span><span class="co">#&gt;  [7] SummarizedExperiment_1.31.1 Biobase_2.61.0             </span></span>
-<span><span class="co">#&gt;  [9] GenomicRanges_1.53.1        GenomeInfoDb_1.37.4        </span></span>
+<span><span class="co">#&gt;  [9] GenomicRanges_1.53.2        GenomeInfoDb_1.37.6        </span></span>
 <span><span class="co">#&gt; [11] IRanges_2.35.2              MatrixGenerics_1.13.1      </span></span>
 <span><span class="co">#&gt; [13] matrixStats_1.0.0           MuData_0.99.9              </span></span>
-<span><span class="co">#&gt; [15] rhdf5_2.45.1                S4Vectors_0.39.1           </span></span>
-<span><span class="co">#&gt; [17] BiocGenerics_0.47.0         Matrix_1.6-1               </span></span>
-<span><span class="co">#&gt; [19] BiocStyle_2.29.1           </span></span>
+<span><span class="co">#&gt; [15] rhdf5_2.45.1                S4Vectors_0.39.2           </span></span>
+<span><span class="co">#&gt; [17] BiocGenerics_0.47.0         Matrix_1.6-1.1             </span></span>
+<span><span class="co">#&gt; [19] BiocStyle_2.29.2           </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; loaded via a namespace (and not attached):</span></span>
 <span><span class="co">#&gt;   [1] RColorBrewer_1.1-3        tensorA_0.36.2           </span></span>
 <span><span class="co">#&gt;   [3] jsonlite_1.8.7            magrittr_2.0.3           </span></span>
 <span><span class="co">#&gt;   [5] ggbeeswarm_0.7.2          farver_2.1.1             </span></span>
-<span><span class="co">#&gt;   [7] rmarkdown_2.24            fs_1.6.3                 </span></span>
-<span><span class="co">#&gt;   [9] zlibbioc_1.47.0           ragg_1.2.5               </span></span>
+<span><span class="co">#&gt;   [7] rmarkdown_2.25            fs_1.6.3                 </span></span>
+<span><span class="co">#&gt;   [9] zlibbioc_1.47.0           ragg_1.2.6               </span></span>
 <span><span class="co">#&gt;  [11] vctrs_0.6.3               memoise_2.0.1            </span></span>
 <span><span class="co">#&gt;  [13] DelayedMatrixStats_1.23.4 RCurl_1.98-1.12          </span></span>
-<span><span class="co">#&gt;  [15] htmltools_0.5.6           S4Arrays_1.1.6           </span></span>
-<span><span class="co">#&gt;  [17] BiocNeighbors_1.19.0      Rhdf5lib_1.23.0          </span></span>
+<span><span class="co">#&gt;  [15] htmltools_0.5.6.1         S4Arrays_1.1.6           </span></span>
+<span><span class="co">#&gt;  [17] BiocNeighbors_1.19.0      Rhdf5lib_1.23.2          </span></span>
 <span><span class="co">#&gt;  [19] SparseArray_1.1.12        sass_0.4.7               </span></span>
 <span><span class="co">#&gt;  [21] bslib_0.5.1               htmlwidgets_1.6.2        </span></span>
-<span><span class="co">#&gt;  [23] desc_1.4.2                plyr_1.8.8               </span></span>
+<span><span class="co">#&gt;  [23] desc_1.4.2                plyr_1.8.9               </span></span>
 <span><span class="co">#&gt;  [25] plotly_4.10.2             cachem_1.0.8             </span></span>
 <span><span class="co">#&gt;  [27] igraph_1.5.1              lifecycle_1.0.3          </span></span>
 <span><span class="co">#&gt;  [29] pkgconfig_2.0.3           rsvd_1.0.5               </span></span>
@@ -342,51 +340,51 @@ Experiments In Bioconductor.” Cancer Research, 77(21); e39-42.</p></li>
 <span><span class="co">#&gt;  [33] GenomeInfoDbData_1.2.10   digest_0.6.33            </span></span>
 <span><span class="co">#&gt;  [35] colorspace_2.1-0          rprojroot_2.0.3          </span></span>
 <span><span class="co">#&gt;  [37] dqrng_0.3.1               irlba_2.3.5.1            </span></span>
-<span><span class="co">#&gt;  [39] textshaping_0.3.6         beachmat_2.17.16         </span></span>
+<span><span class="co">#&gt;  [39] textshaping_0.3.7         beachmat_2.17.16         </span></span>
 <span><span class="co">#&gt;  [41] labeling_0.4.3            randomForest_4.7-1.1     </span></span>
-<span><span class="co">#&gt;  [43] fansi_1.0.4               httr_1.4.7               </span></span>
-<span><span class="co">#&gt;  [45] polyclip_1.10-4           abind_1.4-5              </span></span>
-<span><span class="co">#&gt;  [47] compiler_4.4.0            withr_2.5.0              </span></span>
+<span><span class="co">#&gt;  [43] fansi_1.0.5               httr_1.4.7               </span></span>
+<span><span class="co">#&gt;  [45] polyclip_1.10-6           abind_1.4-5              </span></span>
+<span><span class="co">#&gt;  [47] compiler_4.4.0            withr_2.5.1              </span></span>
 <span><span class="co">#&gt;  [49] BiocParallel_1.35.4       viridis_0.6.4            </span></span>
-<span><span class="co">#&gt;  [51] highr_0.10                ggforce_0.4.1            </span></span>
-<span><span class="co">#&gt;  [53] MASS_7.3-60.1             bayesm_3.1-5             </span></span>
-<span><span class="co">#&gt;  [55] DelayedArray_0.27.10      bluster_1.11.4           </span></span>
-<span><span class="co">#&gt;  [57] tools_4.4.0               vipor_0.4.5              </span></span>
-<span><span class="co">#&gt;  [59] beeswarm_0.4.0            glue_1.6.2               </span></span>
-<span><span class="co">#&gt;  [61] dbscan_1.1-11             nlme_3.1-163             </span></span>
-<span><span class="co">#&gt;  [63] rhdf5filters_1.13.5       grid_4.4.0               </span></span>
-<span><span class="co">#&gt;  [65] Rtsne_0.16                cluster_2.1.4            </span></span>
-<span><span class="co">#&gt;  [67] reshape2_1.4.4            generics_0.1.3           </span></span>
-<span><span class="co">#&gt;  [69] gtable_0.3.4              tidyr_1.3.0              </span></span>
-<span><span class="co">#&gt;  [71] data.table_1.14.8         metapod_1.9.0            </span></span>
-<span><span class="co">#&gt;  [73] BiocSingular_1.17.1       tidygraph_1.2.3          </span></span>
-<span><span class="co">#&gt;  [75] ScaledMatrix_1.9.1        utf8_1.2.3               </span></span>
-<span><span class="co">#&gt;  [77] XVector_0.41.1            ggrepel_0.9.3            </span></span>
-<span><span class="co">#&gt;  [79] pillar_1.9.0              stringr_1.5.0            </span></span>
-<span><span class="co">#&gt;  [81] limma_3.57.7              robustbase_0.99-0        </span></span>
-<span><span class="co">#&gt;  [83] splines_4.4.0             dplyr_1.1.3              </span></span>
-<span><span class="co">#&gt;  [85] tweenr_2.0.2              lattice_0.21-8           </span></span>
-<span><span class="co">#&gt;  [87] survival_3.5-7            compositions_2.0-6       </span></span>
-<span><span class="co">#&gt;  [89] tidyselect_1.2.0          locfit_1.5-9.8           </span></span>
-<span><span class="co">#&gt;  [91] knitr_1.43                gridExtra_2.3            </span></span>
-<span><span class="co">#&gt;  [93] bookdown_0.35             edgeR_3.43.8             </span></span>
-<span><span class="co">#&gt;  [95] xfun_0.40                 graphlayouts_1.0.0       </span></span>
-<span><span class="co">#&gt;  [97] mixtools_2.0.0            statmod_1.5.0            </span></span>
-<span><span class="co">#&gt;  [99] DEoptimR_1.1-2            pheatmap_1.0.12          </span></span>
-<span><span class="co">#&gt; [101] stringi_1.7.12            lazyeval_0.2.2           </span></span>
-<span><span class="co">#&gt; [103] yaml_2.3.7                evaluate_0.21            </span></span>
-<span><span class="co">#&gt; [105] codetools_0.2-19          kernlab_0.9-32           </span></span>
-<span><span class="co">#&gt; [107] ggraph_2.1.0              tibble_3.2.1             </span></span>
-<span><span class="co">#&gt; [109] BiocManager_1.30.22       cli_3.6.1                </span></span>
-<span><span class="co">#&gt; [111] uwot_0.1.16               systemfonts_1.0.4        </span></span>
-<span><span class="co">#&gt; [113] segmented_1.6-4           munsell_0.5.0            </span></span>
-<span><span class="co">#&gt; [115] jquerylib_0.1.4           Rcpp_1.0.11              </span></span>
-<span><span class="co">#&gt; [117] parallel_4.4.0            pkgdown_2.0.7            </span></span>
-<span><span class="co">#&gt; [119] scran_1.29.3              sparseMatrixStats_1.13.4 </span></span>
-<span><span class="co">#&gt; [121] bitops_1.0-7              viridisLite_0.4.2        </span></span>
-<span><span class="co">#&gt; [123] scales_1.2.1              ggridges_0.5.4           </span></span>
-<span><span class="co">#&gt; [125] purrr_1.0.2               crayon_1.5.2             </span></span>
-<span><span class="co">#&gt; [127] rlang_1.1.1               cowplot_1.1.1</span></span></code></pre></div>
+<span><span class="co">#&gt;  [51] ggforce_0.4.1             MASS_7.3-60.1            </span></span>
+<span><span class="co">#&gt;  [53] bayesm_3.1-6              DelayedArray_0.27.10     </span></span>
+<span><span class="co">#&gt;  [55] bluster_1.11.4            tools_4.4.0              </span></span>
+<span><span class="co">#&gt;  [57] vipor_0.4.5               beeswarm_0.4.0           </span></span>
+<span><span class="co">#&gt;  [59] glue_1.6.2                dbscan_1.1-11            </span></span>
+<span><span class="co">#&gt;  [61] nlme_3.1-163              rhdf5filters_1.13.5      </span></span>
+<span><span class="co">#&gt;  [63] grid_4.4.0                Rtsne_0.16               </span></span>
+<span><span class="co">#&gt;  [65] cluster_2.1.4             reshape2_1.4.4           </span></span>
+<span><span class="co">#&gt;  [67] generics_0.1.3            gtable_0.3.4             </span></span>
+<span><span class="co">#&gt;  [69] tidyr_1.3.0               data.table_1.14.8        </span></span>
+<span><span class="co">#&gt;  [71] metapod_1.9.0             BiocSingular_1.17.1      </span></span>
+<span><span class="co">#&gt;  [73] tidygraph_1.2.3           ScaledMatrix_1.9.1       </span></span>
+<span><span class="co">#&gt;  [75] utf8_1.2.3                XVector_0.41.1           </span></span>
+<span><span class="co">#&gt;  [77] ggrepel_0.9.3             pillar_1.9.0             </span></span>
+<span><span class="co">#&gt;  [79] stringr_1.5.0             limma_3.57.9             </span></span>
+<span><span class="co">#&gt;  [81] robustbase_0.99-0         splines_4.4.0            </span></span>
+<span><span class="co">#&gt;  [83] dplyr_1.1.3               tweenr_2.0.2             </span></span>
+<span><span class="co">#&gt;  [85] lattice_0.21-9            survival_3.5-7           </span></span>
+<span><span class="co">#&gt;  [87] compositions_2.0-6        tidyselect_1.2.0         </span></span>
+<span><span class="co">#&gt;  [89] locfit_1.5-9.8            knitr_1.44               </span></span>
+<span><span class="co">#&gt;  [91] gridExtra_2.3             bookdown_0.35            </span></span>
+<span><span class="co">#&gt;  [93] edgeR_3.99.0              xfun_0.40                </span></span>
+<span><span class="co">#&gt;  [95] graphlayouts_1.0.1        mixtools_2.0.0           </span></span>
+<span><span class="co">#&gt;  [97] statmod_1.5.0             DEoptimR_1.1-3           </span></span>
+<span><span class="co">#&gt;  [99] pheatmap_1.0.12           stringi_1.7.12           </span></span>
+<span><span class="co">#&gt; [101] lazyeval_0.2.2            yaml_2.3.7               </span></span>
+<span><span class="co">#&gt; [103] evaluate_0.22             codetools_0.2-19         </span></span>
+<span><span class="co">#&gt; [105] kernlab_0.9-32            ggraph_2.1.0             </span></span>
+<span><span class="co">#&gt; [107] tibble_3.2.1              BiocManager_1.30.22      </span></span>
+<span><span class="co">#&gt; [109] cli_3.6.1                 uwot_0.1.16              </span></span>
+<span><span class="co">#&gt; [111] systemfonts_1.0.5         segmented_1.6-4          </span></span>
+<span><span class="co">#&gt; [113] munsell_0.5.0             jquerylib_0.1.4          </span></span>
+<span><span class="co">#&gt; [115] Rcpp_1.0.11               parallel_4.4.0           </span></span>
+<span><span class="co">#&gt; [117] pkgdown_2.0.7             scran_1.29.3             </span></span>
+<span><span class="co">#&gt; [119] sparseMatrixStats_1.13.4  bitops_1.0-7             </span></span>
+<span><span class="co">#&gt; [121] viridisLite_0.4.2         scales_1.2.1             </span></span>
+<span><span class="co">#&gt; [123] ggridges_0.5.4            purrr_1.0.2              </span></span>
+<span><span class="co">#&gt; [125] crayon_1.5.2              rlang_1.1.1              </span></span>
+<span><span class="co">#&gt; [127] cowplot_1.1.1</span></span></code></pre></div>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>

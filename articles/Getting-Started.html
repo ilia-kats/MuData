@@ -84,7 +84,7 @@ Kats</h4>
 Germany<br><a class="author_email" href="mailto:#"></a><a href="mailto:i.kats@dkfz-heidelberg.de" class="email">i.kats@dkfz-heidelberg.de</a>
       </address>
                   
-            <h4 data-toc-skip class="date">2023-09-11</h4>
+            <h4 data-toc-skip class="date">2023-10-12</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/ilia-kats/MuData/blob/HEAD/vignettes/Getting-Started.Rmd" class="external-link"><code>vignettes/Getting-Started.Rmd</code></a></small>
       <div class="d-none name"><code>Getting-Started.Rmd</code></div>
@@ -120,8 +120,6 @@ bioconductor versions.</p>
 </h2>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ilia-kats/MuData" class="external-link">MuData</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning: replacing previous import 'S4Arrays::makeNindexFromArrayViewport' by</span></span>
-<span><span class="co">#&gt; 'DelayedArray::makeNindexFromArrayViewport' when loading 'SummarizedExperiment'</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://waldronlab.io/MultiAssayExperiment/" class="external-link">MultiAssayExperiment</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/grimbough/rhdf5" class="external-link">rhdf5</a></span><span class="op">)</span></span></code></pre></div>
@@ -229,7 +227,7 @@ object:</p>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">colData</a></span><span class="op">(</span><span class="va">acc</span><span class="op">)</span><span class="op">[</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span><span class="op">)</span></span>
 <span><span class="co">#&gt; DataFrame with 6 rows and 4 columns</span></span>
 <span><span class="co">#&gt;                 patientID years_to_birth vital_status days_to_death</span></span>
-<span><span class="co">#&gt;               &lt;character&gt;      &lt;integer&gt;    &lt;integer&gt;     &lt;integer&gt;</span></span>
+<span><span class="co">#&gt;                   &lt;array&gt;        &lt;array&gt;      &lt;array&gt;       &lt;array&gt;</span></span>
 <span><span class="co">#&gt; TCGA-OR-A5J1 TCGA-OR-A5J1             58            1          1355</span></span>
 <span><span class="co">#&gt; TCGA-OR-A5J2 TCGA-OR-A5J2             44            1          1677</span></span>
 <span><span class="co">#&gt; TCGA-OR-A5J3 TCGA-OR-A5J3             23            0            NA</span></span>
@@ -250,14 +248,14 @@ object:</p>
 <span><span class="co">#&gt; G6PD          G6PD        2539        Xq28</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">rowData</a></span><span class="op">(</span><span class="va">acc</span><span class="op">[[</span><span class="st">"gistict"</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; DataFrame with 6 rows and 3 columns</span></span>
-<span><span class="co">#&gt;        Gene.Symbol    Locus.ID    Cytoband</span></span>
-<span><span class="co">#&gt;        &lt;character&gt; &lt;character&gt; &lt;character&gt;</span></span>
-<span><span class="co">#&gt; DIRAS3      DIRAS3        9077      1p31.3</span></span>
-<span><span class="co">#&gt; MAPK14      MAPK14        1432     6p21.31</span></span>
-<span><span class="co">#&gt; YAP1          YAP1       10413     11q22.1</span></span>
-<span><span class="co">#&gt; CDKN1B      CDKN1B        1027     12p13.1</span></span>
-<span><span class="co">#&gt; ERBB2        ERBB2        2064       17q12</span></span>
-<span><span class="co">#&gt; G6PD          G6PD        2539        Xq28</span></span></code></pre></div>
+<span><span class="co">#&gt;        Gene.Symbol Locus.ID Cytoband</span></span>
+<span><span class="co">#&gt;            &lt;array&gt;  &lt;array&gt;  &lt;array&gt;</span></span>
+<span><span class="co">#&gt; DIRAS3      DIRAS3     9077   1p31.3</span></span>
+<span><span class="co">#&gt; MAPK14      MAPK14     1432  6p21.31</span></span>
+<span><span class="co">#&gt; YAP1          YAP1    10413  11q22.1</span></span>
+<span><span class="co">#&gt; CDKN1B      CDKN1B     1027  12p13.1</span></span>
+<span><span class="co">#&gt; ERBB2        ERBB2     2064    17q12</span></span>
+<span><span class="co">#&gt; G6PD          G6PD     2539     Xq28</span></span></code></pre></div>
 <div class="section level4">
 <h4 id="backed-objects">Backed objects<a class="anchor" aria-label="anchor" href="#backed-objects"></a>
 </h4>
@@ -265,8 +263,6 @@ object:</p>
 <code>.X</code> and <code>.layers</code>) on disk.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">acc_b</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/readH5MU.html">readH5MU</a></span><span class="op">(</span><span class="st">"miniacc.h5mu"</span>, backed <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning: replacing previous import 'S4Arrays::makeNindexFromArrayViewport' by</span></span>
-<span><span class="co">#&gt; 'DelayedArray::makeNindexFromArrayViewport' when loading 'HDF5Array'</span></span>
 <span><span class="co">#&gt; Reading as SingleCellExperiment where the original object class is matrix</span></span>
 <span><span class="co">#&gt; Warning: sampleMap[['assay']] coerced with as.factor()</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">assay</a></span><span class="op">(</span><span class="va">acc_b</span>, <span class="st">"RNASeq2GeneNorm"</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span></span>
@@ -327,7 +323,7 @@ documentation</p></li>
 </h2>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; R Under development (unstable) (2023-09-10 r85120)</span></span>
+<span><span class="co">#&gt; R Under development (unstable) (2023-10-10 r85312)</span></span>
 <span><span class="co">#&gt; Platform: x86_64-pc-linux-gnu</span></span>
 <span><span class="co">#&gt; Running under: Ubuntu 22.04.3 LTS</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -350,39 +346,39 @@ documentation</p></li>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; other attached packages:</span></span>
 <span><span class="co">#&gt;  [1] MultiAssayExperiment_1.27.5 SummarizedExperiment_1.31.1</span></span>
-<span><span class="co">#&gt;  [3] Biobase_2.61.0              GenomicRanges_1.53.1       </span></span>
-<span><span class="co">#&gt;  [5] GenomeInfoDb_1.37.4         IRanges_2.35.2             </span></span>
+<span><span class="co">#&gt;  [3] Biobase_2.61.0              GenomicRanges_1.53.2       </span></span>
+<span><span class="co">#&gt;  [5] GenomeInfoDb_1.37.6         IRanges_2.35.2             </span></span>
 <span><span class="co">#&gt;  [7] MatrixGenerics_1.13.1       matrixStats_1.0.0          </span></span>
 <span><span class="co">#&gt;  [9] MuData_0.99.9               rhdf5_2.45.1               </span></span>
-<span><span class="co">#&gt; [11] S4Vectors_0.39.1            BiocGenerics_0.47.0        </span></span>
-<span><span class="co">#&gt; [13] Matrix_1.6-1                BiocStyle_2.29.1           </span></span>
+<span><span class="co">#&gt; [11] S4Vectors_0.39.2            BiocGenerics_0.47.0        </span></span>
+<span><span class="co">#&gt; [13] Matrix_1.6-1.1              BiocStyle_2.29.2           </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; loaded via a namespace (and not attached):</span></span>
 <span><span class="co">#&gt;  [1] sass_0.4.7                  bitops_1.0-7               </span></span>
 <span><span class="co">#&gt;  [3] SparseArray_1.1.12          stringi_1.7.12             </span></span>
-<span><span class="co">#&gt;  [5] lattice_0.21-8              digest_0.6.33              </span></span>
-<span><span class="co">#&gt;  [7] magrittr_2.0.3              evaluate_0.21              </span></span>
+<span><span class="co">#&gt;  [5] lattice_0.21-9              digest_0.6.33              </span></span>
+<span><span class="co">#&gt;  [7] magrittr_2.0.3              evaluate_0.22              </span></span>
 <span><span class="co">#&gt;  [9] grid_4.4.0                  bookdown_0.35              </span></span>
 <span><span class="co">#&gt; [11] fastmap_1.1.1               rprojroot_2.0.3            </span></span>
 <span><span class="co">#&gt; [13] jsonlite_1.8.7              BiocManager_1.30.22        </span></span>
 <span><span class="co">#&gt; [15] SingleCellExperiment_1.23.0 purrr_1.0.2                </span></span>
-<span><span class="co">#&gt; [17] HDF5Array_1.29.3            textshaping_0.3.6          </span></span>
+<span><span class="co">#&gt; [17] HDF5Array_1.29.3            textshaping_0.3.7          </span></span>
 <span><span class="co">#&gt; [19] jquerylib_0.1.4             abind_1.4-5                </span></span>
 <span><span class="co">#&gt; [21] cli_3.6.1                   rlang_1.1.1                </span></span>
 <span><span class="co">#&gt; [23] crayon_1.5.2                XVector_0.41.1             </span></span>
 <span><span class="co">#&gt; [25] cachem_1.0.8                DelayedArray_0.27.10       </span></span>
 <span><span class="co">#&gt; [27] yaml_2.3.7                  S4Arrays_1.1.6             </span></span>
 <span><span class="co">#&gt; [29] tools_4.4.0                 memoise_2.0.1              </span></span>
-<span><span class="co">#&gt; [31] Rhdf5lib_1.23.0             GenomeInfoDbData_1.2.10    </span></span>
+<span><span class="co">#&gt; [31] Rhdf5lib_1.23.2             GenomeInfoDbData_1.2.10    </span></span>
 <span><span class="co">#&gt; [33] vctrs_0.6.3                 R6_2.5.1                   </span></span>
 <span><span class="co">#&gt; [35] lifecycle_1.0.3             zlibbioc_1.47.0            </span></span>
 <span><span class="co">#&gt; [37] stringr_1.5.0               fs_1.6.3                   </span></span>
-<span><span class="co">#&gt; [39] ragg_1.2.5                  desc_1.4.2                 </span></span>
+<span><span class="co">#&gt; [39] ragg_1.2.6                  desc_1.4.2                 </span></span>
 <span><span class="co">#&gt; [41] pkgdown_2.0.7               bslib_0.5.1                </span></span>
-<span><span class="co">#&gt; [43] glue_1.6.2                  systemfonts_1.0.4          </span></span>
-<span><span class="co">#&gt; [45] xfun_0.40                   knitr_1.43                 </span></span>
-<span><span class="co">#&gt; [47] rhdf5filters_1.13.5         htmltools_0.5.6            </span></span>
-<span><span class="co">#&gt; [49] rmarkdown_2.24              compiler_4.4.0             </span></span>
+<span><span class="co">#&gt; [43] glue_1.6.2                  systemfonts_1.0.5          </span></span>
+<span><span class="co">#&gt; [45] xfun_0.40                   knitr_1.44                 </span></span>
+<span><span class="co">#&gt; [47] rhdf5filters_1.13.5         htmltools_0.5.6.1          </span></span>
+<span><span class="co">#&gt; [49] rmarkdown_2.25              compiler_4.4.0             </span></span>
 <span><span class="co">#&gt; [51] RCurl_1.98-1.12</span></span></code></pre></div>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
