@@ -1,15 +1,15 @@
 Package: MuData
 Title: Serialization for MultiAssayExperiment Objects
-Version: 1.11.0
+Version: 1.11.1
 Authors@R:
     c(person(given = "Danila",
            family = "Bredikhin",
-           role = c("aut", "cre"),
+           role = c("aut"),
            email = "danila.bredikhin@embl.de",
            comment = c(ORCID = "0000-0001-8089-6983")),
     person(given = "Ilia",
            family = "Kats",
-           role = c("aut"),
+           role = c("aut", "cre"),
            email = "i.kats@dkfz-heidelberg.de",
            comment = c(ORCID = "0000-0001-5220-5671")))
 Description: Save MultiAssayExperiments to h5mu files supported by muon and mudata.
