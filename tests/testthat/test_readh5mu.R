@@ -96,3 +96,56 @@ test_that("Extra levels in categoricals are ignored when NA are present", {
   res <- convert_categoricals(values, categories)
   expect_equal(levels(res), c('a'))
 })
+
+# anndata writes pandas string columns and indices (the default with
+# pandas 3) as nullable-string-array groups, and None with the null encoding
+as_nullable_strings <- function(file, name, mask) {
+  values <- as.vector(rhdf5::h5read(file, name))
+  rhdf5::h5delete(file, name)
+  rhdf5::h5createGroup(file, name)
+  rhdf5::h5write(values, file, paste(name, "values", sep = "/"))
+  rhdf5::h5write(as.integer(mask), file, paste(name, "mask", sep = "/"))
+  h5 <- rhdf5::H5Fopen(file)
+  group <- rhdf5::H5Gopen(h5, name)
+  rhdf5::h5writeAttribute("nullable-string-array", group, "encoding-type")
+  rhdf5::h5writeAttribute("0.1.0", group, "encoding-version")
+  rhdf5::H5Gclose(group)
+  rhdf5::H5Fclose(h5)
+}
+
+add_null <- function(file, name) {
+  h5 <- rhdf5::H5Fopen(file)
+  space <- rhdf5::H5Screate("H5S_NULL")
+  dataset <- rhdf5::H5Dcreate(h5, name, "H5T_IEEE_F32LE", space)
+  rhdf5::h5writeAttribute("null", dataset, "encoding-type")
+  rhdf5::h5writeAttribute("0.1.0", dataset, "encoding-version")
+  rhdf5::H5Dclose(dataset)
+  rhdf5::H5Sclose(space)
+  rhdf5::H5Fclose(h5)
+}
+
+test_that("nullable string arrays and null values are read", {
+  se <- SummarizedExperiment(matrix(rnorm(20), ncol = 4))
+  rownames(colData(se)) <- paste("obs-", 1:ncol(se), sep = "")
+  rownames(se) <- paste("var-", 1:nrow(se), sep = "")
+  rowData(se)$gene <- paste("gene-", 1:nrow(se), sep = "")
+  metadata(se) <- list("origin" = "SummarizedExperiment")
+  file <- tempfile(fileext = ".h5ad")
+  writeH5AD(se, file)
+
+  as_nullable_strings(file, "var/_index", rep(FALSE, nrow(se)))
+  as_nullable_strings(file, "var/gene", c(FALSE, TRUE, FALSE, FALSE, FALSE))
+  add_null(file, "uns/unset")
+
+  expect_error(se_ <- readH5AD(file), NA)
+
+  # Index and column are plain vectors; masked values are NA
+  expect_equal(rownames(se_), rownames(se))
+  expect_equal(rowData(se_)$gene, c("gene-1", NA, "gene-3", "gene-4", "gene-5"))
+  expect_null(dim(rowData(se_)$gene))
+
+  # None is read as NULL; other metadata is recovered
+  expect_true("unset" %in% names(metadata(se_)))
+  expect_null(metadata(se_)$unset)
+  expect_equal(metadata(se_)$origin, "SummarizedExperiment")
+})
