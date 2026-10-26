@@ -274,7 +274,7 @@ sessionInfo()
 #>  [7] SummarizedExperiment_1.42.0 Biobase_2.72.0             
 #>  [9] GenomicRanges_1.64.0        Seqinfo_1.2.0              
 #> [11] IRanges_2.46.0              MatrixGenerics_1.24.0      
-#> [13] matrixStats_1.5.0           MuData_1.11.1              
+#> [13] matrixStats_1.5.0           MuData_1.17.1              
 #> [15] rhdf5_2.56.1                S4Vectors_0.50.3           
 #> [17] BiocGenerics_0.58.1         generics_0.1.4             
 #> [19] Matrix_1.7-6                BiocStyle_2.40.0           
