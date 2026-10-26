@@ -255,7 +255,9 @@ read_categorical <- function(group, encoding) {
 #' @importMethodsFrom rhdf5 &
 read_nullable <- function(group, encoding) {
     check_encodingversion(group, encoding, "0.1.0")
-    values <- as.vector(H5Dread(h5autoclose(group & "values")))
+    values <- H5Dread(h5autoclose(group & "values"))
+    if (length(dim(values)) == 1)
+        values <- as.vector(values)
     mask <- as.logical(H5Dread(h5autoclose(group & "mask")))
     values[mask] <- NA
     if (endsWith(encoding, "-boolean")) {
