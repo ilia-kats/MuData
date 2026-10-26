@@ -17,8 +17,9 @@ read_dataframe_020 <- function(group, encoding, strict=TRUE) {
         read_attribute(h5autoclose(group & name))
     })
     names(col_list) <- columnorder
+    # anndata writes a pandas string index as a nullable-string-array group
     index <- h5autoclose(group & indexcol)
-    col_list[["row.names"]] <- H5Dread(index)
+    col_list[["row.names"]] <- read_attribute(index)
     do.call(DataFrame, args=col_list)
 }
 
@@ -255,6 +256,8 @@ read_categorical <- function(group, encoding) {
 read_nullable <- function(group, encoding) {
     check_encodingversion(group, encoding, "0.1.0")
     values <- H5Dread(h5autoclose(group & "values"))
+    if (length(dim(values)) == 1)
+        values <- as.vector(values)
     mask <- as.logical(H5Dread(h5autoclose(group & "mask")))
     values[mask] <- NA
     if (endsWith(encoding, "-boolean")) {
@@ -273,7 +276,8 @@ read_nullable <- function(group, encoding) {
                     "categorical"=read_categorical,
                     "string-array"=read_array,
                     "nullable-integer"=read_nullable,
-                    "nullable-boolean"=read_nullable)
+                    "nullable-boolean"=read_nullable,
+                    "nullable-string-array"=read_nullable)
 
 #' @importFrom rhdf5 H5Aexists H5Aopen H5Aread H5Aclose H5Iget_type H5Iget_name
 read_attribute <- function(attr) {
@@ -282,6 +286,10 @@ read_attribute <- function(attr) {
         encattr <- H5Aopen(attr, "encoding-type")
         encoding <- H5Aread(encattr)
         H5Aclose(encattr)
+
+        # None: a dataset with a null dataspace, which H5Dread cannot read
+        if (encoding == "null")
+            return(NULL)
 
         func <- switch(encoding,
                       "array"=read_array,
@@ -294,7 +302,8 @@ read_attribute <- function(attr) {
                       "categorical"=read_categorical,
                       "string-array"=read_array,
                       "nullable-integer"=read_nullable,
-                      "nullable-boolean"=read_nullable)
+                      "nullable-boolean"=read_nullable,
+                      "nullable-string-array"=read_nullable)
         if (is.null(func)) {
             warning("Unknown encoding ", encoding, " for element ", H5Iget_name(attr))
         } else {
