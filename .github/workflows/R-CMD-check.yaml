@@ -43,6 +43,7 @@ jobs:
           elif [ $RUNNER_OS == "macOS" ] ; then
             brew install imagemagick@6
             brew install fribidi
+            brew install libomp
           fi
         shell: bash
       
