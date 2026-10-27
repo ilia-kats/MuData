@@ -50,7 +50,7 @@ jobs:
       - name: Install dependencies on MacOS # https://github.com/r-lib/actions/issues/1017
         if: runner.os == 'macOS'
         run: |
-          sudo Rscript -e "source('https://mac.R-project.org/bin/install.R'); install.libs('gettext')"
+          sudo Rscript -e "source('https://mac.R-project.org/bin/install.R'); install.libs(c('gettext', 'libpng'))"
 
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
