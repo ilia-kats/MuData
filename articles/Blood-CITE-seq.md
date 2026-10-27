@@ -246,7 +246,7 @@ rhdf5::H5close()
 ``` r
 
 sessionInfo()
-#> R Under development (unstable) (2026-10-25 r90763)
+#> R Under development (unstable) (2026-10-26 r90766)
 #> Platform: x86_64-pc-linux-gnu
 #> Running under: Ubuntu 26.04.1 LTS
 #> 
